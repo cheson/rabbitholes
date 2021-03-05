@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
-import firebase from 'firebase'
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import List from "./components/List";
+import Alert from "react-bootstrap/Alert";
 
+import firebase from "firebase";
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).
@@ -29,6 +26,9 @@ export default function BasicExample() {
           </li>
           <li>
             <Link to="/about">About</Link>
+          </li>
+          <li>
+            <Link to="/list">List</Link>
           </li>
           <li>
             <Link to="/dashboard">Dashboard</Link>
@@ -59,6 +59,9 @@ export default function BasicExample() {
           </Route>
           <Route path="/about">
             <About />
+          </Route>
+          <Route path="/list">
+            <List />
           </Route>
           <Route path="/dashboard">
             <Dashboard />
@@ -93,6 +96,10 @@ function About() {
   return (
     <div>
       <h2>About</h2>
+      <Alert dismissible variant="danger">
+        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+        <p>Change this and that and try again.</p>
+      </Alert>
     </div>
   );
 }
@@ -114,21 +121,21 @@ var firebaseConfig = {
   storageBucket: "flow-website-2f43f.appspot.com",
   messagingSenderId: "227156325482",
   appId: "1:227156325482:web:9e7730c2400062059ec613",
-  measurementId: "G-Y6B1Q541FC"
+  measurementId: "G-Y6B1Q541FC",
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 // Configure FirebaseUI.
 const uiConfig = {
   // Popup signin flow rather than redirect flow.
-  signInFlow: 'popup',
+  signInFlow: "popup",
   // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  signInSuccessUrl: '/home',
+  signInSuccessUrl: "/home",
   // We will display Google and Facebook as auth providers.
   signInOptions: [
     firebase.auth.EmailAuthProvider.PROVIDER_ID,
     firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID
+    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
   ],
 };
 
@@ -160,20 +167,18 @@ function Count() {
 
   useEffect(() => {
     // testing fetch API, works great!
-    let url = "https://baconipsum.com/api/?type=meat-and-filler"
-    fetch(url).then(function(response) {
-      response.text().then(function(text) {
-        setQuote(text)
+    let url = "https://baconipsum.com/api/?type=meat-and-filler";
+    fetch(url).then(function (response) {
+      response.text().then(function (text) {
+        setQuote(text);
       });
     });
-  }, []) //empty dependencies array means no need to re-evaluate effect after render unless something in array changed.
+  }, []); //empty dependencies array means no need to re-evaluate effect after render unless something in array changed.
 
   return (
     <div>
       <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>
-        Click me
-      </button>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
       <p>{quote}</p>
     </div>
   );

@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-import { Header } from './Header';
+import { Header } from "./Header";
 
 let exportObj = {
-  title: 'Example/Header',
+  title: "Example/Header",
   component: Header,
 };
 

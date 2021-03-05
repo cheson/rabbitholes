@@ -1,38 +1,38 @@
-import React from 'react';
+import React from "react";
 
-import HelloWorld from './HelloWorld';
+import HelloWorld from "./HelloWorld";
 
 export default {
-    component: HelloWorld,
-    title: 'HelloWorld Title',
-    argTypes: { onDivClick: { action: 'div_clicked' } }
+  component: HelloWorld,
+  title: "HelloWorld Title",
+  argTypes: { onDivClick: { action: "div_clicked" } },
 };
 
-const Template = args => <HelloWorld {...args} />;
+const Template = (args) => <HelloWorld {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
   words: {
-      defaultText: "Default World",
-      extra: "Extra Words"
-  }
+    defaultText: "Default World",
+    extra: "Extra Words",
+  },
 };
 
 export const Special = Template.bind({});
 Special.args = {
   words: {
-      ...Default.args.words,
-      defaultText: "Special World",
-      doubleExtra: "doubleExtra"
-  }
+    ...Default.args.words,
+    defaultText: "Special World",
+    doubleExtra: "doubleExtra",
+  },
 };
 
 export const Wrong = Template.bind({});
 Special.args = {
   words: {
-      defaultText: "Special World",
-      doubleExtra: "doubleExtra"
-  }
+    defaultText: "Special World",
+    doubleExtra: "doubleExtra",
+  },
 };
 
 // export default {
