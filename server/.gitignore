@@ -28,3 +28,6 @@ benchmarks/graphs
 
 # Environmental Variable File (dev)
 .env
+
+# Secrets (dev)
+/dev_secrets

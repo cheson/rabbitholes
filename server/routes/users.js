@@ -1,5 +1,12 @@
 var express = require('express');
 var router = express.Router();
+var admin = require("firebase-admin");
+
+var serviceAccount = require("../dev_secrets/flow-website-2f43f-firebase-adminsdk-tx4es-32e589224b.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 // change to post later on and handle incoming parameters
 router.post('/register', (req, res) => {

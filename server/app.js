@@ -1,8 +1,9 @@
 const express = require('express');
 const MongoClient = require('mongodb')
 const usersRoutes = require('./routes/users.js')
+
 const dotenv = require('dotenv')
-dotenv.config()
+dotenv.config({path: './dev_secrets/.env'})
 
 const app = express();
 
