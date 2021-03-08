@@ -25,26 +25,23 @@ var firebaseConfig = {
     callbacks: {
         signInSuccessWithAuthResult: function(authResult, redirectUrl) {
             var user = authResult.user;
-            
-            var credential = authResult.credential;
+
             var isNewUser = authResult.additionalUserInfo.isNewUser;
-            var providerId = authResult.additionalUserInfo.providerId;
-            var operationType = authResult.operationType;
             // Do something with the returned AuthResult.
             // Return type determines whether we continue the redirect
             // automatically or whether we leave that to developer to handle.
             console.log(user.displayName)
             console.log(user.email)
             console.log(user.uid)
-            console.log(credential)
             console.log(isNewUser)
-            console.log(providerId)
-            console.log(operationType)
 
-            // fetch("/api/getList")
-            // .then((res) => res.json())
-            // .then((list) => setList(list));
-
+            fetch('/1/users/register', {
+                method: 'post',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({name: user.displayName, email: user.email, id: user.uid})
+                })
+                .then((res) => res.json())
+                .then((list) => console.log(list));
             return false;
           },
     },
