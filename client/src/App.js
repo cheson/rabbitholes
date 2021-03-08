@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import List from "./components/List";
 import Login from "./components/Login";
+import NavigationBar from "./components/NavigationBar"
 import Alert from "react-bootstrap/Alert";
 
 
@@ -19,31 +20,7 @@ export default function BasicExample() {
   return (
     <Router>
       <div>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/list">List</Link>
-          </li>
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/view">View</Link>
-          </li>
-          <li>
-            <Link to="/count">Count</Link>
-          </li>
-        </ul>
-
-        <hr />
+        <NavigationBar />
 
         {/*
           A <Switch> looks through all its children <Route>
@@ -99,6 +76,7 @@ function About() {
         <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
         <p>Change this and that and try again.</p>
       </Alert>
+      <a href="/list">LINK TO LIST</a>
     </div>
   );
 }

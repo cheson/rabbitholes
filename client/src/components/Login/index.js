@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import firebase from "firebase";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
@@ -34,6 +34,7 @@ var firebaseConfig = {
             console.log(user.email)
             console.log(user.uid)
             console.log(isNewUser)
+            console.log(redirectUrl)
 
             fetch('/1/users/register', {
                 method: 'post',

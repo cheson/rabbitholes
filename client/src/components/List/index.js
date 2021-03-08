@@ -19,7 +19,7 @@ function List() {
         <div>
           {/* Render the list of items */}
           {list.map((item) => {
-            return <div>{item}</div>;
+            return <div key="1">{item}</div>;
           })}
         </div>
       ) : (
