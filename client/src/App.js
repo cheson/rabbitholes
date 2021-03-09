@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import List from "./components/List";
 import Login from "./components/Login";
-import NavigationBar from "./components/NavigationBar"
+import NavigationBar from "./components/NavigationBar";
 import Alert from "react-bootstrap/Alert";
-
 
 // This site has 3 pages, all of which are rendered
 // dynamically in the browser (not server rendered).

@@ -5,7 +5,7 @@ function List() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    fetch('/1/users')
+    fetch("/1/users")
       .then((res) => res.json())
       .then((list) => setList(list));
   }, []);
