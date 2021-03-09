@@ -36,13 +36,21 @@ var firebaseConfig = {
             console.log(isNewUser)
             console.log(redirectUrl)
 
-            fetch('/1/users/register', {
-                method: 'post',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({name: user.displayName, email: user.email, id: user.uid})
-                })
-                .then((res) => res.json())
-                .then((list) => console.log(list));
+            firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+                // Send token to your backend via HTTPS
+                // ...
+                console.log(idToken)
+                fetch('/1/users/register', {
+                    method: 'post',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({token: idToken})
+                    })
+                    .then((res) => console.log(res.status))
+              }).catch(function(error) {
+                console.log(error)
+              });
+
+
             return false;
           },
     },

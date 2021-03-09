@@ -5,8 +5,7 @@ function List() {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    // setList(["1"])
-    fetch("/api/getList")
+    fetch('/1/users')
       .then((res) => res.json())
       .then((list) => setList(list));
   }, []);
@@ -19,7 +18,7 @@ function List() {
         <div>
           {/* Render the list of items */}
           {list.map((item) => {
-            return <div key="1">{item}</div>;
+            return <div key={item.firebase_id}>{item.email}</div>;
           })}
         </div>
       ) : (
