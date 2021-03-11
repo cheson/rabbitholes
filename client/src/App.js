@@ -3,122 +3,52 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import List from "./components/List";
 import Login from "./components/Login";
+import Home from "./components/Home";
 import NavigationBar from "./components/NavigationBar";
-import Alert from "react-bootstrap/Alert";
+import Count from "./components/Count";
+import About from "./components/About";
 
-// This site has 3 pages, all of which are rendered
-// dynamically in the browser (not server rendered).
-//
-// Although the page does not ever refresh, notice how
-// React Router keeps the URL up to date as you navigate
-// through the site. This preserves the browser history,
-// making sure things like the back button and bookmarks
-// work properly.
+import { initializeFirebase } from "./utils/firebase.js";
 
-export default function BasicExample() {
+export default function App() {
+  const [authUser, setAuthUser] = useState(null);
+  const firebase = initializeFirebase();
+
+  useEffect(() => {
+    // onAuthStateChanged returns an unsubscribe function
+    const unregisterAuthObserver = firebase
+      .auth()
+      .onAuthStateChanged((user) => {
+        setAuthUser(user);
+      });
+    return () => unregisterAuthObserver();
+  }, []);
+
   return (
     <Router>
-      <div>
-        <NavigationBar />
+      <NavigationBar authUser={authUser} firebase={firebase}/>
 
-        {/*
-          A <Switch> looks through all its children <Route>
-          elements and renders the first one whose path
-          matches the current URL. Use a <Switch> any time
-          you have multiple routes, but you want only one
-          of them to render at a time
-        */}
-        <Switch>
-          <Route exact path="/">
-            <Home />
-          </Route>
-          <Route path="/about">
-            <About />
-          </Route>
-          <Route path="/list">
-            <List />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route path="/view">
-            <View />
-          </Route>
-          <Route path="/count">
-            <Count />
-          </Route>
-        </Switch>
-      </div>
+      <Switch>
+        <Route exact path="/">
+          <Home />
+        </Route>
+        <Route path="/about">
+          <About authUser={authUser}/>
+        </Route>
+        <Route path="/list">
+          <List />
+        </Route>
+        <Route path="/login">
+          <Login
+            authUser={authUser}
+            setAuthUser={setAuthUser}
+            firebase={firebase}
+          />
+        </Route>
+        <Route path="/count">
+          <Count />
+        </Route>
+      </Switch>
     </Router>
-  );
-}
-
-// You can think of these components as "pages"
-// in your app.
-
-function Home() {
-  return (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
-}
-
-function About() {
-  return (
-    <div>
-      <h2>About</h2>
-      <Alert dismissible variant="danger">
-        <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-        <p>Change this and that and try again.</p>
-      </Alert>
-      <a href="/list">LINK TO LIST</a>
-    </div>
-  );
-}
-
-function Dashboard() {
-  return (
-    <div>
-      <h2>Dashboard</h2>
-    </div>
-  );
-}
-
-function View() {
-  return (
-    <div>
-      <h2>View</h2>
-    </div>
-  );
-}
-
-function Count() {
-  const [count, setCount] = useState(0);
-  const [quote, setQuote] = useState("");
-
-  useEffect(() => {
-    document.title = `You clicked ${count} times`;
-  });
-
-  useEffect(() => {
-    // testing fetch API, works great!
-    let url = "https://baconipsum.com/api/?type=meat-and-filler";
-    fetch(url).then(function (response) {
-      response.text().then(function (text) {
-        setQuote(text);
-      });
-    });
-  }, []); //empty dependencies array means no need to re-evaluate effect after render unless something in array changed.
-
-  return (
-    <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
-      <p>{quote}</p>
-    </div>
   );
 }

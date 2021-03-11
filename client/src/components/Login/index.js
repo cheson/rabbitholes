@@ -1,90 +1,66 @@
-import React, { useEffect, useState } from "react";
-
+import React from "react";
 import firebase from "firebase";
+import PropTypes from "prop-types";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-var firebaseConfig = {
-  apiKey: "AIzaSyCekVCfjfPPB21WgR-9wL8k78KpmgOzS3s",
-  authDomain: "flow-website-2f43f.firebaseapp.com",
-  projectId: "flow-website-2f43f",
-  storageBucket: "flow-website-2f43f.appspot.com",
-  messagingSenderId: "227156325482",
-  appId: "1:227156325482:web:9e7730c2400062059ec613",
-  measurementId: "G-Y6B1Q541FC",
-};
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-// Configure FirebaseUI.
-const uiConfig = {
-  // Popup signin flow rather than redirect flow.
-  signInFlow: "popup",
-  // Redirect to /signedIn after sign in is successful. Alternatively you can provide a callbacks.signInSuccess function.
-  // signInSuccessUrl: "/home",
-  callbacks: {
-    signInSuccessWithAuthResult: function (authResult, redirectUrl) {
-      var user = authResult.user;
+function Login(props) {
 
-      var isNewUser = authResult.additionalUserInfo.isNewUser;
-      // Do something with the returned AuthResult.
-      // Return type determines whether we continue the redirect
-      // automatically or whether we leave that to developer to handle.
-      console.log(user.displayName);
-      console.log(user.email);
-      console.log(user.uid);
-      console.log(isNewUser);
-      console.log(redirectUrl);
+  // Configure FirebaseUI.
+  const uiConfig = {
+    // Popup signin flow rather than redirect flow.
+    signInFlow: "popup",
+    // Redirect to URL after sign in is successful.
+    signInSuccessUrl: "/about",
+    callbacks: {
+      signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+        var isNewUser = authResult.additionalUserInfo.isNewUser;
+        // Do something with the returned AuthResult.
+        // Return type determines whether we continue the redirect
+        // automatically or whether we leave that to developer to handle.
+        console.log("auth result");
+        console.log(authResult);
 
-      firebase
-        .auth()
-        .currentUser.getIdToken(/* forceRefresh */ true)
-        .then(function (idToken) {
-          // Send token to your backend via HTTPS
-          // ...
-          console.log(idToken);
-          fetch("/1/users/register", {
-            method: "post",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: idToken }),
-          }).then((res) => console.log(res.status));
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-      return false;
+        props.firebase
+          .auth()
+          .currentUser.getIdToken(/* forceRefresh */ true)
+          .then(function (idToken) {
+            // Send token to your backend via HTTPS
+            // ...
+            console.log(idToken);
+            if (isNewUser) {
+                fetch("/1/users/register", {
+                    method: "post",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: idToken }),
+                    }).then((res) => console.log(res.status));
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        console.log(redirectUrl);
+        
+        //props.setAuthUser(props.firebase.auth().currentUser);
+        return true;
+      },
     },
-  },
-  // We will display Google and Facebook as auth providers.
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID,
-    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-  ],
-};
+    // We will display Google and Facebook as auth providers.
+    signInOptions: [
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+    ],
+  };
 
-function Login() {
-  const [isSignedIn, setIsSignedIn] = useState(false); // Local signed-in state.
-
-  // Listen to the Firebase Auth state and set the local state.
-  useEffect(() => {
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        setIsSignedIn(!!user);
-      });
-    return () => unregisterAuthObserver(); // Make sure we un-register Firebase observers when the component unmounts.
-  }, []);
-
-  if (!isSignedIn) {
+  console.log(props.authUser);
+  if (!props.authUser) {
     return (
       <div>
         <h1>My App</h1>
         <p>Please sign-in:</p>
         <StyledFirebaseAuth
           uiConfig={uiConfig}
-          firebaseAuth={firebase.auth()}
+          firebaseAuth={props.firebase.auth()}
         />
       </div>
     );
@@ -93,12 +69,18 @@ function Login() {
     <div>
       <h1>My App</h1>
       <p>
-        Welcome {firebase.auth().currentUser.displayName}! You are now
+        Welcome {props.authUser.displayName}! You are now
         signed-in!
       </p>
-      <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
+      <a onClick={() => { console.log("signing out"); props.firebase.auth().signOut(); props.setAuthUser(null); } }>Sign-out</a>
     </div>
   );
 }
+
+Login.propTypes = {
+  authUser: PropTypes.object,
+  setAuthUser: PropTypes.func.isRequired,
+  firebase: PropTypes.object.isRequired
+};
 
 export default Login;
