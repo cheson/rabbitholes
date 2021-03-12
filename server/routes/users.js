@@ -5,8 +5,10 @@ var admin = require("firebase-admin");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./dev_secrets/.env" });
 
+var serviceAccount = require(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
+
 admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
+  credential: admin.credential.cert(serviceAccount)
 });
 
 // change to post later on and handle incoming parameters
@@ -15,6 +17,7 @@ router.post("/register", (req, res) => {
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
+      console.log(decodedToken);
       const query = { firebase_id: decodedToken.uid };
       const update = {
         $set: {

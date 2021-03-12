@@ -20,9 +20,9 @@
 //     constructor(firebase.auth) {
 //       this.name = name;
 //     }
-  
+
 //     sayHi() {
 //       alert(this.name);
 //     }
-  
+
 //   }

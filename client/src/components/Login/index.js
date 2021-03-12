@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 function Login(props) {
-
   // Configure FirebaseUI.
   const uiConfig = {
     // Popup signin flow rather than redirect flow.
@@ -12,13 +11,11 @@ function Login(props) {
     // Redirect to URL after sign in is successful.
     signInSuccessUrl: "/about",
     callbacks: {
-      signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+      signInSuccessWithAuthResult: function (authResult) {
         var isNewUser = authResult.additionalUserInfo.isNewUser;
         // Do something with the returned AuthResult.
         // Return type determines whether we continue the redirect
         // automatically or whether we leave that to developer to handle.
-        console.log("auth result");
-        console.log(authResult);
 
         props.firebase
           .auth()
@@ -28,20 +25,19 @@ function Login(props) {
             // ...
             console.log(idToken);
             if (isNewUser) {
-                fetch("/1/users/register", {
-                    method: "post",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ token: idToken }),
-                    }).then((res) => console.log(res.status));
+              fetch("/1/users/register", {
+                method: "post",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+              }).then((res) => console.log(res.status));
             }
           })
           .catch(function (error) {
             console.log(error);
           });
-        console.log(redirectUrl);
-        
+        props.history.push("/home");
         //props.setAuthUser(props.firebase.auth().currentUser);
-        return true;
+        return false;
       },
     },
     // We will display Google and Facebook as auth providers.
@@ -68,11 +64,16 @@ function Login(props) {
   return (
     <div>
       <h1>My App</h1>
-      <p>
-        Welcome {props.authUser.displayName}! You are now
-        signed-in!
-      </p>
-      <a onClick={() => { console.log("signing out"); props.firebase.auth().signOut(); props.setAuthUser(null); } }>Sign-out</a>
+      <p>Welcome {props.authUser.displayName}! You are now signed-in!</p>
+      <a
+        onClick={() => {
+          console.log("signing out");
+          props.firebase.auth().signOut();
+          //props.setAuthUser(null);
+        }}
+      >
+        Sign-out
+      </a>
     </div>
   );
 }
@@ -80,7 +81,8 @@ function Login(props) {
 Login.propTypes = {
   authUser: PropTypes.object,
   setAuthUser: PropTypes.func.isRequired,
-  firebase: PropTypes.object.isRequired
+  firebase: PropTypes.object.isRequired,
+  history: PropTypes.object,
 };
 
 export default Login;

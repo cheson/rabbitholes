@@ -1,8 +1,7 @@
 import React from "react";
-import { Nav, NavDropdown, Navbar, Button } from "react-bootstrap";
+import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
-
 
 function NavigationBar(props) {
   return (
@@ -31,13 +30,13 @@ function NavigationBar(props) {
             </NavDropdown>
           </Nav>
           <Nav>
-            {props.authUser ? 
-            <Button variant="outline-primary" onClick={()=>{props.firebase.auth().signOut()}}>Logout</Button> : 
-            <Nav.Link as={Link} to="/login">
-              Login
-            </Nav.Link>
-            }
-            
+            {props.authUser ? (
+              props.logoutButton
+            ) : (
+              <Nav.Link as={Link} to="/login">
+                Login
+              </Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -46,8 +45,8 @@ function NavigationBar(props) {
 }
 
 NavigationBar.propTypes = {
-    authUser: PropTypes.object,
-    firebase: PropTypes.object.isRequired
+  authUser: PropTypes.object,
+  logoutButton: PropTypes.object,
 };
 
 export default NavigationBar;

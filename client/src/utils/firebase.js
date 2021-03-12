@@ -13,8 +13,16 @@ var firebaseConfig = {
 };
 
 export function initializeFirebase() {
-    if (firebase.apps.length > 0) {
-        return firebase.app()
-    }
-    return firebase.initializeApp(firebaseConfig);
+  if (firebase.apps.length > 0) {
+    return firebase.app();
+  }
+  return firebase.initializeApp(firebaseConfig);
+}
+
+export function initializeAuthObserver(firebase, onAuthStateChangedHandler) {
+  // onAuthStateChanged returns an unregister observer function
+  const unregisterAuthObserver = firebase
+    .auth()
+    .onAuthStateChanged(onAuthStateChangedHandler);
+  return unregisterAuthObserver;
 }

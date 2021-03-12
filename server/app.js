@@ -7,6 +7,7 @@ dotenv.config({ path: "./dev_secrets/.env" });
 
 const app = express();
 
+console.log(`${process.env.MONGO_DB_USER}`);
 const mongo_uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@claustrophobiccluster.7kape.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 MongoClient.connect(mongo_uri, { useNewUrlParser: true })
   .then((client) => {

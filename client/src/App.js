@@ -7,33 +7,37 @@ import Home from "./components/Home";
 import NavigationBar from "./components/NavigationBar";
 import Count from "./components/Count";
 import About from "./components/About";
+import LogoutButton from "./components/LogoutButton";
 
-import { initializeFirebase } from "./utils/firebase.js";
+import {
+  initializeFirebase,
+  initializeAuthObserver,
+} from "./utils/firebase.js";
 
 export default function App() {
   const [authUser, setAuthUser] = useState(null);
   const firebase = initializeFirebase();
 
   useEffect(() => {
-    // onAuthStateChanged returns an unsubscribe function
-    const unregisterAuthObserver = firebase
-      .auth()
-      .onAuthStateChanged((user) => {
-        setAuthUser(user);
-      });
+    const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
+      setAuthUser(user);
+    });
     return () => unregisterAuthObserver();
   }, []);
 
   return (
     <Router>
-      <NavigationBar authUser={authUser} firebase={firebase}/>
+      <NavigationBar
+        authUser={authUser}
+        logoutButton={<LogoutButton firebase={firebase} />}
+      />
 
       <Switch>
         <Route exact path="/">
           <Home />
         </Route>
         <Route path="/about">
-          <About authUser={authUser}/>
+          <About authUser={authUser} />
         </Route>
         <Route path="/list">
           <List />
