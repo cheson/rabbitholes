@@ -15,11 +15,14 @@ import {
 } from "./utils/firebase.js";
 
 export default function App() {
-  const [authUser, setAuthUser] = useState(null);
+  const [authUser, setAuthUser] = useState(
+    JSON.parse(localStorage.getItem("currentUser")) || null
+  );
   const firebase = initializeFirebase();
 
   useEffect(() => {
     const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
+      localStorage.setItem("currentUser", JSON.stringify(user));
       setAuthUser(user);
     });
     return () => unregisterAuthObserver();
