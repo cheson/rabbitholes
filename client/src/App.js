@@ -14,11 +14,14 @@ import {
   initializeAuthObserver,
 } from "./utils/firebase.js";
 
+import { APIService } from "./utils/api.js";
+
 export default function App() {
   const [authUser, setAuthUser] = useState(
     JSON.parse(localStorage.getItem("currentUser")) || null
   );
   const firebase = initializeFirebase();
+  const apiService = new APIService(firebase);
 
   useEffect(() => {
     const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
@@ -43,13 +46,14 @@ export default function App() {
           <About authUser={authUser} />
         </Route>
         <Route path="/list">
-          <List />
+          <List apiService={apiService} />
         </Route>
         <Route path="/login">
           <Login
             authUser={authUser}
             setAuthUser={setAuthUser}
             firebase={firebase}
+            apiService={apiService}
           />
         </Route>
         <Route path="/count">

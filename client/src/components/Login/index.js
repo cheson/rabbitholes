@@ -17,24 +17,9 @@ function Login(props) {
         // Return type determines whether we continue the redirect
         // automatically or whether we leave that to developer to handle.
 
-        props.firebase
-          .auth()
-          .currentUser.getIdToken(/* forceRefresh */ true)
-          .then(function (idToken) {
-            // Send token to your backend via HTTPS
-            // ...
-            console.log(idToken);
-            if (isNewUser) {
-              fetch("/1/users/register", {
-                method: "post",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ token: idToken }),
-              }).then((res) => console.log(res.status));
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        if (isNewUser) {
+          props.apiService.registerUser();
+        }
         props.history.push("/home");
         //props.setAuthUser(props.firebase.auth().currentUser);
         return false;
@@ -83,6 +68,7 @@ Login.propTypes = {
   setAuthUser: PropTypes.func.isRequired,
   firebase: PropTypes.object.isRequired,
   history: PropTypes.object,
+  apiService: PropTypes.object,
 };
 
 export default Login;

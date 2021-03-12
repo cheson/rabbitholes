@@ -1,28 +1,29 @@
-// export default class Api{
+export class APIService {
+  constructor(firebase) {
+    this.firebase = firebase;
+  }
 
-//     function DoAxiosCall(callback){
-//     axios.get(`/https://exampleService.com/${e.target.value}`)
-//                 .then(function (response) {
-//                     callback(response.data['name']);
-//                 })
-//                 .catch(function (error) {
-//                     if (error.response) {
-//                         if (error.response.status === 404) {
-//                             callback(`\u2014`)
-//                         }
-//                     }
-//                 })
-//     }
-// }
+  registerUser() {
+    this.firebase
+      .auth()
+      .currentUser.getIdToken(/* forceRefresh */ true)
+      .then(function (idToken) {
+        // Send token to your backend via HTTPS
+        // ...
+        console.log(`idToken is: ${idToken}`);
 
-// class APIService {
+        fetch("/1/users/register", {
+          method: "post",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token: idToken }),
+        }).then((res) => console.log(res.status));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
-//     constructor(firebase.auth) {
-//       this.name = name;
-//     }
-
-//     sayHi() {
-//       alert(this.name);
-//     }
-
-//   }
+  listUsers() {
+    return fetch("/1/users").then((res) => res.json());
+  }
+}

@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styles from "./List.module.css";
 
-function List() {
+function List(props) {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    fetch("/1/users")
-      .then((res) => res.json())
-      .then((list) => setList(list));
+    props.apiService.listUsers().then((list) => setList(list));
   }, []);
 
   return (
@@ -29,5 +28,9 @@ function List() {
     </div>
   );
 }
+
+List.propTypes = {
+  apiService: PropTypes.object,
+};
 
 export default List;
