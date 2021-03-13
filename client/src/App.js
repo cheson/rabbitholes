@@ -8,13 +8,15 @@ import NavigationBar from "./components/NavigationBar";
 import Count from "./components/Count";
 import About from "./components/About";
 import LogoutButton from "./components/LogoutButton";
+import CreateFlow from "./components/CreateFlow";
+import ViewFlow from "./components/ViewFlow";
+import ViewFlows from "./components/ViewFlows";
+import Profile from "./components/Profile";
 
-import {
-  initializeFirebase,
-  initializeAuthObserver,
-} from "./utils/firebase.js";
+import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
 
-import { APIService } from "./utils/api.js";
+import { APIService } from "./utils/api";
+import * as routes from "./constants/routes";
 
 export default function App() {
   const [authUser, setAuthUser] = useState(
@@ -39,22 +41,36 @@ export default function App() {
       />
 
       <Switch>
-        <Route exact path="/">
+        <Route exact path={[routes.ROOT, routes.HOME]}>
           <Home />
         </Route>
-        <Route path="/about">
-          <About authUser={authUser} />
-        </Route>
-        <Route path="/list">
-          <List apiService={apiService} />
-        </Route>
-        <Route path="/login">
+        <Route path={routes.LOGIN}>
           <Login
             authUser={authUser}
             setAuthUser={setAuthUser}
             firebase={firebase}
             apiService={apiService}
           />
+        </Route>
+        <Route path={routes.CREATE_FLOW}>
+          <CreateFlow />
+        </Route>
+        <Route path={routes.VIEW_FLOWS}>
+          <ViewFlows />
+        </Route>
+        <Route path={routes.VIEW_FLOW}>
+          <ViewFlow />
+        </Route>
+        <Route path={routes.PROFILE}>
+          <Profile />
+        </Route>
+
+        {/* example routes and components */}
+        <Route path={routes.ABOUT}>
+          <About authUser={authUser} />
+        </Route>
+        <Route path="/list">
+          <List apiService={apiService} />
         </Route>
         <Route path="/count">
           <Count />
