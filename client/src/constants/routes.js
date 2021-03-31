@@ -1,7 +1,7 @@
 export const ROOT = "/";
 export const HOME = "/home";
 export const LOGIN = "/login";
-export const CREATE_FLOW = "/createFlow";
+export const CREATE_FLOW = "/create";
 export const VIEW_FLOWS = "/viewFlows";
 export const VIEW_FLOW = "/viewFlow/:id";
 export const ABOUT = "/about";
