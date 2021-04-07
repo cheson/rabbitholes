@@ -31,3 +31,6 @@ benchmarks/graphs
 
 # Secrets (dev)
 /dev_secrets
+
+# File uploads (dev)
+/uploads

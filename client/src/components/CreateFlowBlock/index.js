@@ -7,6 +7,9 @@ function CreateFlowBlock() {
   const [image, setImage] = useState(cameraImg);
 
   const onDrop = (acceptedImageArray) => {
+    // TODO: instead of returning, show some UI that only 1 image can be uploaded.
+    if (acceptedImageArray.length == 0) return;
+
     // No need to work with arrays here because we limit dropzone to accept only 1 file.
     const acceptedImage = acceptedImageArray[0];
     setImage(URL.createObjectURL(acceptedImage));
@@ -28,34 +31,36 @@ function CreateFlowBlock() {
     />
   );
 
+  // TODO: Servers can be configured with a size limit for files and HTTP requests in order to prevent abuse.
+  // TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
   return (
     <div>
-      <form action="/api/images" method="post" encType="multipart/form-data">
-        <Dropzone onDrop={onDrop} maxFiles={1} accept="image/*">
-          {({ getRootProps, getInputProps }) => (
-            <div className={styles.dropzone} {...getRootProps()}>
-              {imgPreview}
-              <input {...getInputProps()} />
-            </div>
-          )}
-        </Dropzone>
+      <Dropzone onDrop={onDrop} maxFiles={1} accept="image/*">
+        {({ getRootProps, getInputProps }) => (
+          <div className={styles.dropzone} {...getRootProps()}>
+            {imgPreview}
+            <input {...getInputProps({ name: "flowImage" })} />
+          </div>
+        )}
+      </Dropzone>
 
-        <label htmlFor="title">Title</label>
-        <input
-          placeholder="title"
-          className={styles.titleText}
-          type="text"
-          name="text"
-        ></input>
+      <label htmlFor="title">Title</label>
+      <input
+        id="title"
+        placeholder="title"
+        className={styles.titleText}
+        name="title"
+      ></input>
 
-        <label htmlFor="description">Description</label>
-        <textarea
-          className={styles.descriptionText}
-          placeholder="description"
-          type="text"
-          name="text"
-        ></textarea>
-      </form>
+      <label htmlFor="description">Description</label>
+      <textarea
+        id="description"
+        className={styles.descriptionText}
+        placeholder="description"
+        name="description"
+      ></textarea>
+
+      <button type="submit">Submit form</button>
     </div>
   );
 }
