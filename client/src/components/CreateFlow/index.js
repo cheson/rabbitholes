@@ -1,13 +1,46 @@
 import React, { useState, useRef } from "react";
 import CreateFlowBlock from "../CreateFlowBlock";
 import PropTypes from "prop-types";
-import styles from "./CreateFlow.module.css";
+import { nanoid } from "nanoid";
 
 export default function CreateFlow(props) {
-  const [blocks, setBlocks] = useState(["blue", "green", "black"]);
+  const [blocks, setBlocks] = useState([
+    { url: "url1", image: "image1", description: "description1", id: nanoid() },
+  ]);
 
-  function addBlock(color) {
-    setBlocks((currentBlocks) => [...currentBlocks, color]);
+  function addBlock() {
+    const randNum = Math.floor(Math.random() * 100);
+    const newBlock = {
+      url: "url" + randNum,
+      image: "image" + randNum,
+      description: "description" + randNum,
+      id: nanoid(),
+    };
+    setBlocks((currentBlocks) => [...currentBlocks, newBlock]);
+  }
+
+  // CreateFlow
+  // CreateFlowIntro
+  // [CreateFlowBlock]
+  // Start out by just being div blocks with: optional img, optional description, resource url
+  // [{img: xxx, description: xxx, url: xxx, deepDive: [{xxx}, {xxx}, {xxx}]}]
+
+  // ViewFlow
+  // FlowIntro
+  // [FlowBlock]
+
+  // CreateFlowIntro
+  // FlowIntro
+
+  // CreateFlowBlock
+  // FlowBlock
+
+  // what should show up on first creation? default block with helpful suggestions + UI to add new block
+
+  function onRemove(id) {
+    const newBlocks = blocks.filter((block) => block.id !== id);
+
+    setBlocks(newBlocks);
   }
 
   let form = useRef(null);
@@ -34,23 +67,35 @@ export default function CreateFlow(props) {
 
             <hr />
 
-            {blocks.map((block) => {
-              return (
-                <div
-                  style={{
-                    backgroundColor: block,
-                    height: 100,
-                    width: 100,
-                    float: "left",
-                    margin: 15,
-                  }}
-                  key={block}
-                >
-                  {block}
-                  <input placeholder="whatever" name="whatever"></input>
-                </div>
-              );
-            })}
+            <div className={styles.flowBlockContainer}>
+              {blocks.map((block) => {
+                return (
+                  <div className={styles.flowBlock} key={block.id}>
+                    <button type="button" onClick={() => onRemove(block.id)}>
+                      Remove
+                    </button>
+
+                    <label htmlFor={block.id}>URL</label>
+                    <input
+                      placeholder={block.url}
+                      className={styles.urlText}
+                      type="text"
+                      id={block.id}
+                      name="url"
+                    ></input>
+
+                    <label htmlFor="description">Description</label>
+                    <textarea
+                      className={styles.descriptionText}
+                      placeholder={block.description}
+                      type="text"
+                      id={block.id}
+                      name="description"
+                    ></textarea>
+                  </div>
+                );
+              })}
+            </div>
 
             <button type="button" onClick={() => addBlock("purple")}>
               add color!
