@@ -11,7 +11,7 @@ var upload = multer({ dest: 'uploads/' })
 const app = express();
 
 console.log(`${process.env.MONGO_DB_USER}`);
-const mongo_uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@claustrophobiccluster.7kape.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
+const mongo_uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@claustrophobiccluster.8051k.mongodb.net/flow-website?retryWrites=true&w=majority`;
 MongoClient.connect(mongo_uri, { useNewUrlParser: true })
   .then((client) => {
     app.locals.db = client.db("flow-website");
