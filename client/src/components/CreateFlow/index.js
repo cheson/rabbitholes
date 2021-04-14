@@ -1,13 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import CreateFlowBlock from "../CreateFlowBlock";
+import PropTypes from "prop-types";
 import styles from "./CreateFlow.module.css";
 
-export default function CreateFlow() {
+export default function CreateFlow(props) {
   const [blocks, setBlocks] = useState(["blue", "green", "black"]);
 
   function addBlock(color) {
     setBlocks((currentBlocks) => [...currentBlocks, color]);
   }
+
+  let form = useRef(null);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(form.current);
+    console.log(Array.from(formData.entries()));
+
+    props.apiService.createFlow(formData);
+  };
 
   return (
     <div>
@@ -16,11 +27,7 @@ export default function CreateFlow() {
       <div className={styles.grid}>
         {true && <div className={styles.box1}>hello space placeholder</div>}
         <div className={styles.box2}>
-          <form
-            action="/createFlow"
-            method="post"
-            encType="multipart/form-data"
-          >
+          <form onSubmit={onSubmit} ref={form}>
             <div className={styles.flexCentered}>
               <CreateFlowBlock />
             </div>
@@ -40,13 +47,22 @@ export default function CreateFlow() {
                   key={block}
                 >
                   {block}
+                  <input placeholder="whatever" name="whatever"></input>
                 </div>
               );
             })}
-            <button onClick={() => addBlock("purple")}>add color!</button>
+
+            <button type="button" onClick={() => addBlock("purple")}>
+              add color!
+            </button>
+            <button type="submit">Submit form</button>
           </form>
         </div>
       </div>
     </div>
   );
 }
+
+CreateFlow.propTypes = {
+  apiService: PropTypes.object,
+};

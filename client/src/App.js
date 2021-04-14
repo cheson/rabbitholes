@@ -53,7 +53,7 @@ export default function App() {
           />
         </Route>
         <Route path={routes.CREATE_FLOW}>
-          <CreateFlow />
+          <CreateFlow apiService={apiService} />
         </Route>
         <Route path={routes.VIEW_FLOWS}>
           <ViewFlows />
