@@ -8,7 +8,7 @@ dotenv.config({ path: "./dev_secrets/.env" });
 var serviceAccount = require(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
 
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
+  credential: admin.credential.cert(serviceAccount),
 });
 
 // change to post later on and handle incoming parameters

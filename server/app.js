@@ -5,8 +5,8 @@ const usersRoutes = require("./routes/users.js");
 const dotenv = require("dotenv");
 dotenv.config({ path: "./dev_secrets/.env" });
 
-const multer = require('multer');
-var upload = multer({ dest: 'uploads/' })
+const multer = require("multer");
+var upload = multer({ dest: "uploads/" });
 
 const app = express();
 
@@ -38,14 +38,14 @@ app.get("*", function (req, res) {
   res.sendFile("../client/build/index.html");
 });
 
-app.post("/createFlow", upload.single("flowImage"), (req, res) => {
-  console.log(req.body);
-  console.log(req.file);
-});
-
-// app.post("/createFlow", upload.any(), (req, res) => {
+// app.post("/createFlow", upload.single("flowImage"), (req, res) => {
 //   console.log(req.body);
-//   console.log(req.files);
+//   console.log(req.file);
 // });
+
+app.post("/1/createFlow", upload.any(), (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+});
 
 app.listen(9000);

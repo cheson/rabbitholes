@@ -6,6 +6,8 @@ import styles from "./CreateFlowBlock.module.css";
 function CreateFlowBlock() {
   const [image, setImage] = useState(cameraImg);
 
+  // let formData = new FormData();
+
   const onDrop = (acceptedImageArray) => {
     // TODO: instead of returning, show some UI that only 1 image can be uploaded.
     if (acceptedImageArray.length == 0) return;
@@ -59,8 +61,6 @@ function CreateFlowBlock() {
         placeholder="description"
         name="description"
       ></textarea>
-
-      <button type="submit">Submit form</button>
     </div>
   );
 }

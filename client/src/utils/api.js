@@ -26,4 +26,14 @@ export class APIService {
   listUsers() {
     return fetch("/1/users").then((res) => res.json());
   }
+
+  createFlow(formData) {
+    fetch("/1/createFlow", {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => response.json())
+      .catch((error) => console.error("Error:", error))
+      .then((response) => console.log("Success:", JSON.stringify(response)));
+  }
 }
