@@ -1,6 +1,6 @@
 .grid {
   display: grid;
-  grid-template-columns: 1fr minmax(max-content, 100%);
+  grid-template-columns: 1fr 100%;
   grid-gap: 10px;
 }
 
@@ -30,4 +30,11 @@
   display: flex;
   align-content: center;
   justify-content: center;
+}
+
+.flowBlockContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
 }
