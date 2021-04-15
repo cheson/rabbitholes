@@ -8,7 +8,7 @@ import NavigationBar from "./components/NavigationBar";
 import Count from "./components/Count";
 import About from "./components/About";
 import LogoutButton from "./components/LogoutButton";
-import CreateFlow from "./components/CreateFlow";
+import CreateFlowPage from "./components/CreateFlowPage";
 import ViewFlow from "./components/ViewFlow";
 import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
@@ -53,7 +53,7 @@ export default function App() {
           />
         </Route>
         <Route path={routes.CREATE_FLOW}>
-          <CreateFlow apiService={apiService} />
+          <CreateFlowPage apiService={apiService} />
         </Route>
         <Route path={routes.VIEW_FLOWS}>
           <ViewFlows />

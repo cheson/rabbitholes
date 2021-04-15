@@ -1,9 +1,12 @@
 import React, { useState, useRef } from "react";
+import CreateFlowIntro from "../CreateFlowIntro";
 import CreateFlowBlock from "../CreateFlowBlock";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import styles from "./CreateFlowPage.module.css";
 
-export default function CreateFlow(props) {
+export default function CreateFlowPage(props) {
+  // what should show up on first creation? default block with helpful suggestions + UI to add new block
   const [blocks, setBlocks] = useState([
     { url: "url1", image: "image1", description: "description1", id: nanoid() },
   ]);
@@ -19,32 +22,12 @@ export default function CreateFlow(props) {
     setBlocks((currentBlocks) => [...currentBlocks, newBlock]);
   }
 
-  // CreateFlow
-  // CreateFlowIntro
-  // [CreateFlowBlock]
-  // Start out by just being div blocks with: optional img, optional description, resource url
-  // [{img: xxx, description: xxx, url: xxx, deepDive: [{xxx}, {xxx}, {xxx}]}]
-
-  // ViewFlow
-  // FlowIntro
-  // [FlowBlock]
-
-  // CreateFlowIntro
-  // FlowIntro
-
-  // CreateFlowBlock
-  // FlowBlock
-
-  // what should show up on first creation? default block with helpful suggestions + UI to add new block
-
-  function onRemove(id) {
+  function removeBlock(id) {
     const newBlocks = blocks.filter((block) => block.id !== id);
-
     setBlocks(newBlocks);
   }
 
   let form = useRef(null);
-
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(form.current);
@@ -62,7 +45,7 @@ export default function CreateFlow(props) {
         <div className={styles.box2}>
           <form onSubmit={onSubmit} ref={form}>
             <div className={styles.flexCentered}>
-              <CreateFlowBlock />
+              <CreateFlowIntro />
             </div>
 
             <hr />
@@ -70,35 +53,17 @@ export default function CreateFlow(props) {
             <div className={styles.flowBlockContainer}>
               {blocks.map((block) => {
                 return (
-                  <div className={styles.flowBlock} key={block.id}>
-                    <button type="button" onClick={() => onRemove(block.id)}>
-                      Remove
-                    </button>
-
-                    <label htmlFor={block.id}>URL</label>
-                    <input
-                      placeholder={block.url}
-                      className={styles.urlText}
-                      type="text"
-                      id={block.id}
-                      name="url"
-                    ></input>
-
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                      className={styles.descriptionText}
-                      placeholder={block.description}
-                      type="text"
-                      id={block.id}
-                      name="description"
-                    ></textarea>
-                  </div>
+                  <CreateFlowBlock
+                    key={block.id}
+                    blockData={block}
+                    removeBlock={removeBlock}
+                  />
                 );
               })}
             </div>
 
-            <button type="button" onClick={() => addBlock("purple")}>
-              add color!
+            <button type="button" onClick={() => addBlock()}>
+              add block!
             </button>
             <button type="submit">Submit form</button>
           </form>
@@ -108,6 +73,6 @@ export default function CreateFlow(props) {
   );
 }
 
-CreateFlow.propTypes = {
+CreateFlowPage.propTypes = {
   apiService: PropTypes.object,
 };

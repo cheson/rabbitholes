@@ -38,11 +38,3 @@
   flex-wrap: wrap;
   justify-content: space-evenly;
 }
-
-.flowBlock {
-  border-color: black;
-  border-width: 3px;
-  border-style: solid;
-  border-radius: 2px;
-  margin: 15px;
-}
