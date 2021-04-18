@@ -1,0 +1,11 @@
+Repo is still very much a WIP, but here are some of the things I've tinkered with so far and are part of this project:
+- Firebase Auth for login/auth
+- MongoDB Atlas + Mongoose
+- NodeJS / Express
+- React
+- ESLint + Prettier
+
+work notes/tracker: https://www.notion.so/daily-progress-d5211167c07b472b9b400eae388ce15e
+
+small figma wireframe of what i'm trying to build: https://www.figma.com/file/7d5TfMQdnDfcXwqHTd4Ugn/Flow-Website-Wireframe?node-id=101%3A5630
+
