@@ -1,22 +1,18 @@
 const express = require("express");
-const MongoClient = require("mongodb");
 const usersRoutes = require("./routes/users.js");
-
-const dotenv = require("dotenv");
-dotenv.config({ path: "./dev_secrets/.env" });
+const models = require("./models");
 
 const multer = require("multer");
 var upload = multer({ dest: "uploads/" });
 
 const app = express();
 
-console.log(`${process.env.MONGO_DB_USER}`);
-const mongo_uri = `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@claustrophobiccluster.8051k.mongodb.net/flow-website?retryWrites=true&w=majority`;
-MongoClient.connect(mongo_uri, { useNewUrlParser: true })
-  .then((client) => {
-    app.locals.db = client.db("flow-website");
-  })
-  .catch((error) => console.error(error));
+models.connectDb().then(async () => {
+  app.listen(9000, () => {
+    console.log("Example app listening on port 9000");
+    //app.locals.db =
+  });
+});
 
 app.use(express.static("../client/build"));
 app.use(express.json());
@@ -47,5 +43,3 @@ app.post("/1/createFlow", upload.any(), (req, res) => {
   console.log(req.body);
   console.log(req.files);
 });
-
-app.listen(9000);
