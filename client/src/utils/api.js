@@ -28,7 +28,7 @@ export class APIService {
   }
 
   createFlow(formData) {
-    fetch("/1/createFlow", {
+    fetch("/1/flows/create", {
       method: "POST",
       body: formData,
     })
@@ -36,4 +36,12 @@ export class APIService {
       .catch((error) => console.error("Error:", error))
       .then((response) => console.log("Success:", JSON.stringify(response)));
   }
+
+  viewFlow(flowId) {
+    return fetch(`/1/flows/${flowId}`).then((response) => response.json())
+    // TODO: figure out json parse error checking with promises
+      // .catch((error) => console.error("Error:", error))
+      // .then((response) => console.log("Success:", JSON.stringify(response)));
+  }
+
 }
