@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var admin = require("firebase-admin");
 var models = require("../models");
+var httpCodes = require("../constants/httpCodes")
 
 const dotenv = require("dotenv");
 dotenv.config({ path: "./dev_secrets/.env" });
@@ -12,43 +13,45 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-const User = models.models.User;
+const User = models.user;
 console.log(models);
 
-// change to post later on and handle incoming parameters
 router.post("/register", (req, res) => {
   admin
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
       console.log(decodedToken);
-      const query = { firebase_id: decodedToken.uid };
-      const update = {
-        $set: {
+      User.updateOne(
+        {firebase_id: decodedToken.uid},
+        {
           firebase_id: decodedToken.uid,
           name: decodedToken.name,
           email: decodedToken.email,
         },
-      };
-      const options = { upsert: true };
-      usersCollection = req.app.locals.db.collection("users");
-      usersCollection.updateOne(query, update, options);
-      res.sendStatus(200);
+        {upsert: true}
+      ).then((result) => {
+        console.log(result);
+        if (result.nModified + result.upserted.length > 0) {
+          res.sendStatus(httpCodes.success);
+        } else {
+          res.sendStatus(httpCodes.serverError);
+        }
+      })
     })
     .catch((error) => {
       console.log(error);
-      res.sendStatus(400);
+      res.sendStatus(httpCodes.serverError);
     });
   console.log("registering new user");
 });
 
 router.get("/", (req, res) => {
   console.log(models);
-  User.find()
-    // .toArray()
+  User.findAll()
     .then((response) => {
       console.log(response);
-      res.status(200).json(response);
+      res.status(httpCodes.success).json(response);
     })
     .catch((error) => console.error(error));
 });

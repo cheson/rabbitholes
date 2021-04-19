@@ -11,9 +11,7 @@ const connectDb = () => {
   );
 };
 
-const models = { User };
-
 module.exports = {
   connectDb: connectDb,
-  models: models,
+  user: User,
 };
