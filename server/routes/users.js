@@ -1,35 +1,24 @@
-var express = require("express");
-var router = express.Router();
-var admin = require("firebase-admin");
-var models = require("../models");
-var httpCodes = require("../constants/httpCodes.js");
-
-const dotenv = require("dotenv");
-dotenv.config({ path: "./dev_secrets/.env" });
-
-var serviceAccount = require(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
-
-// TODO: like the client side, I think this needs to be shared among all api calls to check for login status
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+const express = require("express");
+const router = express.Router();
+const models = require("../models");
+const httpCodes = require("../constants/httpCodes.js");
 
 const User = models.user;
 
 router.post("/register", (req, res) => {
-  admin
+  req.app.locals.firebaseAdmin
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
       console.log(decodedToken);
       User.updateOne(
-        {firebase_id: decodedToken.uid},
+        { firebase_id: decodedToken.uid },
         {
           firebase_id: decodedToken.uid,
           name: decodedToken.name,
           email: decodedToken.email,
         },
-        {upsert: true}
+        { upsert: true }
       ).then((result) => {
         console.log(result);
         if (result.nModified + result.upserted.length > 0) {
@@ -37,7 +26,7 @@ router.post("/register", (req, res) => {
         } else {
           res.sendStatus(httpCodes.serverError);
         }
-      })
+      });
     })
     .catch((error) => {
       console.log(error);

@@ -3,6 +3,9 @@ export class APIService {
     this.firebase = firebase;
   }
 
+  // TODO: abstract out to a post(url, data) api that will always include the firebase current user code
+  // or "withAuthentication"
+
   registerUser() {
     this.firebase
       .auth()
@@ -38,10 +41,9 @@ export class APIService {
   }
 
   viewFlow(flowId) {
-    return fetch(`/1/flows/${flowId}`).then((response) => response.json())
+    return fetch(`/1/flows/${flowId}`).then((response) => response.json());
     // TODO: figure out json parse error checking with promises
-      // .catch((error) => console.error("Error:", error))
-      // .then((response) => console.log("Success:", JSON.stringify(response)));
+    // .catch((error) => console.error("Error:", error))
+    // .then((response) => console.log("Success:", JSON.stringify(response)));
   }
-
 }

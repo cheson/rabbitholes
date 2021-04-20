@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import styles from "./ImageDropzone.module.css";
 
 // TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
-function ImageDropzone() {
+function ImageDropzone(props) {
   const [image, setImage] = useState(cameraImg);
 
   const onDrop = (acceptedImageArray) => {
@@ -38,7 +38,7 @@ function ImageDropzone() {
       {({ getRootProps, getInputProps }) => (
         <div className={styles.dropzone} {...getRootProps()}>
           {imgPreview}
-          <input {...getInputProps({ name: "flowImage" })} />
+          <input {...getInputProps({ name: props.imageId })} />
         </div>
       )}
     </Dropzone>
@@ -47,7 +47,7 @@ function ImageDropzone() {
 
 // props should include: styles for big or small, name to identify if for intro or blocks
 ImageDropzone.propTypes = {
-  imageIdentifier: PropTypes.string,
+  imageId: PropTypes.string,
   useSmallDropzone: PropTypes.bool,
 };
 

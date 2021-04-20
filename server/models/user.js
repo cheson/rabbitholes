@@ -23,7 +23,7 @@ userSchema.statics.findAll = async function () {
 };
 
 userSchema.statics.findByEmail = async function (email) {
-  let user = await this.findOne({
+  const user = await this.findOne({
     email: email,
   });
   return user;
