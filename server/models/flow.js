@@ -16,26 +16,25 @@ const flowBlockSchema = new Schema({
 
 const flowSchema = new Schema(
   {
-    id: mongoose.ObjectId, //is this the right syntax
     flowTitle: String,
     flowDescription: String,
     blocks: [flowBlockSchema],
-    userId: String, //maybe objectid? look more into mongoose's objectid to see if its useful here
+    userId: String, //maybe ObjectId? look more into mongoose's objectid to see if its useful here
   },
   { timestamps: true }
 );
 
+// TODO: remove the await from here and pull it higher up the call stack?
 flowSchema.statics.findByFlowId = async function (flowId) {
-  const flow = await this.findOne({
-    id: flowId,
+  const flow = await this.findById({
+    _id: flowId,
   });
 
   return flow;
 };
 
-// return all flows by this user
 flowSchema.statics.findByUserId = async function (userId) {
-  const flows = await this.findOne({
+  const flows = await this.find({
     userId: userId,
   });
 

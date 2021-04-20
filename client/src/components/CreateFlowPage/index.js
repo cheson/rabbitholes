@@ -32,7 +32,6 @@ export default function CreateFlowPage(props) {
     e.preventDefault();
     const formData = new FormData(form.current);
     console.log(Array.from(formData.entries()));
-
     props.apiService.createFlow(formData);
   };
 

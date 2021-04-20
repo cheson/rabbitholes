@@ -12,7 +12,9 @@ const Flow = models.flow;
 
 router.get("/:flowId", (req, res) => {
   console.log(`${req.params.flowId}`);
-  res.json({ flow: "exampleFlow" });
+  Flow.findByFlowId(req.params.flowId).then((result) => {
+    res.json(result);
+  });
 });
 
 function uploadImageToS3(img) {
@@ -30,51 +32,46 @@ router.post("/create", upload.any(), (req, res) => {
   let flowInfo = {};
   let flowBlocks = {};
 
+  // Retrieve flow blocks from the request body.
+  // Input fields associated with the same block share a unique id (eg. url:123xyz and description:123xyz)
   for (const [key, value] of Object.entries(req.body)) {
-    if (["flowTitle", "flowDescription"].includes(key)) {
-      flowInfo[key] = value;
-    } else {
-      // Input fields associated with the same block share a unique id (eg. url:123xyz and description:123xyz)
-      const [type, id] = key.split(":");
-      let block = flowBlocks[id];
-      if (!block) {
-        block = {};
-        const img = req.files.find((file) => {
-          return file.fieldname == id;
-        });
-        if (img) {
-          block["imgUrl"] = uploadImageToS3(img);
-          console.log("img urling");
-        }
+    const [type, id] = key.split(":");
+    let block = flowBlocks[id];
+    if (!block) {
+      block = {};
+      const img = req.files.find((file) => {
+        return file.fieldname == id;
+      });
+      if (img) {
+        block["imgUrl"] = uploadImageToS3(img);
       }
-      flowBlocks[id] = Object.assign(block, { [type]: value });
     }
+    flowBlocks[id] = Object.assign(block, { [type]: value });
   }
+
+  // Note: for updates? worry about this later
+  if (req.body["flowId"]) {
+    flowInfo["_id"] = req.body["flowId"];
+  }
+
   flowInfo["userId"] = "[req.userId]";
+  flowInfo["flowTitle"] = req.body["flowTitle"];
+  flowInfo["flowDescription"] = req.body["flowDescription"];
   flowInfo["blocks"] = Object.values(flowBlocks);
 
-  console.log(flowInfo);
-  // TODO: actually write flowInfo with mongoose to db now
-  // Flow.updateOne(
-  //   {firebase_id: decodedToken.uid},
-  //   {
-  //     firebase_id: decodedToken.uid,
-  //     name: decodedToken.name,
-  //     email: decodedToken.email,
-  //   },
-  //   {upsert: true}
-  // ).then((result) => {
-  //   console.log(result);
-  //   if (result.nModified + result.upserted.length > 0) {
-  //     res.sendStatus(httpCodes.success);
-  //   } else {
-  //     res.sendStatus(httpCodes.serverError);
-  //   }
-  // })
-
-  res
-    .status(httpCodes.success)
-    .json({ example: "this would be the created flow" });
+  const flow = new Flow(flowInfo);
+  flow
+    .save()
+    .then((saved_flow) => {
+      console.log(saved_flow);
+      res
+        .status(httpCodes.success)
+        .json({ example: "this would be the created flow" });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
 });
 
 module.exports = router;

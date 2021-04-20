@@ -5,6 +5,7 @@ const httpCodes = require("../constants/httpCodes.js");
 
 const User = models.user;
 
+// update this to use save and such for validation
 router.post("/register", (req, res) => {
   req.app.locals.firebaseAdmin
     .auth()
@@ -41,7 +42,10 @@ router.get("/", (req, res) => {
       console.log(response);
       res.status(httpCodes.success).json(response);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(httpCodes.serverError);
+    });
 });
 
 module.exports = router;
