@@ -1,6 +1,6 @@
 module.exports = function setCurrentUser(req, res, next) {
   if (req.body.token) {
-      req.app.locals.firebaseAdmin
+    req.app.locals.firebaseAdmin
       .auth()
       .verifyIdToken(req.body.token)
       .then((decodedToken) => {
@@ -14,7 +14,7 @@ module.exports = function setCurrentUser(req, res, next) {
         console.log(error);
         res.sendStatus(httpCodes.serverError);
       });
-    }
+  }
 
-    next();
-  };
+  next();
+};
