@@ -27,9 +27,7 @@ function uploadImageToS3(img) {
   return "https://picsum.photos/300/200";
 }
 
-// TODO: need to figure out a way to abstract the "authenticated" logic check on the server side, custom middleware?
-// https://expressjs.com/en/guide/writing-middleware.html
-// TODO: comment with expected req shape
+// TODO: documentation comment with expected req shape?
 router.post("/create", isAuthenticated, upload.any(), (req, res) => {
   console.log(req.body);
   console.log(req.files);
