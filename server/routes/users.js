@@ -1,53 +1,51 @@
-var express = require("express");
-var router = express.Router();
-var admin = require("firebase-admin");
+const express = require("express");
+const router = express.Router();
+const models = require("../models");
+const httpCodes = require("../constants/httpCodes.js");
 
-const dotenv = require("dotenv");
-dotenv.config({ path: "./dev_secrets/.env" });
+const User = models.user;
 
-var serviceAccount = require(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`);
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
-
-// change to post later on and handle incoming parameters
+// update this to use save and such for validation
 router.post("/register", (req, res) => {
-  admin
+  req.app.locals.firebaseAdmin
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
       console.log(decodedToken);
-      const query = { firebase_id: decodedToken.uid };
-      const update = {
-        $set: {
+      User.updateOne(
+        { firebase_id: decodedToken.uid },
+        {
           firebase_id: decodedToken.uid,
           name: decodedToken.name,
           email: decodedToken.email,
         },
-      };
-      const options = { upsert: true };
-      usersCollection = req.app.locals.db.collection("users");
-      usersCollection.updateOne(query, update, options);
-      res.sendStatus(200);
+        { upsert: true }
+      ).then((result) => {
+        console.log(result);
+        if (result.nModified + result.upserted.length > 0) {
+          res.sendStatus(httpCodes.success);
+        } else {
+          res.sendStatus(httpCodes.serverError);
+        }
+      });
     })
     .catch((error) => {
       console.log(error);
-      res.sendStatus(400);
+      res.sendStatus(httpCodes.serverError);
     });
   console.log("registering new user");
 });
 
 router.get("/", (req, res) => {
-  usersCollection = req.app.locals.db.collection("users");
-  usersCollection
-    .find({})
-    .toArray()
+  User.findAll()
     .then((response) => {
       console.log(response);
-      res.status(200).json(response);
+      res.status(httpCodes.success).json(response);
     })
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.error(error);
+      res.sendStatus(httpCodes.serverError);
+    });
 });
 
 module.exports = router;

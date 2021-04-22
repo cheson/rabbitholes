@@ -59,7 +59,7 @@ export default function App() {
           <ViewFlows />
         </Route>
         <Route path={routes.VIEW_FLOW}>
-          <ViewFlow />
+          <ViewFlow apiService={apiService} />
         </Route>
         <Route path={routes.PROFILE}>
           <Profile />

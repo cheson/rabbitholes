@@ -11,7 +11,7 @@ function CreateFlowBlock(props) {
         Remove
       </button>
 
-      <ImageDropzone />
+      <ImageDropzone imageId={block.id} />
 
       <label htmlFor={block.id}>URL</label>
       <input
@@ -19,7 +19,7 @@ function CreateFlowBlock(props) {
         className={styles.urlText}
         type="text"
         id={block.id}
-        name="url"
+        name={`url:${block.id}`}
       ></input>
 
       <label htmlFor="description">Description</label>
@@ -28,7 +28,7 @@ function CreateFlowBlock(props) {
         placeholder={block.description}
         type="text"
         id={block.id}
-        name="description"
+        name={`description:${block.id}`}
       ></textarea>
     </div>
   );

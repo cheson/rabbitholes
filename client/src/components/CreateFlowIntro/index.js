@@ -3,7 +3,6 @@ import styles from "./CreateFlowIntro.module.css";
 import ImageDropzone from "../ImageDropzone";
 
 function CreateFlowIntro() {
-  // TODO: Servers can be configured with a size limit for files and HTTP requests in order to prevent abuse.
   return (
     <div>
       <ImageDropzone />
