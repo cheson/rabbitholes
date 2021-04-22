@@ -4,21 +4,25 @@ const models = require("../models");
 const httpCodes = require("../constants/httpCodes");
 
 const multer = require("multer");
-// Servers can be configured with a size limit for files and HTTP requests in order to prevent abuse. (Good DKV candidate!)
+// Configured with a limit in order to prevent abuse. (Good DKV candidate!)
 const limits = { files: 100, fileSize: 10 * 1024 * 1024 };
 const upload = multer({ dest: "uploads/", limits: limits });
 
 const Flow = models.flow;
 
 router.get("/:flowId", (req, res) => {
-  console.log(`${req.params.flowId}`);
-  Flow.findByFlowId(req.params.flowId).then((result) => {
-    res.json(result);
-  });
+  Flow.findByFlowIdAndIncNumViews(req.params.flowId)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
 });
 
 function uploadImageToS3(img) {
-  // stub image url for eventual S3/image storage
+  // Stub image url for eventual S3/image storage
   return "https://picsum.photos/300/200";
 }
 
@@ -34,6 +38,8 @@ router.post("/create", upload.any(), (req, res) => {
 
   // Retrieve flow blocks from the request body.
   // Input fields associated with the same block share a unique id (eg. url:123xyz and description:123xyz)
+  // Note: alternative approach would be to use controlled components client-side so that they could just
+  // submit an already well-formatted json body.
   for (const [key, value] of Object.entries(req.body)) {
     const [type, id] = key.split(":");
     let block = flowBlocks[id];
@@ -49,11 +55,7 @@ router.post("/create", upload.any(), (req, res) => {
     flowBlocks[id] = Object.assign(block, { [type]: value });
   }
 
-  // Note: for updates? worry about this later
-  if (req.body["flowId"]) {
-    flowInfo["_id"] = req.body["flowId"];
-  }
-
+  // TODO: pass in real userId when working out the authentication portion
   flowInfo["userId"] = "[req.userId]";
   flowInfo["flowTitle"] = req.body["flowTitle"];
   flowInfo["flowDescription"] = req.body["flowDescription"];

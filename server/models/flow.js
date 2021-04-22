@@ -19,16 +19,28 @@ const flowSchema = new Schema(
     flowTitle: String,
     flowDescription: String,
     blocks: [flowBlockSchema],
-    userId: String, //maybe ObjectId? look more into mongoose's objectid to see if its useful here
+    userId: String,
+    numViews: Number,
   },
   { timestamps: true }
 );
 
-// TODO: remove the await from here and pull it higher up the call stack?
-flowSchema.statics.findByFlowId = async function (flowId) {
-  const flow = await this.findById({
-    _id: flowId,
-  });
+// TODO: improve error handling and propagate back to client
+flowSchema.statics.findByFlowIdAndIncNumViews = async function (flowId) {
+  if (!mongoose.Types.ObjectId.isValid(flowId)) {
+    throw new Error("bad id");
+  }
+  const flow = await this.findByIdAndUpdate(
+    {
+      _id: flowId,
+    },
+    { $inc: { numViews: 1 } },
+    { new: true }
+  );
+
+  if (!flow) {
+    throw new Error("not found");
+  }
 
   return flow;
 };
@@ -44,34 +56,3 @@ flowSchema.statics.findByUserId = async function (userId) {
 const Flow = mongoose.model("Flow", flowSchema);
 
 module.exports = Flow;
-
-//   {
-//     flowTitle: '',
-//     flowDescription: '',
-//     'url:BAN_0wxsUXew1trThiI5c': '',
-//     'description:BAN_0wxsUXew1trThiI5c': 'asdf',
-//     'url:e53S12WCPNbgVFhyBeWbz': '',
-//     'description:e53S12WCPNbgVFhyBeWbz': 'asdffds'
-//   }
-//   [
-//     {
-//       fieldname: 'BAN_0wxsUXew1trThiI5c',
-//       originalname: 'geoff.gif',
-//       encoding: '7bit',
-//       mimetype: 'image/gif',
-//       destination: 'uploads/',
-//       filename: 'e794ac4ec646ebf6dc83bd7a6100bdd6',
-//       path: 'uploads/e794ac4ec646ebf6dc83bd7a6100bdd6',
-//       size: 14470964
-//     }
-//   ]
-
-// transform into format of:
-// {
-//   flowTitle: xxx,
-//   flowDescription: xxx,
-//   flowCreator: xxx,
-//   flowBlocks: [{url: xxx, description: xxx, imageUrl: xxx, optDeepDive: []}, ...]},
-//   createdAt: xxx,
-//   updatedAt: xxx,
-// }

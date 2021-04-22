@@ -37,5 +37,3 @@ userSchema.statics.findByEmail = async function (email) {
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
-// once mongoose is added, add a handler to submit form (maybe we can just ignore images for now and write them over as null)
