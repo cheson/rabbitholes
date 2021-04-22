@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const httpCodes = require("../constants/httpCodes");
+const isAuthenticated = require("../middleware/isAuthenticated.js");
 
 const multer = require("multer");
 // Configured with a limit in order to prevent abuse. (Good DKV candidate!)
@@ -26,10 +27,8 @@ function uploadImageToS3(img) {
   return "https://picsum.photos/300/200";
 }
 
-// TODO: need to figure out a way to abstract the "authenticated" logic check on the server side, custom middleware?
-// https://expressjs.com/en/guide/writing-middleware.html
-// TODO: comment with expected req shape
-router.post("/create", upload.any(), (req, res) => {
+// TODO: documentation comment with expected req shape?
+router.post("/create", isAuthenticated, upload.any(), (req, res) => {
   console.log(req.body);
   console.log(req.files);
 

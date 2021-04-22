@@ -4,6 +4,7 @@ const flowsRoutes = require("./routes/flows.js");
 const models = require("./models");
 const admin = require("firebase-admin");
 const dotenv = require("dotenv");
+const setCurrentFirebaseUser = require("./middleware/setCurrentFirebaseUser.js");
 
 const app = express();
 
@@ -25,6 +26,7 @@ models.connectDb().then(async () => {
 
 app.use(express.static("../client/build"));
 app.use(express.json());
+app.use(setCurrentFirebaseUser);
 
 app.use("/1/users", usersRoutes);
 app.use("/1/flows", flowsRoutes);
