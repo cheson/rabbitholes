@@ -54,8 +54,7 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
     flowBlocks[id] = Object.assign(block, { [type]: value });
   }
 
-  // TODO: pass in real userId when working out the authentication portion
-  flowInfo["userId"] = "[req.userId]";
+  flowInfo["userId"] = req.user.firebase_id;
   flowInfo["flowTitle"] = req.body["flowTitle"];
   flowInfo["flowDescription"] = req.body["flowDescription"];
   flowInfo["blocks"] = Object.values(flowBlocks);
