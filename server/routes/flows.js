@@ -69,6 +69,7 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
   flowInfo["flowTitle"] = req.body["flowTitle"];
   flowInfo["flowDescription"] = req.body["flowDescription"];
   flowInfo["blocks"] = Object.values(flowBlocks);
+  flowInfo["numViews"] = 1;
 
   const flow = new Flow(flowInfo);
   flow

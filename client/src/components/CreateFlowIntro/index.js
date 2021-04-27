@@ -5,6 +5,7 @@ import ImageDropzone from "../ImageDropzone";
 function CreateFlowIntro() {
   return (
     <div>
+      {/* TODO: add the identifier and backend code to handle image submission for flow */}
       <ImageDropzone />
 
       <label htmlFor="title">Title</label>
