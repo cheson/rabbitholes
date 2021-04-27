@@ -36,7 +36,9 @@ export class APIService {
 
   async handleResponse(response) {
     return response.text().then((text) => {
-      const data = text && JSON.parse(text);
+      const isJSONResponse =
+        response.headers.get("content-type").indexOf("application/json") !== -1;
+      const data = isJSONResponse ? JSON.parse(text) : text;
 
       if (!response.ok) {
         const error = (data && data.message) || response.statusText;
