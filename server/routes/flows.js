@@ -11,6 +11,17 @@ const upload = multer({ dest: "uploads/", limits: limits });
 
 const Flow = models.flow;
 
+router.get("/", (req, res) => {
+  Flow.findAll()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
+});
+
 router.get("/:flowId", (req, res) => {
   Flow.findByFlowIdAndIncNumViews(req.params.flowId)
     .then((result) => {

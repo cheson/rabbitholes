@@ -40,7 +40,6 @@ router.post("/register", (req, res) => {
 router.get("/", isAuthenticated, (req, res) => {
   User.findAll()
     .then((response) => {
-      console.log(response);
       res.status(httpCodes.success).json(response);
     })
     .catch((error) => {

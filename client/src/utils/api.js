@@ -25,6 +25,10 @@ export class APIService {
     return this.GET(`/1/flows/${flowId}`);
   }
 
+  viewFlows() {
+    return this.GET(`/1/flows`);
+  }
+
   /* ----------- HELPER FUNCTIONS ----------- */
 
   getFirebaseIdToken() {

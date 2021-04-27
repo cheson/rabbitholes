@@ -25,6 +25,10 @@ const flowSchema = new Schema(
   { timestamps: true }
 );
 
+flowSchema.statics.findAll = async function () {
+  return await this.find();
+};
+
 // TODO: improve error handling and propagate back to client
 flowSchema.statics.findByFlowIdAndIncNumViews = async function (flowId) {
   if (!mongoose.Types.ObjectId.isValid(flowId)) {
