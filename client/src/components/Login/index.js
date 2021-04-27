@@ -1,5 +1,6 @@
 import React from "react";
 import firebase from "firebase";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
@@ -21,7 +22,6 @@ function Login(props) {
           props.apiService.registerUser();
         }
         props.history.push("/home");
-        //props.setAuthUser(props.firebase.auth().currentUser);
         return false;
       },
     },
@@ -33,7 +33,6 @@ function Login(props) {
     ],
   };
 
-  console.log(props.authUser);
   if (!props.authUser) {
     return (
       <div>
@@ -54,7 +53,6 @@ function Login(props) {
         onClick={() => {
           console.log("signing out");
           props.firebase.auth().signOut();
-          //props.setAuthUser(null);
         }}
       >
         Sign-out
@@ -64,11 +62,10 @@ function Login(props) {
 }
 
 Login.propTypes = {
+  apiService: PropTypes.object,
   authUser: PropTypes.object,
-  setAuthUser: PropTypes.func.isRequired,
   firebase: PropTypes.object.isRequired,
   history: PropTypes.object,
-  apiService: PropTypes.object,
 };
 
-export default Login;
+export default withRouter(Login);

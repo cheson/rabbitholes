@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const httpCodes = require("../constants/httpCodes.js");
+const isAuthenticated = require("../middleware/isAuthenticated.js");
 
 const User = models.user;
 
-// update this to use save and such for validation
+// update this to use save and such for validation with mongoose
 router.post("/register", (req, res) => {
   req.app.locals.firebaseAdmin
     .auth()
@@ -36,7 +37,7 @@ router.post("/register", (req, res) => {
   console.log("registering new user");
 });
 
-router.get("/", (req, res) => {
+router.get("/", isAuthenticated, (req, res) => {
   User.findAll()
     .then((response) => {
       console.log(response);
