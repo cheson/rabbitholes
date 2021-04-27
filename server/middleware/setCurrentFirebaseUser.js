@@ -15,5 +15,7 @@ module.exports = function setCurrentUser(req, res, next) {
         console.log(error);
       })
       .then(() => next());
+  } else {
+    next();
   }
 };

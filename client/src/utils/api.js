@@ -37,7 +37,9 @@ export class APIService {
   async handleResponse(response) {
     return response.text().then((text) => {
       const isJSONResponse =
-        response.headers.get("content-type").indexOf("application/json") !== -1;
+        (response.headers.get("content-type") || "").indexOf(
+          "application/json"
+        ) !== -1;
       const data = isJSONResponse ? JSON.parse(text) : text;
 
       if (!response.ok) {
@@ -60,7 +62,7 @@ export class APIService {
     return fetch(url, requestOptions).then(this.handleResponse);
   }
 
-  async POST(url, body, isFormData = false) {
+  async POST(url, body = {}, isFormData = false) {
     const idToken = await this.getFirebaseIdToken();
     let requestOptions = {
       method: "POST",
