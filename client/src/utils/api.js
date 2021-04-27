@@ -6,6 +6,27 @@ export class APIService {
     this.firebase = firebase;
   }
 
+  /* ----------- API FUNCTIONS ----------- */
+
+  async registerUser() {
+    const idToken = await this.getFirebaseIdToken();
+    return this.POST("/1/users/register", { token: idToken });
+  }
+
+  listUsers() {
+    return this.GET("/1/users", true);
+  }
+
+  createFlow(formData) {
+    return this.POST("/1/flows/create", formData, true);
+  }
+
+  viewFlow(flowId) {
+    return this.GET(`/1/flows/${flowId}`);
+  }
+
+  /* ----------- HELPER FUNCTIONS ----------- */
+
   getFirebaseIdToken() {
     const currentUser = this.firebase.auth().currentUser;
     if (currentUser) {
@@ -13,7 +34,6 @@ export class APIService {
     }
   }
 
-  // TODO: look through this response handler
   async handleResponse(response) {
     return response.text().then((text) => {
       const data = text && JSON.parse(text);
@@ -70,24 +90,4 @@ export class APIService {
   //   };
   //   return fetch(url, requestOptions).then(handleResponse);
   // }
-
-  async registerUser() {
-    const idToken = await this.getFirebaseIdToken();
-    return this.POST("/1/users/register", { token: idToken });
-  }
-
-  listUsers() {
-    return this.GET("/1/users", true);
-  }
-
-  createFlow(formData) {
-    return this.POST("/1/flows/create", formData, true);
-  }
-
-  viewFlow(flowId) {
-    return fetch(`/1/flows/${flowId}`).then((response) => response.json());
-    // TODO: figure out json parse error checking with promises
-    // .catch((error) => console.error("Error:", error))
-    // .then((response) => console.log("Success:", JSON.stringify(response)));
-  }
 }
