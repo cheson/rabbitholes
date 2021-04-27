@@ -19,21 +19,28 @@ import { APIService } from "./utils/api";
 import * as routes from "./constants/routes";
 
 export default function App() {
-  const [authUser, setAuthUser] = useState(
-    JSON.parse(localStorage.getItem("currentUser")) || null
-  );
   const firebase = initializeFirebase();
   const apiService = new APIService(firebase);
 
+  // Extra variable to prevent app from displaying UI before Firebase loads current user
+  const [appReady, setAppReady] = useState(false);
+  const [authUser, setAuthUser] = useState();
+
   useEffect(() => {
     const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      setAuthUser(user);
+      setAppReady(true);
+      if (user) {
+        setAuthUser({ displayName: user.displayName, email: user.email });
+      } else {
+        setAuthUser();
+      }
     });
     return () => unregisterAuthObserver();
   }, []);
 
-  return (
+  return !appReady ? (
+    <div></div>
+  ) : (
     <Router>
       <NavigationBar
         authUser={authUser}
@@ -47,7 +54,6 @@ export default function App() {
         <Route path={routes.LOGIN}>
           <Login
             authUser={authUser}
-            setAuthUser={setAuthUser}
             firebase={firebase}
             apiService={apiService}
           />
@@ -67,7 +73,7 @@ export default function App() {
 
         {/* example routes and components */}
         <Route path={routes.ABOUT}>
-          <About authUser={authUser} />
+          <About authUser={authUser} firebase={firebase} />
         </Route>
         <Route path="/list">
           <List apiService={apiService} />

@@ -1,9 +1,10 @@
 module.exports = function setCurrentUser(req, res, next) {
-  if (req.body.token) {
+  if (req.headers["authorization"]) {
     req.app.locals.firebaseAdmin
       .auth()
-      .verifyIdToken(req.body.token)
+      .verifyIdToken(req.headers["authorization"])
       .then((decodedToken) => {
+        console.log(decodedToken);
         req.user = {
           firebase_id: decodedToken.uid,
           name: decodedToken.name,
@@ -12,9 +13,9 @@ module.exports = function setCurrentUser(req, res, next) {
       })
       .catch((error) => {
         console.log(error);
-        res.sendStatus(httpCodes.serverError);
-      });
+      })
+      .then(() => next());
+  } else {
+    next();
   }
-
-  next();
 };

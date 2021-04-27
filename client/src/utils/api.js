@@ -1,49 +1,97 @@
+// Parts of HTTP wrapper taken from this article:
+// https://jasonwatmore.com/post/2020/04/18/fetch-a-lightweight-fetch-wrapper-to-simplify-http-requests
+
 export class APIService {
   constructor(firebase) {
     this.firebase = firebase;
   }
 
-  // TODO: abstract out to a post(url, data) api that will always include the firebase current user code
-  // or "withAuthentication"
+  /* ----------- API FUNCTIONS ----------- */
 
-  registerUser() {
-    this.firebase
-      .auth()
-      .currentUser.getIdToken(/* forceRefresh */ true)
-      .then(function (idToken) {
-        // Send token to your backend via HTTPS
-        // ...
-        console.log(`idToken is: ${idToken}`);
-
-        fetch("/1/users/register", {
-          method: "post",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ token: idToken }),
-        }).then((res) => console.log(res.status));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+  async registerUser() {
+    const idToken = await this.getFirebaseIdToken();
+    return this.POST("/1/users/register", { token: idToken });
   }
 
   listUsers() {
-    return fetch("/1/users").then((res) => res.json());
+    return this.GET("/1/users", true);
   }
 
   createFlow(formData) {
-    fetch("/1/flows/create", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .catch((error) => console.error("Error:", error))
-      .then((response) => console.log("Success:", JSON.stringify(response)));
+    return this.POST("/1/flows/create", formData, true);
   }
 
   viewFlow(flowId) {
-    return fetch(`/1/flows/${flowId}`).then((response) => response.json());
-    // TODO: figure out json parse error checking with promises
-    // .catch((error) => console.error("Error:", error))
-    // .then((response) => console.log("Success:", JSON.stringify(response)));
+    return this.GET(`/1/flows/${flowId}`);
   }
+
+  /* ----------- HELPER FUNCTIONS ----------- */
+
+  getFirebaseIdToken() {
+    const currentUser = this.firebase.auth().currentUser;
+    if (currentUser) {
+      return currentUser.getIdToken(/* forceRefresh */ true);
+    }
+  }
+
+  async handleResponse(response) {
+    return response.text().then((text) => {
+      const isJSONResponse =
+        (response.headers.get("content-type") || "").indexOf(
+          "application/json"
+        ) !== -1;
+      const data = isJSONResponse ? JSON.parse(text) : text;
+
+      if (!response.ok) {
+        const error = (data && data.message) || response.statusText;
+        return Promise.reject(error);
+      }
+
+      return data;
+    });
+  }
+
+  async GET(url, requireAuth = false) {
+    let requestOptions = {
+      method: "GET",
+    };
+    if (requireAuth) {
+      const idToken = await this.getFirebaseIdToken();
+      Object.assign(requestOptions, { headers: { authorization: idToken } });
+    }
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
+
+  async POST(url, body = {}, isFormData = false) {
+    const idToken = await this.getFirebaseIdToken();
+    let requestOptions = {
+      method: "POST",
+      headers: { authorization: idToken },
+    };
+    if (isFormData) {
+      requestOptions.body = body;
+    } else {
+      requestOptions.body = JSON.stringify(body);
+      requestOptions.headers["Content-Type"] = "application/json";
+    }
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
+
+  // Currently unused HTTP calls
+
+  // async PUT(url, body) {
+  //   const requestOptions = {
+  //       method: 'PUT',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify(body)
+  //   };
+  //   return fetch(url, requestOptions).then(handleResponse);
+  // }
+
+  // async DELETE(url) {
+  //   const requestOptions = {
+  //       method: 'DELETE'
+  //   };
+  //   return fetch(url, requestOptions).then(handleResponse);
+  // }
 }

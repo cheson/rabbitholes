@@ -7,9 +7,7 @@ export default function About(props) {
   return (
     <div>
       <h2>About</h2>
-      <div>
-        {props.authUser != null ? props.authUser.displayName : "whatever name"}
-      </div>
+      <div>{props.authUser ? props.authUser.displayName : "whatever name"}</div>
       <Alert dismissible variant="danger">
         <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
         <p>Change this and that and try again.</p>
@@ -22,4 +20,5 @@ export default function About(props) {
 
 About.propTypes = {
   authUser: PropTypes.object,
+  firebase: PropTypes.object.isRequired,
 };
