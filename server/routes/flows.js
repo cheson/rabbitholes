@@ -65,6 +65,8 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
     flowBlocks[id] = Object.assign(block, { [type]: value });
   }
 
+  // TODO: Stay denormalized with userId joining to user table for now,
+  // but figure out how to profile the cost of the join, especially when fetching all flows.
   flowInfo["userId"] = req.user.firebase_id;
   flowInfo["flowTitle"] = req.body["flowTitle"];
   flowInfo["flowDescription"] = req.body["flowDescription"];
