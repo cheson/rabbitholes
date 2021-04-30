@@ -10,11 +10,13 @@ function ViewFlowsBlock(props) {
     // bad for accessibility because all that becomes content of the link
     <Link to={`viewFlow/${flow._id}`}>
       <div className={styles.flowBlock}>
-        userId: {flow.userId} <br></br>
+        username: {flow.user?.username} <br></br>
+        name: {flow.user?.name} <br></br>
         flowTitle: {flow.flowTitle} <br></br>
         flowDescription: {flow.flowDescription} <br></br>
         numViews: {flow.numViews} <br></br>
         imageURL: {flow.imageURL} <br></br>
+        {console.log(flow)}
       </div>
     </Link>
   );

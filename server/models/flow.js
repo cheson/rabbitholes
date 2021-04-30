@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const User = require("./user");
 const { Schema } = mongoose;
 
 const extraBlockSchema = new Schema({
@@ -26,8 +25,24 @@ const flowSchema = new Schema(
   { timestamps: true }
 );
 
-flowSchema.statics.findAll = async function () {
-  return await this.find();
+// https://mongoosejs.com/docs/populate.html#populate-virtuals
+flowSchema.virtual("user", {
+  ref: "User",
+  localField: "userId",
+  foreignField: "firebase_id",
+  justOne: true,
+});
+flowSchema.set("toObject", { virtuals: true });
+flowSchema.set("toJSON", { virtuals: true });
+
+flowSchema.statics.findAll = async function (withUserInfo = false) {
+  if (withUserInfo) {
+    return await this.find().populate({
+      path: "user",
+      select: "firebase_id email name username -_id",
+    });
+  }
+  return await this.find().select("-userId");
 };
 
 // TODO: improve error handling and propagate back to client
