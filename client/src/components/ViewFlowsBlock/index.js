@@ -24,6 +24,7 @@ function ViewFlowsBlock(props) {
   }
 
   return (
+    // TODO: Adding an actual <a> link would help with accessibility
     <div className={styles.flowBlock} onClick={onClick}>
       <img className={styles.image} src={imgURL} />
       <div className={styles.title}>
