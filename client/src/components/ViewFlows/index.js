@@ -15,33 +15,55 @@ export default function ViewFlows(props) {
   const searchQuery = useQuery().get("search");
   console.log(searchQuery); // Can be used in the future for search keywords
 
+  const sortTypes = {
+    VIEWS_ASCENDING: "VIEWS_ASCENDING",
+    VIEWS_DESCENDING: "VIEWS_DESCENDING",
+    TITLE: "TITLE",
+  };
+
+  const sortFunctions = {
+    VIEWS_ASCENDING: (a, b) => {
+      return (a.numViews || 0) - (b.numViews || 0);
+    },
+    VIEWS_DESCENDING: (a, b) => {
+      return (b.numViews || 0) - (a.numViews || 0);
+    },
+    TITLE: (a, b) => {
+      return a.title > b.title;
+    },
+  };
+
+  function setSortedFlows(sortType, optFlows) {
+    const unsortedFlows = [...(optFlows || flows)];
+    setFlows(unsortedFlows.sort(sortFunctions[sortType]));
+  }
+
   const [flows, setFlows] = useState([]);
   // TODO: do we need a loaded boolean for all pages that load from api?
   useEffect(() => {
-    props.apiService.viewFlows().then((flows) => setSortedFlows(flows));
+    props.apiService
+      .viewFlows()
+      .then((newFlows) => setSortedFlows(sortTypes.VIEWS_DESCENDING, newFlows));
   }, []);
-
-  function descendingSort(a, b) {
-    return (b.numViews || 0) - (a.numViews || 0);
-  }
-
-  function setSortedFlows(flows, sortBy) {
-    console.log(sortBy);
-    const sortedFlows = flows.sort(descendingSort);
-    setFlows(sortedFlows);
-  }
 
   return (
     <div>
-      <Dropdown className={styles.dropdownButton}>
+      <Dropdown
+        onSelect={(sortType) => setSortedFlows(sortType)}
+        className={styles.dropdownButton}
+      >
         <Dropdown.Toggle variant="success" id="dropdown-basic">
           Sort By
         </Dropdown.Toggle>
 
         <Dropdown.Menu>
-          <Dropdown.Item href="#/action-1">Views</Dropdown.Item>
-          <Dropdown.Item href="#/action-2">Title</Dropdown.Item>
-          <Dropdown.Item href="#/action-3">Created By</Dropdown.Item>
+          <Dropdown.Item eventKey={sortTypes.VIEWS_DESCENDING}>
+            Views Descending
+          </Dropdown.Item>
+          <Dropdown.Item eventKey={sortTypes.VIEWS_ASCENDING}>
+            Views Ascending
+          </Dropdown.Item>
+          <Dropdown.Item eventKey={sortTypes.TITLE}>Title</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
 

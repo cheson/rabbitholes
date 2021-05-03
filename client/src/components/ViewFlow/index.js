@@ -18,15 +18,8 @@ export default function ViewFlow(props) {
   return (
     <div>
       <img className={styles.image} src={imgURL} />
-      <div className={styles.title}>
-        {flow.flowTitle || "flow title tee hee"}{" "}
-      </div>
-      <div className={styles.description}>
-        {flow.flowDescription ||
-          "flow description blah blah blah blah blah description blah blah blah blah blah".repeat(
-            50
-          )}
-      </div>
+      <div className={styles.title}>{flow.flowTitle}</div>
+      <div className={styles.description}>{flow.flowDescription}</div>
     </div>
   );
 }

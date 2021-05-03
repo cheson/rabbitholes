@@ -1,39 +1,46 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import styles from "./ViewFlowsBlock.module.css";
 
 function ViewFlowsBlock(props) {
   const flow = props.flow;
-  // const width = Math.floor(Math.random() * 1000);
-  // const height = Math.floor(Math.random() * 1000);
-  const width = 1500;
-  const height = 800;
+
+  function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+  const width = getRandomInt(1300, 1600);
+  const height = getRandomInt(600, 900);
   const imgURL = `https://picsum.photos/${width}/${height}`;
+
+  const history = useHistory();
+  function onClick() {
+    const isTextSelected = window.getSelection().toString();
+    if (!isTextSelected) {
+      history.push(`viewFlow/${flow._id}`);
+    }
+  }
+
   return (
-    // TODO: temp solution, do not actually wrap div in <a> tag to make it clickable
-    // bad for accessibility because all that becomes content of the link
-    <Link to={`viewFlow/${flow._id}`}>
-      <div className={styles.flowBlock}>
-        <img className={styles.image} src={imgURL} />
-        <div className={styles.title}>
-          {" "}
-          {flow.flowTitle || "flow title tee hee"}{" "}
-        </div>
-        <div className={styles.description}>
-          {" "}
-          {flow.flowDescription ||
-            "flow description blah blah blah blah blah description blah blah blah blah blah"}{" "}
-        </div>
-        <div className={styles.metadata}>
-          <span>
-            username: {flow.user?.username || flow.user?.name || "gooduser"}
-          </span>
-          <span>views: {flow.numViews || 1}</span>
-        </div>
-        {console.log(flow)}
+    <div className={styles.flowBlock} onClick={onClick}>
+      <img className={styles.image} src={imgURL} />
+      <div className={styles.title}>
+        {flow.flowTitle || "flow title tee hee"}
       </div>
-    </Link>
+      <div className={styles.description}>
+        {flow.flowDescription ||
+          "flow description blah blah blah blah blah description blah blah blah blah blah"}
+      </div>
+      <div className={styles.metadata}>
+        <span>
+          username: {flow.user?.username || flow.user?.name || "gooduser"}
+        </span>
+        <span>views: {flow.numViews || 1}</span>
+      </div>
+      {console.log(flow)}
+    </div>
   );
 }
 
