@@ -1,0 +1,17 @@
+.image {
+  max-width: 40%;
+  max-height: 20%;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 25px;
+  display: block;
+}
+
+.title {
+  text-align: center;
+  font-size: 30px;
+}
+
+.description {
+  margin: 0px 100px 100px 100px;
+}

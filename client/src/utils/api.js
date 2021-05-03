@@ -26,7 +26,11 @@ export class APIService {
   }
 
   viewFlows() {
-    return this.GET(`/1/flows`);
+    return this.GET("/1/flows");
+  }
+
+  getRandomImage(width, height) {
+    return this.GET(`https://picsum.photos/${width}/${height}`);
   }
 
   /* ----------- HELPER FUNCTIONS ----------- */

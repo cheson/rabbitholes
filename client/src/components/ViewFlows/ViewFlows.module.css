@@ -5,4 +5,6 @@
   justify-content: space-evenly;
 }
 
-/* TODO: perfect time to play around with media queries. make this a single column for mobile and multiple otherwise */
+.dropdownButton {
+  float: right;
+}

@@ -13,6 +13,7 @@ function useQuery() {
 
 export default function ViewFlows(props) {
   const searchQuery = useQuery().get("search");
+  console.log(searchQuery); // Can be used in the future for search keywords
 
   const [flows, setFlows] = useState([]);
   // TODO: do we need a loaded boolean for all pages that load from api?
@@ -22,9 +23,7 @@ export default function ViewFlows(props) {
 
   return (
     <div>
-      <h2>View Flows: {searchQuery}</h2>
-
-      <Dropdown>
+      <Dropdown className={styles.dropdownButton}>
         <Dropdown.Toggle variant="success" id="dropdown-basic">
           Sort By
         </Dropdown.Toggle>
