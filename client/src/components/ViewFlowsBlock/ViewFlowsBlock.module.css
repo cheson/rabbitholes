@@ -1,0 +1,50 @@
+/* NOTE: just prototyping media queries here. Set a breakpoint for phone-like devices at 480px viewport width. 
+When if-else logic is desired, you can just put the default first, then the special case later wrapped in a media
+query. This works because CSS that comes later overwrites CSS that comes earlier.
+*/
+
+.image {
+  max-width: 80%;
+  max-height: 50%;
+  padding-top: 10px;
+  margin: auto;
+  display: block;
+}
+
+.title {
+  text-align: center;
+}
+
+.description {
+  padding: 5px;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+}
+
+.flowBlock {
+  border-color: black;
+  border-width: 3px;
+  border-style: solid;
+  border-radius: 2px;
+  margin: 15px;
+  width: 400px;
+  height: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media all and (max-width: 480px) {
+  .flowBlock {
+    border-color: green;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 2px;
+    margin: 15px;
+    width: 80vw;
+    height: 70vh;
+  }
+}

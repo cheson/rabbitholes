@@ -17,3 +17,5 @@ module.exports = {
   user: User,
   flow: Flow,
 };
+
+// TODO: understand the implications here with queries vs promises: https://mongoosejs.com/docs/queries.html#queries-are-not-promises

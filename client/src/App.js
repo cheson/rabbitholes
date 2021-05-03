@@ -62,7 +62,7 @@ export default function App() {
           <CreateFlowPage apiService={apiService} />
         </Route>
         <Route path={routes.VIEW_FLOWS}>
-          <ViewFlows />
+          <ViewFlows apiService={apiService} />
         </Route>
         <Route path={routes.VIEW_FLOW}>
           <ViewFlow apiService={apiService} />

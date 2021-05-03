@@ -11,6 +11,17 @@ const upload = multer({ dest: "uploads/", limits: limits });
 
 const Flow = models.flow;
 
+router.get("/", (req, res) => {
+  Flow.findAll(true)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
+});
+
 router.get("/:flowId", (req, res) => {
   Flow.findByFlowIdAndIncNumViews(req.params.flowId)
     .then((result) => {
@@ -54,10 +65,13 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
     flowBlocks[id] = Object.assign(block, { [type]: value });
   }
 
+  // TODO: Stay denormalized with userId joining to user table for now,
+  // but figure out how to profile the cost of the join, especially when fetching all flows.
   flowInfo["userId"] = req.user.firebase_id;
   flowInfo["flowTitle"] = req.body["flowTitle"];
   flowInfo["flowDescription"] = req.body["flowDescription"];
   flowInfo["blocks"] = Object.values(flowBlocks);
+  flowInfo["numViews"] = 1;
 
   const flow = new Flow(flowInfo);
   flow
