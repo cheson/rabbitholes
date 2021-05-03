@@ -18,8 +18,17 @@ export default function ViewFlows(props) {
   const [flows, setFlows] = useState([]);
   // TODO: do we need a loaded boolean for all pages that load from api?
   useEffect(() => {
-    props.apiService.viewFlows().then((flows) => setFlows(flows));
+    props.apiService.viewFlows().then((flows) => setSortedFlows(flows));
   }, []);
+
+  function descendingSort(a, b) {
+    return (b.numViews || 0) - (a.numViews || 0);
+  }
+
+  function setSortedFlows(flows, sortBy) {
+    const sortedFlows = flows.sort(descendingSort);
+    setFlows(sortedFlows);
+  }
 
   return (
     <div>
