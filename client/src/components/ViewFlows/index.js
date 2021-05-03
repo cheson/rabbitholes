@@ -26,6 +26,7 @@ export default function ViewFlows(props) {
   }
 
   function setSortedFlows(flows, sortBy) {
+    console.log(sortBy);
     const sortedFlows = flows.sort(descendingSort);
     setFlows(sortedFlows);
   }
