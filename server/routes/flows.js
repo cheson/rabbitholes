@@ -51,6 +51,10 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
   // Note: alternative approach would be to use controlled components client-side so that they could just
   // submit an already well-formatted json body.
   for (const [key, value] of Object.entries(req.body)) {
+    if (["flowTitle", "flowDescription"].includes(key)) {
+      flowInfo[key] = value;
+      continue;
+    }
     const [type, id] = key.split(":");
     let block = flowBlocks[id];
     if (!block) {
@@ -68,10 +72,9 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
   // TODO: Stay denormalized with userId joining to user table for now,
   // but figure out how to profile the cost of the join, especially when fetching all flows.
   flowInfo["userId"] = req.user.firebase_id;
-  flowInfo["flowTitle"] = req.body["flowTitle"];
-  flowInfo["flowDescription"] = req.body["flowDescription"];
   flowInfo["blocks"] = Object.values(flowBlocks);
   flowInfo["numViews"] = 1;
+  console.log(flowInfo["blocks"]);
 
   const flow = new Flow(flowInfo);
   flow

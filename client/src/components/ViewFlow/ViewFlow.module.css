@@ -13,5 +13,41 @@
 }
 
 .description {
-  margin: 0px 100px 100px 100px;
+  padding: 10px;
 }
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.block {
+  border-color: lightgrey;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 2px;
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  display: flex;
+  object-fit: contain;
+}
+
+.index {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.blockImage {
+  max-width: 30%;
+  padding: 10px;
+  object-fit: contain;
+}
+
+/* .description {
+    float: left;
+} */

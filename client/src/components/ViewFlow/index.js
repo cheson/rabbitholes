@@ -20,6 +20,17 @@ export default function ViewFlow(props) {
       <img className={styles.image} src={imgURL} />
       <div className={styles.title}>{flow.flowTitle}</div>
       <div className={styles.description}>{flow.flowDescription}</div>
+      <div className={styles.list}>
+        {flow.blocks?.map((block, index) => (
+          <a key={block._id} href={block.url}>
+            <li className={styles.block} key={block._id}>
+              <div className={styles.index}>{index + 1}</div>
+              <img className={styles.blockImage} src={imgURL}></img>
+              <div className={styles.description}>{block.description}</div>
+            </li>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
