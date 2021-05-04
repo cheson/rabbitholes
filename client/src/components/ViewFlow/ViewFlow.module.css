@@ -1,17 +1,101 @@
+/* TODO: download into bundle and make a generally available css file */
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&family=Source+Serif+Pro&display=swap");
+
 .image {
   max-width: 40%;
   max-height: 20%;
-  border-radius: 10px;
-  margin: auto;
-  margin-top: 25px;
+  border-radius: 5px;
+  margin: 10px auto;
   display: block;
 }
 
 .title {
   text-align: center;
   font-size: 30px;
+  padding-bottom: 10px;
+  font-family: "Source Sans Pro", sans-serif;
+}
+
+.metadata {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: "Source Sans Pro", sans-serif;
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
 }
 
 .description {
-  margin: 0px 100px 100px 100px;
+  width: 80%;
+  margin: auto;
+  font-family: "Source Serif Pro", serif;
+  padding-bottom: 10px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.block {
+  border-color: lightgrey;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 2px;
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+  display: flex;
+  object-fit: contain;
+}
+
+.block:hover {
+  transition: all 0.15s ease-in-out;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.index {
+  margin-top: auto;
+  margin-bottom: auto;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-family: "Source Serif Pro", serif;
+}
+
+.blockImage {
+  max-width: 30%;
+  padding: 10px;
+  object-fit: fill;
+  margin-left: auto;
+  border-radius: 15px;
+}
+
+.blockDescription {
+  margin: auto 0;
+  font-family: "Source Serif Pro", serif;
+}
+
+@media all and (max-width: 480px) {
+  .blockImage {
+    max-width: 60%;
+    padding: 10px;
+    object-fit: contain;
+    order: 1;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .index {
+    margin-top: 10px;
+    order: 2;
+  }
+  .description {
+    order: 3;
+  }
+  .block {
+    flex-wrap: wrap;
+  }
 }
