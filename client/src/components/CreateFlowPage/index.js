@@ -3,6 +3,7 @@ import CreateFlowIntro from "../CreateFlowIntro";
 import CreateFlowBlock from "../CreateFlowBlock";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import styles from "./CreateFlowPage.module.css";
 
 export default function CreateFlowPage(props) {
@@ -35,39 +36,66 @@ export default function CreateFlowPage(props) {
     props.apiService.createFlow(formData);
   };
 
+  function onDragEnd(result) {
+    let newBlocks = [...blocks];
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
+    const tempDestinationBlock = blocks[destinationIndex];
+
+    newBlocks[destinationIndex] = blocks[sourceIndex];
+    newBlocks[sourceIndex] = tempDestinationBlock;
+
+    setBlocks(newBlocks);
+  }
+
   return (
     <div>
-      <h2>Create Flow</h2>
+      <form onSubmit={onSubmit} ref={form}>
+        <CreateFlowIntro />
 
-      <div className={styles.grid}>
-        {true && <div className={styles.box1}>hello space placeholder</div>}
-        <div className={styles.box2}>
-          <form onSubmit={onSubmit} ref={form}>
-            <div className={styles.flexCentered}>
-              <CreateFlowIntro />
-            </div>
+        <hr />
 
-            <hr />
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="blocks">
+            {(provided) => (
+              <div
+                className={styles.flowBlockContainer}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {blocks.map((block, index) => {
+                  return (
+                    <Draggable
+                      key={block.id}
+                      draggableId={block.id}
+                      index={index}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <CreateFlowBlock
+                            blockData={block}
+                            removeBlock={removeBlock}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
-            <div className={styles.flowBlockContainer}>
-              {blocks.map((block) => {
-                return (
-                  <CreateFlowBlock
-                    key={block.id}
-                    blockData={block}
-                    removeBlock={removeBlock}
-                  />
-                );
-              })}
-            </div>
-
-            <button type="button" onClick={() => addBlock()}>
-              add block!
-            </button>
-            <button type="submit">Submit form</button>
-          </form>
-        </div>
-      </div>
+        <button type="button" onClick={() => addBlock()}>
+          add block!
+        </button>
+        <button type="submit">Submit form</button>
+      </form>
     </div>
   );
 }

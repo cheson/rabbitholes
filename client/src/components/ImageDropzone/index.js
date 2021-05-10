@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Dropzone from "react-dropzone";
-import cameraImg from "../../assets/camera.png";
+import imageIcon from "../../assets/image.png";
 import PropTypes from "prop-types";
 import styles from "./ImageDropzone.module.css";
 
 // TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
 function ImageDropzone(props) {
-  const [image, setImage] = useState(cameraImg);
+  const [image, setImage] = useState(imageIcon);
 
   const onDrop = (acceptedImageArray) => {
     // TODO: instead of returning, show some UI that only 1 image can be uploaded.
@@ -29,14 +29,18 @@ function ImageDropzone(props) {
   const imgPreview = (
     <img
       src={image}
-      className={image == cameraImg ? styles.dropzoneCamera : styles.imgPreview}
+      className={image == imageIcon ? styles.imgIcon : styles.imgPreview}
     />
   );
 
   return (
     <Dropzone onDrop={onDrop} maxFiles={1} accept="image/*">
       {({ getRootProps, getInputProps }) => (
-        <div className={styles.dropzone} {...getRootProps()}>
+        <div
+          className={styles.dropzone}
+          style={props.style}
+          {...getRootProps()}
+        >
           {imgPreview}
           <input {...getInputProps({ name: props.imageId })} />
         </div>
@@ -49,6 +53,7 @@ function ImageDropzone(props) {
 ImageDropzone.propTypes = {
   imageId: PropTypes.string,
   useSmallDropzone: PropTypes.bool,
+  style: PropTypes.object,
 };
 
 export default ImageDropzone;

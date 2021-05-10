@@ -4,25 +4,36 @@ import ImageDropzone from "../ImageDropzone";
 
 function CreateFlowIntro() {
   return (
-    <div>
+    <div className={styles.flexCentered}>
       {/* TODO: add the identifier and backend code to handle image submission for flow */}
-      <ImageDropzone />
+      <div className={styles.formEntry}>
+        <label className={styles.label}>Image</label>
+        <ImageDropzone style={{ width: "100%" }} />
+      </div>
 
-      <label htmlFor="title">Title</label>
-      <input
-        id="title"
-        placeholder="title"
-        className={styles.titleText}
-        name="flowTitle"
-      ></input>
+      <div className={styles.formEntry}>
+        <label className={styles.label} htmlFor="title">
+          Title
+        </label>
+        <input
+          id="title"
+          placeholder=""
+          className={styles.titleText}
+          name="flowTitle"
+        ></input>
+      </div>
 
-      <label htmlFor="description">Description</label>
-      <textarea
-        id="description"
-        className={styles.descriptionText}
-        placeholder="description"
-        name="flowDescription"
-      ></textarea>
+      <div className={styles.formEntry}>
+        <label className={styles.label} htmlFor="description">
+          Description
+        </label>
+        <textarea
+          id="description"
+          className={styles.descriptionText}
+          placeholder=""
+          name="flowDescription"
+        ></textarea>
+      </div>
     </div>
   );
 }

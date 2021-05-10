@@ -67,6 +67,7 @@
 }
 
 .blockImage {
+  display: block;
   max-width: 30%;
   padding: 10px;
   object-fit: fill;
@@ -77,6 +78,9 @@
 .blockDescription {
   margin: auto 0;
   font-family: "Source Serif Pro", serif;
+}
+
+.blockUrl {
 }
 
 @media all and (max-width: 480px) {

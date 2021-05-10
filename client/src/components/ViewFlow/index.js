@@ -56,7 +56,10 @@ export default function ViewFlow(props) {
             onClick={() => onClick(block.url)}
           >
             <div className={styles.index}>{index + 1}</div>
-            <div className={styles.blockDescription}>{block.description}</div>
+            <div className={styles.blockDescription}>
+              {block.description}
+              {/* <div className={styles.blockUrl}>{block.url}</div> */}
+            </div>
             <img className={styles.blockImage} src={getRandomImageURL()}></img>
           </div>
         ))}

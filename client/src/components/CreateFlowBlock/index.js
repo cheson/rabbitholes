@@ -11,25 +11,35 @@ function CreateFlowBlock(props) {
         Remove
       </button>
 
-      <ImageDropzone imageId={block.id} />
+      <div>
+        <label htmlFor={`image:${block.id}`}>Image</label>
+        <ImageDropzone
+          imageId={`image:${block.id}`}
+          style={{ width: "200px", height: "100px" }}
+        />
+      </div>
 
-      <label htmlFor={block.id}>URL</label>
-      <input
-        placeholder={block.url}
-        className={styles.urlText}
-        type="text"
-        id={block.id}
-        name={`url:${block.id}`}
-      ></input>
+      <div>
+        <label htmlFor={block.id}>URL</label>
+        <input
+          placeholder={block.url}
+          className={styles.urlText}
+          type="text"
+          id={`url:${block.id}`}
+          name={`url:${block.id}`}
+        ></input>
+      </div>
 
-      <label htmlFor="description">Description</label>
-      <textarea
-        className={styles.descriptionText}
-        placeholder={block.description}
-        type="text"
-        id={block.id}
-        name={`description:${block.id}`}
-      ></textarea>
+      <div>
+        <label htmlFor={`description:${block.id}`}>Description</label>
+        <textarea
+          className={styles.descriptionText}
+          placeholder={block.description}
+          type="text"
+          id={`description:${block.id}`}
+          name={`description:${block.id}`}
+        ></textarea>
+      </div>
     </div>
   );
 }

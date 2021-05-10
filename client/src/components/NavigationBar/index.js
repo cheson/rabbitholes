@@ -3,34 +3,47 @@ import { Nav, NavDropdown, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as routes from "../../constants/routes";
+import styles from "./NavigationBar.module.css";
+import rabbitIcon from "../../assets/rabbit.png";
 
 function NavigationBar(props) {
   return (
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand>
-          <Link to="/">Flow</Link>
+          <Link to="/">
+            <img src={rabbitIcon} className={styles.icon}></img>
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to={routes.ABOUT}>
-              About
-            </Nav.Link>
-            <Nav.Link as={Link} to={routes.CREATE_FLOW}>
-              Create Flow
-            </Nav.Link>
-            <Nav.Link as={Link} to={routes.VIEW_FLOW}>
-              View Flow
-            </Nav.Link>
-            <Nav.Link as={Link} to={routes.VIEW_FLOWS}>
-              View Flows
-            </Nav.Link>
-            <Nav.Link as={Link} to={routes.PROFILE}>
-              Profile
-            </Nav.Link>
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/count">
+            <NavDropdown title="Menu" id="collapsible-nav-dropdown">
+              <NavDropdown.Item as={Link} to={routes.ABOUT}>
+                About
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={routes.CREATE_FLOW}>
+                Create Flow
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={routes.VIEW_FLOW}>
+                View Flow
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={routes.VIEW_FLOWS}>
+                View Flows
+              </NavDropdown.Item>
+              <NavDropdown.Item as={Link} to={routes.PROFILE}>
+                Profile
+              </NavDropdown.Item>
+
+              {props.authUser ? (
+                props.logoutButton
+              ) : (
+                <NavDropdown.Item as={Link} to={routes.LOGIN}>
+                  Login
+                </NavDropdown.Item>
+              )}
+
+              {/* <NavDropdown.Item as={Link} to="/count">
                 Count
               </NavDropdown.Item>
               <NavDropdown.Item as={Link} to="/list">
@@ -39,17 +52,8 @@ function NavigationBar(props) {
               <NavDropdown.Divider />
               <NavDropdown.Item href="#separated">
                 Separated link
-              </NavDropdown.Item>
+              </NavDropdown.Item> */}
             </NavDropdown>
-          </Nav>
-          <Nav>
-            {props.authUser ? (
-              props.logoutButton
-            ) : (
-              <Nav.Link as={Link} to={routes.LOGIN}>
-                Login
-              </Nav.Link>
-            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
