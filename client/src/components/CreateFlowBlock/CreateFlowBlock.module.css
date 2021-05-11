@@ -1,21 +1,53 @@
 .flowBlock {
-  border-color: black;
-  border-width: 3px;
+  border-color: lightgrey;
+  border-width: 2px;
   border-style: solid;
   border-radius: 2px;
-  margin: 15px;
+  margin: 10px 20px;
+  background-color: white;
+  display: grid;
+  grid-template-columns: 6fr 4fr;
+  /* grid-template-rows: auto; */
+  grid-gap: 10px;
+  grid-template-areas:
+    "controls controls"
+    "url url"
+    "description img";
+  padding: 10px;
+  height: 300px;
+  overflow: scroll;
 }
 
 .urlText {
-  display: block;
   width: 100%;
 }
 
 .descriptionText {
-  display: block;
+  /* display: block; */
   width: 100%;
 }
 
-.image {
-  margin: 15px;
+.imageSection {
+  grid-area: img;
+}
+
+.urlSection {
+  grid-area: url;
+}
+
+.controlsSection {
+  grid-area: controls;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.5rem;
+}
+
+.descriptionSection {
+  grid-area: description;
+}
+
+.xCircle:hover {
+  color: rgb(255, 73, 73);
+  transition: all 0.15s ease-in-out;
+  transform: scale(1.05);
 }

@@ -69,6 +69,7 @@ export default function CreateFlowPage(props) {
                       key={block.id}
                       draggableId={block.id}
                       index={index}
+                      isDragDisabled={blocks.length < 2}
                     >
                       {(provided) => (
                         <div
@@ -91,10 +92,13 @@ export default function CreateFlowPage(props) {
           </Droppable>
         </DragDropContext>
 
-        <button type="button" onClick={() => addBlock()}>
-          add block!
-        </button>
-        <button type="submit">Submit form</button>
+        <div className={styles.formControls}>
+          {/* this can be a floating action button */}
+          <button type="button" onClick={() => addBlock()}>
+            add block!
+          </button>
+          <button type="submit">Submit form</button>
+        </div>
       </form>
     </div>
   );
