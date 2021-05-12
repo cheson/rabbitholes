@@ -13,41 +13,47 @@
     "controls controls"
     "url url"
     "description img";
-  padding: 10px;
-  height: 300px;
-  overflow: scroll;
-}
-
-.urlText {
-  width: 100%;
-}
-
-.descriptionText {
-  /* display: block; */
-  width: 100%;
-}
-
-.imageSection {
-  grid-area: img;
-}
-
-.urlSection {
-  grid-area: url;
+  padding: 0 10px 10px 10px;
+  box-sizing: border-box;
+  /* height: 300px; */
 }
 
 .controlsSection {
   grid-area: controls;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 1.5rem;
+}
+
+.urlSection {
+  grid-area: url;
+}
+
+.urlText {
+  width: 100%;
 }
 
 .descriptionSection {
   grid-area: description;
+  display: flex;
+  flex-direction: column;
+}
+
+.descriptionText {
+  width: 100%;
+  min-height: 10vh;
+}
+
+.imageSection {
+  grid-area: img;
+  display: flex;
+  flex-direction: column;
 }
 
 .xCircle:hover {
   color: rgb(255, 73, 73);
+  font-weight: bold;
   transition: all 0.15s ease-in-out;
   transform: scale(1.05);
 }

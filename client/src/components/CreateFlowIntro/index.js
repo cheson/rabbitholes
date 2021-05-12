@@ -4,11 +4,11 @@ import ImageDropzone from "../ImageDropzone";
 
 function CreateFlowIntro() {
   return (
-    <div className={styles.flexCentered}>
+    <div className={styles.centered}>
       {/* TODO: add the identifier and backend code to handle image submission for flow */}
       <div className={styles.formEntry}>
         <label className={styles.label}>Image</label>
-        <ImageDropzone style={{ width: "100%" }} />
+        <ImageDropzone style={{ width: "100%", height: "20vh" }} />
       </div>
 
       <div className={styles.formEntry}>

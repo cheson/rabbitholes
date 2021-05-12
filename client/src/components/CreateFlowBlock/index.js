@@ -1,7 +1,7 @@
 import React from "react";
 import ImageDropzone from "../ImageDropzone";
 import PropTypes from "prop-types";
-import { XCircle, MenuButtonWide } from "react-bootstrap-icons";
+import { XCircle } from "react-bootstrap-icons";
 import styles from "./CreateFlowBlock.module.css";
 
 function CreateFlowBlock(props) {
@@ -9,10 +9,7 @@ function CreateFlowBlock(props) {
   return (
     <div className={styles.flowBlock}>
       <div className={styles.controlsSection}>
-        {/* <button type="button" onClick={() => {}}>
-          Drag to Reorder
-        </button> */}
-        <MenuButtonWide className={styles.menuButtonWide} />
+        <div className={styles.index}>{props.index + 1}</div>
         <XCircle
           className={styles.xCircle}
           onClick={() => props.removeBlock(block.id)}
@@ -43,7 +40,7 @@ function CreateFlowBlock(props) {
         <label htmlFor={`image:${block.id}`}>Image</label>
         <ImageDropzone
           imageId={`image:${block.id}`}
-          style={{ height: "100px" }}
+          style={{ height: "100%", boxSizing: "border-box" }}
         />
       </div>
     </div>
@@ -53,6 +50,7 @@ function CreateFlowBlock(props) {
 CreateFlowBlock.propTypes = {
   blockData: PropTypes.object,
   removeBlock: PropTypes.func,
+  index: PropTypes.number,
 };
 
 export default CreateFlowBlock;

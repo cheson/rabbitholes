@@ -6,12 +6,6 @@
 }
 
 .formControls {
-  /* position: fixed;
-  bottom: 20px;
-  left: 20px;
-  background-color: greenyellow;
-  width: 250px;
-  height: 50px; */
   display: flex;
   justify-content: space-between;
   margin: 20px;
@@ -19,3 +13,24 @@
 
 .formControls:hover {
 }
+
+.menuButtonWide {
+  font-size: 1.5em;
+}
+
+.uiChecksGrid {
+  font-size: 1.5em;
+}
+
+.flowBlocksInformation {
+  margin: 20px;
+}
+
+/* 
+
+todo:
+
+- figure out header/titling
+- fix menu dropdown
+
+*/

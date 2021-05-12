@@ -3,7 +3,9 @@ import CreateFlowIntro from "../CreateFlowIntro";
 import CreateFlowBlock from "../CreateFlowBlock";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import { Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
 import styles from "./CreateFlowPage.module.css";
 
 export default function CreateFlowPage(props) {
@@ -21,6 +23,15 @@ export default function CreateFlowPage(props) {
       id: nanoid(),
     };
     setBlocks((currentBlocks) => [...currentBlocks, newBlock]);
+    setTimeout(
+      () =>
+        window.scrollTo({
+          left: 0,
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        }),
+      50
+    );
   }
 
   function removeBlock(id) {
@@ -38,8 +49,11 @@ export default function CreateFlowPage(props) {
 
   function onDragEnd(result) {
     let newBlocks = [...blocks];
-    const sourceIndex = result.source.index;
-    const destinationIndex = result.destination.index;
+    const sourceIndex = result.source?.index;
+    const destinationIndex = result.destination?.index;
+    if (sourceIndex === undefined || destinationIndex === undefined) {
+      return;
+    }
     const tempDestinationBlock = blocks[destinationIndex];
 
     newBlocks[destinationIndex] = blocks[sourceIndex];
@@ -54,6 +68,14 @@ export default function CreateFlowPage(props) {
         <CreateFlowIntro />
 
         <hr />
+        <div className={styles.flowBlocksInformation}>
+          <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop
+          blocks to reorder the list. <br />
+        </div>
+        <div className={styles.flowBlocksInformation}>
+          <UiChecksGrid className={styles.uiChecksGrid} /> All form fields are
+          optional.
+        </div>
 
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId="blocks">
@@ -80,6 +102,7 @@ export default function CreateFlowPage(props) {
                           <CreateFlowBlock
                             blockData={block}
                             removeBlock={removeBlock}
+                            index={index}
                           />
                         </div>
                       )}
@@ -93,11 +116,16 @@ export default function CreateFlowPage(props) {
         </DragDropContext>
 
         <div className={styles.formControls}>
-          {/* this can be a floating action button */}
-          <button type="button" onClick={() => addBlock()}>
-            add block!
-          </button>
-          <button type="submit">Submit form</button>
+          <Button
+            id="addBlockButton"
+            variant="primary"
+            onClick={() => addBlock()}
+          >
+            Add Block!
+          </Button>
+          <Button type="submit" variant="success">
+            Submit Form
+          </Button>
         </div>
       </form>
     </div>
