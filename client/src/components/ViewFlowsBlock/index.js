@@ -6,14 +6,14 @@ import styles from "./ViewFlowsBlock.module.css";
 function ViewFlowsBlock(props) {
   const flow = props.flow;
 
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-  const width = getRandomInt(1300, 1600);
-  const height = getRandomInt(600, 900);
-  const imgURL = `https://picsum.photos/${width}/${height}`;
+  // function getRandomInt(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min) + min);
+  // }
+  // const width = getRandomInt(1300, 1600);
+  // const height = getRandomInt(600, 900);
+  // const imgURL = `https://picsum.photos/${width}/${height}`;
 
   const history = useHistory();
   function onClick() {
@@ -26,7 +26,7 @@ function ViewFlowsBlock(props) {
   return (
     // TODO: Adding an actual <a> link would help with accessibility
     <div className={styles.flowBlock} onClick={onClick}>
-      <img className={styles.image} src={imgURL} />
+      {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
       <div className={styles.title}>
         {flow.flowTitle || "flow title tee hee"}
       </div>

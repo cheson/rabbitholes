@@ -11,17 +11,17 @@ export default function ViewFlow(props) {
     props.apiService.viewFlow(flowId).then((flow) => setFlow(flow));
   }, []);
 
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min) + min);
-  }
+  // function getRandomInt(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min) + min);
+  // }
 
-  function getRandomImageURL() {
-    const width = getRandomInt(1300, 1600);
-    const height = getRandomInt(600, 900);
-    return `https://picsum.photos/${width}/${height}`;
-  }
+  // function getRandomImageURL() {
+  //   const width = getRandomInt(1300, 1600);
+  //   const height = getRandomInt(600, 900);
+  //   return `https://picsum.photos/${width}/${height}`;
+  // }
 
   function onClick(url) {
     const isTextSelected = window.getSelection().toString();
@@ -37,7 +37,7 @@ export default function ViewFlow(props) {
   // TODO: return appropriate error page for a flow id that doesn't exist
   return (
     <div>
-      <img className={styles.image} src={getRandomImageURL()} />
+      {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
       <div className={styles.title}>{flow.flowTitle}</div>
       <div className={styles.metadata}>
         <div className={styles.author}>
@@ -60,7 +60,9 @@ export default function ViewFlow(props) {
               {block.description}
               {/* <div className={styles.blockUrl}>{block.url}</div> */}
             </div>
-            <img className={styles.blockImage} src={getRandomImageURL()}></img>
+            {block.imgUrl && (
+              <img className={styles.blockImage} src={block.imgUrl}></img>
+            )}
           </div>
         ))}
       </div>

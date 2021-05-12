@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const models = require("../models");
 const httpCodes = require("../constants/httpCodes");
-const isAuthenticated = require("../middleware/isAuthenticated.js");
+const isAuthenticated = require("../middleware/isAuthenticated");
+const uploadS3File = require("../utils/s3");
 
 const multer = require("multer");
 // Configured with a limit in order to prevent abuse. (Good DKV candidate!)
@@ -33,15 +34,16 @@ router.get("/:flowId", (req, res) => {
     });
 });
 
-function uploadImageToS3(img) {
-  // Stub image url for eventual S3/image storage
-  return "https://picsum.photos/300/200";
+function findImageFromFiles(files, id) {
+  return files.find((file) => {
+    return file.fieldname == id;
+  });
 }
 
 // TODO: documentation comment with expected req shape?
-router.post("/create", isAuthenticated, upload.any(), (req, res) => {
-  console.log(req.body);
-  console.log(req.files);
+router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
+  console.log("BODY", req.body);
+  console.log("FILES", req.files);
 
   let flowInfo = {};
   let flowBlocks = {};
@@ -59,28 +61,30 @@ router.post("/create", isAuthenticated, upload.any(), (req, res) => {
     let block = flowBlocks[id];
     if (!block) {
       block = {};
-      const img = req.files.find((file) => {
-        return file.fieldname == id;
-      });
+      const img = findImageFromFiles(req.files, id);
       if (img) {
-        block["imgUrl"] = uploadImageToS3(img);
+        block["imgUrl"] = await uploadS3File(img);
       }
     }
     flowBlocks[id] = Object.assign(block, { [type]: value });
   }
 
+  const introImg = findImageFromFiles(req.files, "intro");
+  if (introImg) {
+    flowInfo["imgUrl"] = await uploadS3File(introImg);
+  }
   // TODO: Stay denormalized with userId joining to user table for now,
   // but figure out how to profile the cost of the join, especially when fetching all flows.
   flowInfo["userId"] = req.user.firebase_id;
   flowInfo["blocks"] = Object.values(flowBlocks);
   flowInfo["numViews"] = 1;
-  console.log(flowInfo["blocks"]);
+  console.log("BLOCKS", flowInfo["blocks"]);
 
   const flow = new Flow(flowInfo);
   flow
     .save()
     .then((saved_flow) => {
-      console.log(saved_flow);
+      console.log("SAVED FLOW", saved_flow);
       res
         .status(httpCodes.success)
         .json({ example: "this would be the created flow" });
