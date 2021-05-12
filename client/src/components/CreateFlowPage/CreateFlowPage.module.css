@@ -26,11 +26,9 @@
   margin: 20px;
 }
 
-/* 
-
-todo:
-
-- figure out header/titling
-- fix menu dropdown
-
-*/
+.header {
+  width: 90%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}

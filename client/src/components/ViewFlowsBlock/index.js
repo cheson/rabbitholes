@@ -40,7 +40,6 @@ function ViewFlowsBlock(props) {
         </span>
         <span>views: {flow.numViews || 1}</span>
       </div>
-      {console.log(flow)}
     </div>
   );
 }

@@ -65,12 +65,17 @@ export default function CreateFlowPage(props) {
   return (
     <div>
       <form onSubmit={onSubmit} ref={form}>
+        <div className={styles.header}>
+          <h3> Create Flow </h3>
+          <hr />
+        </div>
+
         <CreateFlowIntro />
 
-        <hr />
+        {/* <hr /> */}
         <div className={styles.flowBlocksInformation}>
-          <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop
-          blocks to reorder the list. <br />
+          <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop to
+          reorder list blocks. <br />
         </div>
         <div className={styles.flowBlocksInformation}>
           <UiChecksGrid className={styles.uiChecksGrid} /> All form fields are
