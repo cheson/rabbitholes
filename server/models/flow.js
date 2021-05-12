@@ -18,6 +18,7 @@ const flowSchema = new Schema(
   {
     flowTitle: String,
     flowDescription: String,
+    imgUrl: String,
     blocks: [flowBlockSchema],
     userId: String,
     numViews: Number,

@@ -36,11 +36,16 @@ function CreateFlowBlock(props) {
         ></textarea>
       </div>
 
+      {/* TODO: figure out best way to limit max height here naturally */}
       <div className={styles.imageSection}>
         <label htmlFor={`image:${block.id}`}>Image</label>
         <ImageDropzone
-          imageId={`image:${block.id}`}
-          style={{ height: "100%", boxSizing: "border-box" }}
+          imageId={block.id}
+          style={{
+            height: "100%",
+            maxHeight: "200px",
+            boxSizing: "border-box",
+          }}
         />
       </div>
     </div>
