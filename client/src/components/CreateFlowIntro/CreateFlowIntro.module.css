@@ -1,11 +1,21 @@
-.titleText {
+.label {
   display: block;
-  margin: 10px;
+  margin-bottom: 0;
+}
+
+.formEntry {
+  margin: 15px;
+}
+
+.titleText {
   width: 100%;
 }
 
 .descriptionText {
-  display: block;
-  margin: 10px;
   width: 100%;
+}
+
+.centered {
+  width: 60%;
+  margin: 0 auto;
 }

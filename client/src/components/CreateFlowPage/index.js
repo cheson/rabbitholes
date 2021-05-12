@@ -3,6 +3,9 @@ import CreateFlowIntro from "../CreateFlowIntro";
 import CreateFlowBlock from "../CreateFlowBlock";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import { Button } from "react-bootstrap";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
 import styles from "./CreateFlowPage.module.css";
 
 export default function CreateFlowPage(props) {
@@ -20,6 +23,15 @@ export default function CreateFlowPage(props) {
       id: nanoid(),
     };
     setBlocks((currentBlocks) => [...currentBlocks, newBlock]);
+    setTimeout(
+      () =>
+        window.scrollTo({
+          left: 0,
+          top: document.body.scrollHeight,
+          behavior: "smooth",
+        }),
+      50
+    );
   }
 
   function removeBlock(id) {
@@ -35,39 +47,92 @@ export default function CreateFlowPage(props) {
     props.apiService.createFlow(formData);
   };
 
+  function onDragEnd(result) {
+    let newBlocks = [...blocks];
+    const sourceIndex = result.source?.index;
+    const destinationIndex = result.destination?.index;
+    if (sourceIndex === undefined || destinationIndex === undefined) {
+      return;
+    }
+    const tempDestinationBlock = blocks[destinationIndex];
+
+    newBlocks[destinationIndex] = blocks[sourceIndex];
+    newBlocks[sourceIndex] = tempDestinationBlock;
+
+    setBlocks(newBlocks);
+  }
+
   return (
     <div>
-      <h2>Create Flow</h2>
-
-      <div className={styles.grid}>
-        {true && <div className={styles.box1}>hello space placeholder</div>}
-        <div className={styles.box2}>
-          <form onSubmit={onSubmit} ref={form}>
-            <div className={styles.flexCentered}>
-              <CreateFlowIntro />
-            </div>
-
-            <hr />
-
-            <div className={styles.flowBlockContainer}>
-              {blocks.map((block) => {
-                return (
-                  <CreateFlowBlock
-                    key={block.id}
-                    blockData={block}
-                    removeBlock={removeBlock}
-                  />
-                );
-              })}
-            </div>
-
-            <button type="button" onClick={() => addBlock()}>
-              add block!
-            </button>
-            <button type="submit">Submit form</button>
-          </form>
+      <form onSubmit={onSubmit} ref={form}>
+        <div className={styles.header}>
+          <h3> Create Flow </h3>
+          <hr />
         </div>
-      </div>
+
+        <CreateFlowIntro />
+
+        {/* <hr /> */}
+        <div className={styles.flowBlocksInformation}>
+          <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop to
+          reorder list blocks. <br />
+        </div>
+        <div className={styles.flowBlocksInformation}>
+          <UiChecksGrid className={styles.uiChecksGrid} /> All form fields are
+          optional.
+        </div>
+
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId="blocks">
+            {(provided) => (
+              <div
+                className={styles.flowBlockContainer}
+                {...provided.droppableProps}
+                ref={provided.innerRef}
+              >
+                {blocks.map((block, index) => {
+                  return (
+                    <Draggable
+                      key={block.id}
+                      draggableId={block.id}
+                      index={index}
+                      isDragDisabled={blocks.length < 2}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <CreateFlowBlock
+                            blockData={block}
+                            removeBlock={removeBlock}
+                            index={index}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        <div className={styles.formControls}>
+          <Button
+            id="addBlockButton"
+            variant="primary"
+            onClick={() => addBlock()}
+          >
+            Add Block!
+          </Button>
+          <Button type="submit" variant="success">
+            Submit Form
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }

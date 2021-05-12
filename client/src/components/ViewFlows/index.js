@@ -48,24 +48,28 @@ export default function ViewFlows(props) {
 
   return (
     <div>
-      <Dropdown
-        onSelect={(sortType) => setSortedFlows(sortType)}
-        className={styles.dropdownButton}
-      >
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
-          Sort By
-        </Dropdown.Toggle>
+      {/* TODO: consolidate all the header stylings */}
+      <div className={styles.header}>
+        <div className={styles.headerElements}>
+          <h3> View Flows </h3>
+          <Dropdown onSelect={(sortType) => setSortedFlows(sortType)}>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              Sort By
+            </Dropdown.Toggle>
 
-        <Dropdown.Menu>
-          <Dropdown.Item eventKey={sortTypes.VIEWS_DESCENDING}>
-            Views Descending
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={sortTypes.VIEWS_ASCENDING}>
-            Views Ascending
-          </Dropdown.Item>
-          <Dropdown.Item eventKey={sortTypes.TITLE}>Title</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+            <Dropdown.Menu>
+              <Dropdown.Item eventKey={sortTypes.VIEWS_DESCENDING}>
+                Views Descending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={sortTypes.VIEWS_ASCENDING}>
+                Views Ascending
+              </Dropdown.Item>
+              <Dropdown.Item eventKey={sortTypes.TITLE}>Title</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
+        <hr />
+      </div>
 
       <div className={styles.flowBlockContainer}>
         {flows.map((flow) => (

@@ -1,55 +1,45 @@
 import React from "react";
-import { Nav, NavDropdown, Navbar } from "react-bootstrap";
+import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as routes from "../../constants/routes";
+import styles from "./NavigationBar.module.css";
+import rabbitIcon from "../../assets/rabbit.png";
 
 function NavigationBar(props) {
   return (
     <div>
-      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Navbar collapseOnSelect expand={false} bg="dark" variant="dark">
         <Navbar.Brand>
-          <Link to="/">Flow</Link>
+          <Link to="/">
+            <img src={rabbitIcon} className={styles.icon}></img>
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link as={Link} to={routes.ABOUT}>
+            <Nav.Link eventKey="About" as={Link} to={routes.ABOUT}>
               About
             </Nav.Link>
-            <Nav.Link as={Link} to={routes.CREATE_FLOW}>
+            <Nav.Link eventKey="createFlow" as={Link} to={routes.CREATE_FLOW}>
               Create Flow
             </Nav.Link>
-            <Nav.Link as={Link} to={routes.VIEW_FLOW}>
+            <Nav.Link eventKey="viewFlow" as={Link} to={routes.VIEW_FLOW}>
               View Flow
             </Nav.Link>
-            <Nav.Link as={Link} to={routes.VIEW_FLOWS}>
+            <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
               View Flows
             </Nav.Link>
-            <Nav.Link as={Link} to={routes.PROFILE}>
+            <Nav.Link eventKey="profile" as={Link} to={routes.PROFILE}>
               Profile
             </Nav.Link>
-            <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-              <NavDropdown.Item as={Link} to="/count">
-                Count
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/list">
-                List
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#separated">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-          <Nav>
-            {props.authUser ? (
-              props.logoutButton
-            ) : (
-              <Nav.Link as={Link} to={routes.LOGIN}>
-                Login
-              </Nav.Link>
-            )}
+            <Nav.Link eventKey="login" as={Link} to={routes.LOGIN}>
+              {props.authUser ? (
+                props.logoutButton
+              ) : (
+                <Button variant="outline-primary">Login</Button>
+              )}
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

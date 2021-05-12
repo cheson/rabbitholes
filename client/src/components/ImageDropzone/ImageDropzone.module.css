@@ -1,18 +1,16 @@
 .dropzone {
-  border-color: black;
-  border-width: 3px;
+  border-color: rgb(133, 133, 133);
+  border-width: 1px;
   border-style: solid;
   border-radius: 2px;
-  align-content: center;
-  height: 300px;
-  width: 300px;
-  margin: 15px;
+  background-color: rgb(200, 200, 200);
   display: flex;
+  align-content: center;
   align-items: center;
   justify-content: center;
 }
 
-.dropzoneCamera {
+.imgIcon {
   max-width: 15%;
   max-height: 15%;
 }

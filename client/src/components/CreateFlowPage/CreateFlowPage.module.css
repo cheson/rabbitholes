@@ -1,40 +1,34 @@
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 100%;
-  grid-gap: 10px;
-}
-
-.border-color {
-  border-color: purple;
-  border-width: 10px;
-  border-style: solid;
-}
-
-/* body:hover .box1 {
-    display: none;
-    width: 0px;
-  } */
-
-.box1 {
-  composes: border-color;
-  grid-column: 1;
-}
-
-.box2 {
-  composes: border-color;
-  /* grid-area: content; */
-  grid-column: 2;
-}
-
-.flexCentered {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-}
-
 .flowBlockContainer {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-evenly;
+}
+
+.formControls {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.formControls:hover {
+}
+
+.menuButtonWide {
+  font-size: 1.5em;
+}
+
+.uiChecksGrid {
+  font-size: 1.5em;
+}
+
+.flowBlocksInformation {
+  margin: 20px;
+}
+
+.header {
+  width: 90%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
