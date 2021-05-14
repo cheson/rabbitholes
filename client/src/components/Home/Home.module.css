@@ -1,0 +1,10 @@
+.landingPage {
+  /* need to figure out the height in relation to the navigation bar */
+  height: 95vh; 
+  background-color: indianred;
+}
+
+.otherTest {
+  height: 95vh;
+  background-color: green;
+}
