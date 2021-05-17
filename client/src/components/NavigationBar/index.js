@@ -24,9 +24,6 @@ function NavigationBar(props) {
             <Nav.Link eventKey="createFlow" as={Link} to={routes.CREATE_FLOW}>
               Create Flow
             </Nav.Link>
-            <Nav.Link eventKey="viewFlow" as={Link} to={routes.VIEW_FLOW}>
-              View Flow
-            </Nav.Link>
             <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
               View Flows
             </Nav.Link>
