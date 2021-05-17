@@ -32,11 +32,9 @@ export default function ViewFlow(props) {
     }
   }
 
-  console.log(flow);
   // TODO: if no URL in flow (eg for purely notes based non-external linking blocks), then don't add clickable styling
   // TODO: add image placeholders of a certain reasonable size so the divs don't resize as much
   // TODO: play with vertical images and see how they are handled (ans: terribly - come up with fix)
-  // TODO: return appropriate error page for a flow id that doesn't exist
   return (
     <div>
       {flow ? (
