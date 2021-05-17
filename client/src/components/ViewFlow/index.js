@@ -72,7 +72,7 @@ export default function ViewFlow(props) {
           </div>
         </div>
       ) : (
-        <ResourceNotFound />
+        <ResourceNotFound message={`Flow (${flowId}) cannot be found.`} />
       )}
     </div>
   );

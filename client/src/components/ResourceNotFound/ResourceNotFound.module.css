@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.img {
+  max-height: 90vh;
+  display: inline-block;
+}
