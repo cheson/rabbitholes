@@ -8,7 +8,7 @@ import rabbitIcon from "../../assets/rabbit.png";
 
 function NavigationBar(props) {
   return (
-    <div>
+    <div id="navbarId">
       <Navbar collapseOnSelect expand={false} bg="dark" variant="dark">
         <Navbar.Brand>
           <Link to="/">
