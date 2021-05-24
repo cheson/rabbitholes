@@ -1,20 +1,36 @@
 import React from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
+import { Button, Nav, Navbar, Form, FormControl } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as routes from "../../constants/routes";
 import styles from "./NavigationBar.module.css";
 import rabbitIcon from "../../assets/rabbit.png";
+import { Search } from "react-bootstrap-icons";
 
 function NavigationBar(props) {
   return (
     <div id="navbarId">
-      <Navbar collapseOnSelect expand={false} bg="dark" variant="dark">
+      <Navbar
+        // fixed="top"
+        collapseOnSelect
+        expand={false}
+        bg="dark"
+        variant="dark"
+      >
         <Navbar.Brand>
-          <Link to="/">
+          {/* TODO: investigate bug - need to close navbar after select if moving to different pages */}
+          <Link eventKey="Home" to="/">
             <img src={rabbitIcon} className={styles.icon}></img>
           </Link>
         </Navbar.Brand>
+        <Form className={styles.form} inline>
+          <FormControl type="text" placeholder="" className="mr-sm-2" />
+          <Button variant="link">
+            <Search
+            // onClick={() => props.removeBlock(block.id)}
+            />
+          </Button>
+        </Form>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">

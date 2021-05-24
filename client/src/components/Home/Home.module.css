@@ -18,45 +18,73 @@
   width: 50%;
 }
 
-.video {
-  padding: 5px;
-  width: 30vw;
-  border-radius: 2px;
+.modalBody {
+  display: flex;
+  justify-content: center;
+}
+
+.transition {
+  height: 30px;
+  background-image: linear-gradient(white, rgb(245, 245, 247));
 }
 
 .examplesPage {
-  height: 100vh;
+  /* height: 100vh; */
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  background-color: rgb(245, 245, 247);
+}
+
+.examplesHeader {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  text-align: center;
+}
+
+.examplesHeaderDescription {
+  font-size: 21px;
 }
 
 .examplesContainer {
   display: grid;
-  grid-template-columns: 30vw 30vw;
-  grid-template-rows: 30vh 30vh;
+  grid-template-columns: 45vw 45vw;
+  grid-template-rows: 70vh 70vh;
   grid-template-areas:
     "one two"
     "three four";
-  gap: 10px;
+  gap: 30px;
+  margin-bottom: 30px;
 }
 
 .one {
-  background-color: green;
+  background-color: white;
   grid-area: one;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .two {
-  background-color: green;
+  background-color: white;
   grid-area: two;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .three {
-  background-color: green;
+  background-color: white;
   grid-area: three;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .four {
-  background-color: green;
+  background-color: white;
   grid-area: four;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

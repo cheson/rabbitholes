@@ -82,6 +82,16 @@ export default function App() {
           <Count />
         </Route>
       </Switch>
+
+      <div
+        style={{
+          height: "80px",
+          textAlign: "center",
+          backgroundColor: "rgb(100, 100, 100)",
+        }}
+      >
+        footer placeholder
+      </div>
     </Router>
   );
 }
