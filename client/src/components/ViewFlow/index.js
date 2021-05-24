@@ -7,70 +7,70 @@ import ResourceNotFound from "../ResourceNotFound";
 export default function ViewFlow(props) {
   let { flowId } = useParams();
   const [flow, setFlow] = useState();
+  const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
-    props.apiService.viewFlow(flowId).then((flow) => setFlow(flow));
+    props.apiService.viewFlow(flowId).then((flow) => {
+      setFlow(flow);
+      setPageLoaded(true);
+    });
   }, []);
-
-  // function getRandomInt(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min) + min);
-  // }
-
-  // function getRandomImageURL() {
-  //   const width = getRandomInt(1300, 1600);
-  //   const height = getRandomInt(600, 900);
-  //   return `https://picsum.photos/${width}/${height}`;
-  // }
 
   function onClick(url) {
     const isTextSelected = window.getSelection().toString();
     if (!isTextSelected) {
-      // TODO: Open other webpage in a modal
       window.open(url);
     }
   }
+
+  const resourceNotFoundComponent = (
+    <ResourceNotFound message={`Flow (${flowId}) cannot be found.`} />
+  );
+  const pageNotLoadedComponent = <div></div>;
 
   // TODO: if no URL in flow (eg for purely notes based non-external linking blocks), then don't add clickable styling
   // TODO: add image placeholders of a certain reasonable size so the divs don't resize as much
   // TODO: play with vertical images and see how they are handled (ans: terribly - come up with fix)
   return (
     <div>
-      {flow ? (
-        <div>
-          {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
-          <div className={styles.title}>{flow.flowTitle}</div>
-          <div className={styles.metadata}>
-            <div className={styles.author}>
-              <i className="fa fa-user-circle-o"></i> ProlificUser
-            </div>{" "}
-            <div className={styles.date}>
-              <i className="fa fa-calendar-o"></i> May 4, 2021
+      {pageLoaded ? (
+        flow ? (
+          <div>
+            {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
+            <div className={styles.title}>{flow.flowTitle}</div>
+            <div className={styles.metadata}>
+              <div className={styles.author}>
+                <i className="fa fa-user-circle-o"></i> ProlificUser
+              </div>{" "}
+              <div className={styles.date}>
+                <i className="fa fa-calendar-o"></i> May 4, 2021
+              </div>
+            </div>
+            <div className={styles.description}>{flow.flowDescription}</div>
+            <div className={styles.list}>
+              {flow.blocks?.map((block, index) => (
+                <div
+                  className={styles.block}
+                  key={block._id}
+                  onClick={() => onClick(block.url)}
+                >
+                  <div className={styles.index}>{index + 1}</div>
+                  <div className={styles.blockDescription}>
+                    {block.description}
+                    {/* <div className={styles.blockUrl}>{block.url}</div> */}
+                  </div>
+                  {block.imgUrl && (
+                    <img className={styles.blockImage} src={block.imgUrl}></img>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
-          <div className={styles.description}>{flow.flowDescription}</div>
-          <div className={styles.list}>
-            {flow.blocks?.map((block, index) => (
-              <div
-                className={styles.block}
-                key={block._id}
-                onClick={() => onClick(block.url)}
-              >
-                <div className={styles.index}>{index + 1}</div>
-                <div className={styles.blockDescription}>
-                  {block.description}
-                  {/* <div className={styles.blockUrl}>{block.url}</div> */}
-                </div>
-                {block.imgUrl && (
-                  <img className={styles.blockImage} src={block.imgUrl}></img>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
+        ) : (
+          resourceNotFoundComponent
+        )
       ) : (
-        <ResourceNotFound message={`Flow (${flowId}) cannot be found.`} />
+        pageNotLoadedComponent
       )}
     </div>
   );
