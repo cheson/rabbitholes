@@ -5,13 +5,13 @@ import List from "./components/List";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import NavigationBar from "./components/NavigationBar";
-import Count from "./components/Count";
 import About from "./components/About";
 import LogoutButton from "./components/LogoutButton";
 import CreateFlowPage from "./components/CreateFlowPage";
 import ViewFlow from "./components/ViewFlow";
 import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
+import MyFlows from "./components/MyFlows";
 
 import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
 
@@ -30,7 +30,8 @@ export default function App() {
     const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
       setAppReady(true);
       if (user) {
-        setAuthUser({ displayName: user.displayName, email: user.email });
+        // setAuthUser({ displayName: user.displayName, email: user.email, photoURL: user.photoURL });
+        setAuthUser(user);
       } else {
         setAuthUser();
       }
@@ -67,8 +68,11 @@ export default function App() {
         <Route path={routes.VIEW_FLOW}>
           <ViewFlow apiService={apiService} />
         </Route>
+        <Route path={routes.MY_FLOWS}>
+          <MyFlows apiService={apiService} />
+        </Route>
         <Route path={routes.PROFILE}>
-          <Profile />
+          <Profile authUser={authUser} />
         </Route>
 
         {/* example routes and components */}
@@ -77,9 +81,6 @@ export default function App() {
         </Route>
         <Route path="/list">
           <List apiService={apiService} />
-        </Route>
-        <Route path="/count">
-          <Count />
         </Route>
       </Switch>
 
@@ -90,7 +91,8 @@ export default function App() {
           backgroundColor: "rgb(100, 100, 100)",
         }}
       >
-        footer placeholder
+        footer placeholder / fix to bottom, add privacy policy? terms of use?
+        contact?
       </div>
     </Router>
   );
