@@ -14,7 +14,14 @@ const Flow = models.flow;
 
 router.get("/", (req, res) => {
   console.log(req.query);
-  Flow.findAll(true)
+  // TODO: take search string and use for text based search
+  let resultPromise;
+  if (Object.keys(req.query).length === 0) {
+    resultPromise = Flow.findAll(true);
+  } else {
+    resultPromise = Flow.findByUserId(req.query.userId);
+  }
+  resultPromise
     .then((result) => {
       res.json(result);
     })
