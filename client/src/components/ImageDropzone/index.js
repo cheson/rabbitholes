@@ -6,7 +6,7 @@ import styles from "./ImageDropzone.module.css";
 
 // TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
 function ImageDropzone(props) {
-  const [image, setImage] = useState(imageIcon);
+  const [image, setImage] = useState(props.initialImageUrl || imageIcon);
 
   const onDrop = (acceptedImageArray) => {
     // TODO: instead of returning, show some UI that only 1 image can be uploaded.
@@ -49,8 +49,8 @@ function ImageDropzone(props) {
   );
 }
 
-// props should include: styles for big or small, name to identify if for intro or blocks
 ImageDropzone.propTypes = {
+  initialImageUrl: PropTypes.string,
   imageId: PropTypes.string,
   useSmallDropzone: PropTypes.bool,
   style: PropTypes.object,
