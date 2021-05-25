@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // import EditFlowBlock from "../EditFlowBlock";
+import ViewFlowsBlock from "../ViewFlowsBlock";
 import styles from "./MyFlows.module.css";
 import ResourceNotFound from "../ResourceNotFound";
+
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 export default function MyFlows(props) {
   const [myFlows, setMyFlows] = useState([]);
@@ -18,6 +22,34 @@ export default function MyFlows(props) {
     }
   }, [props.authUser]);
 
+  function deleteFlow(id, event) {
+    event.stopPropagation();
+    confirmAlert({
+      message: "Are you sure you want to delete this flow?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            props.apiService.deleteFlow(id).then((result) => {
+              if (result == "OK") {
+                setMyFlows(
+                  myFlows.filter(function (flow) {
+                    return flow._id != id;
+                  })
+                );
+              } else {
+                // display some error that flow was not deleted
+              }
+            });
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  }
+
   return props.authUser ? (
     <div>
       {/* TODO: consolidate all the header stylings */}
@@ -30,7 +62,9 @@ export default function MyFlows(props) {
 
       <div className={styles.flowBlockContainer}>
         {/* <EditFlowBlock key={flow._id} flow={flow} /> */}
-        {myFlows.map((flow) => JSON.stringify(flow))}
+        {myFlows.map((flow) => (
+          <ViewFlowsBlock key={flow.id} flow={flow} deleteFn={deleteFlow} />
+        ))}
       </div>
     </div>
   ) : (

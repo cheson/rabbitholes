@@ -30,6 +30,10 @@ export class APIService {
     return this.GET("/1/flows", searchParams);
   }
 
+  deleteFlow(flowId) {
+    return this.DELETE(`/1/flows/${flowId}`);
+  }
+
   /* ----------- HELPER FUNCTIONS ----------- */
 
   getFirebaseIdToken() {
@@ -100,10 +104,10 @@ export class APIService {
   //   return fetch(url, requestOptions).then(handleResponse);
   // }
 
-  // async DELETE(url) {
-  //   const requestOptions = {
-  //       method: 'DELETE'
-  //   };
-  //   return fetch(url, requestOptions).then(handleResponse);
-  // }
+  async DELETE(url) {
+    const requestOptions = {
+      method: "DELETE",
+    };
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
 }

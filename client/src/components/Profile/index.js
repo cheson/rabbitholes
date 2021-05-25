@@ -5,8 +5,8 @@ import ResourceNotFound from "../ResourceNotFound";
 import ImageDropzone from "../ImageDropzone";
 import { Button } from "react-bootstrap";
 
-import { confirmAlert } from "react-confirm-alert"; // Import
-import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 // for all changes, need to update my backend first before firebase, THEN return success to user
 // https://firebase.google.com/docs/auth/web/manage-users#update_a_users_profile
@@ -88,7 +88,7 @@ export default function Profile(props) {
         </div>
         <div className={styles.formEntry}>
           <Button variant="danger" onClick={() => deleteUser(props.authUser)}>
-            Delete user
+            Delete account
           </Button>
         </div>
       </div>
