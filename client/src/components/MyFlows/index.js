@@ -2,16 +2,23 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // import EditFlowBlock from "../EditFlowBlock";
 import styles from "./MyFlows.module.css";
+import ResourceNotFound from "../ResourceNotFound";
 
 export default function MyFlows(props) {
   const [myFlows, setMyFlows] = useState([]);
-  console.log(JSON.stringify(myFlows));
   // TODO: do we need a loaded boolean for all pages that load from api?
   useEffect(() => {
-    props.apiService.viewMyFlows().then((myFlows) => setMyFlows(myFlows));
-  }, []);
+    if (props.authUser) {
+      props.apiService
+        .viewFlows({
+          searchString: "testing the search string",
+          userId: props.authUser.uid,
+        })
+        .then((myFlows) => setMyFlows(myFlows));
+    }
+  }, [props.authUser]);
 
-  return (
+  return props.authUser ? (
     <div>
       {/* TODO: consolidate all the header stylings */}
       <div className={styles.header}>
@@ -23,12 +30,15 @@ export default function MyFlows(props) {
 
       <div className={styles.flowBlockContainer}>
         {/* <EditFlowBlock key={flow._id} flow={flow} /> */}
-        {myFlows.map((flow) => ({ flow }))}
+        {myFlows.map((flow) => JSON.stringify(flow))}
       </div>
     </div>
+  ) : (
+    <ResourceNotFound message={`No user logged in.`} />
   );
 }
 
 MyFlows.propTypes = {
   apiService: PropTypes.object,
+  authUser: PropTypes.object,
 };

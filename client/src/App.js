@@ -69,7 +69,7 @@ export default function App() {
           <ViewFlow apiService={apiService} />
         </Route>
         <Route path={routes.MY_FLOWS}>
-          <MyFlows apiService={apiService} />
+          <MyFlows apiService={apiService} authUser={authUser} />
         </Route>
         <Route path={routes.PROFILE}>
           <Profile authUser={authUser} />

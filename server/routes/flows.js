@@ -13,6 +13,7 @@ const upload = multer({ dest: "uploads/", limits: limits });
 const Flow = models.flow;
 
 router.get("/", (req, res) => {
+  console.log(req.query);
   Flow.findAll(true)
     .then((result) => {
       res.json(result);

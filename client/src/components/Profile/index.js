@@ -82,7 +82,9 @@ export default function Profile(props) {
         </div>
 
         <div className={styles.formEntry}>
-          <Button variant="primary" onClick={() => updateUser()}>Save changes</Button>
+          <Button variant="primary" onClick={() => updateUser()}>
+            Save changes
+          </Button>
         </div>
         <div className={styles.formEntry}>
           <Button variant="danger" onClick={() => deleteUser(props.authUser)}>

@@ -14,7 +14,7 @@ export class APIService {
   }
 
   listUsers() {
-    return this.GET("/1/users", true);
+    return this.GET("/1/users", undefined, true);
   }
 
   createFlow(formData) {
@@ -25,12 +25,9 @@ export class APIService {
     return this.GET(`/1/flows/${flowId}`);
   }
 
-  viewFlows() {
-    return this.GET("/1/flows");
-  }
-
-  viewMyFlows() {
-    return this.GET("/1/flows");
+  viewFlows(searchParams = {}) {
+    // text or uid
+    return this.GET("/1/flows", searchParams);
   }
 
   /* ----------- HELPER FUNCTIONS ----------- */
@@ -59,7 +56,14 @@ export class APIService {
     });
   }
 
-  async GET(url, requireAuth = false) {
+  formQueryString(obj) {
+    return Object.keys(obj)
+      .map((key) => key + "=" + obj[key])
+      .join("&");
+  }
+
+  async GET(urlBase, searchParamsObj = {}, requireAuth = false) {
+    let url = urlBase + "?" + this.formQueryString(searchParamsObj);
     let requestOptions = {
       method: "GET",
     };
