@@ -17,6 +17,11 @@ export class APIService {
     return this.GET("/1/users", undefined, true);
   }
 
+  updateUser(formData, userId) {
+    console.log(formData, userId);
+    return this.PUT(`/1/users/${userId}`, formData, true);
+  }
+
   deleteUser(userId) {
     return this.DELETE(`/1/users/${userId}`);
   }
@@ -97,16 +102,20 @@ export class APIService {
     return fetch(url, requestOptions).then(this.handleResponse);
   }
 
-  // Currently unused HTTP calls
-
-  // async PUT(url, body) {
-  //   const requestOptions = {
-  //       method: 'PUT',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(body)
-  //   };
-  //   return fetch(url, requestOptions).then(handleResponse);
-  // }
+  async PUT(url, body, isFormData = false) {
+    const idToken = await this.getFirebaseIdToken();
+    let requestOptions = {
+      method: "PUT",
+      headers: { authorization: idToken },
+    };
+    if (isFormData) {
+      requestOptions.body = body;
+    } else {
+      requestOptions.body = JSON.stringify(body);
+      requestOptions.headers["Content-Type"] = "application/json";
+    }
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
 
   async DELETE(url) {
     const requestOptions = {

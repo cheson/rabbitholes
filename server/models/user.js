@@ -22,6 +22,7 @@ const userSchema = new Schema(
       unique: true,
       sparse: true,
     },
+    profilePictureURL: String,
   },
   { timestamps: true }
 );

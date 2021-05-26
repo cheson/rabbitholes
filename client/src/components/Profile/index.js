@@ -1,62 +1,68 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./Profile.module.css";
 import ResourceNotFound from "../ResourceNotFound";
 import ImageDropzone from "../ImageDropzone";
 import { Button } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
-
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-// for all changes, need to update my backend first before firebase, THEN return success to user
-// https://firebase.google.com/docs/auth/web/manage-users#update_a_users_profile
-
-function updateUser(user, email, name, photo) {
-  console.log("updating", user, email, name, photo);
-  //   user.updateProfile({
-  //   displayName: name,
-  //   email: email,
-  //   photoURL: "https://example.com/jane-q-user/profile.jpg"
-  // }).then(function() {
-  //   console.log("success");
-  //   // Update successful, should update local state of authUser
-  // }).catch(function(error) {
-  //   console.log(error);
-  //   // An error happened.
-  // });
-}
-
-function deleteUser(user, apiService, history) {
-  confirmAlert({
-    message: "Are you sure you want to delete your account?",
-    buttons: [
-      {
-        label: "Yes",
-        onClick: () => {
-          console.log("deleting", user);
-          // delete user from backend, delete all their flows too
-          // delete user from firebase
-          // if successful, logout and return to home screen
-          apiService
-            .deleteUser(user.uid)
-            .then(user.delete()) // maybe this should go first because it has the chance to fail if user hasn't logged in recently
-            .then(() => {
-              console.log(
-                "delete complete, clear auth user and return to home screen. also need to handle relogin if sensitive"
-              );
-              history.push("/home");
-            });
-        },
-      },
-      {
-        label: "No",
-      },
-    ],
-  });
-}
-
 function Profile(props) {
+  const [showError, setShowError] = useState(false);
+  const [showUpdating, setShowUpdating] = useState(false);
+
+  function deleteUser(user, apiService, history) {
+    confirmAlert({
+      message: "Are you sure you want to delete your account?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            user
+              .delete()
+              .then(apiService.deleteUser(user.uid))
+              .then(() => {
+                history.push("/home");
+              })
+              .catch((error) => {
+                console.log(error);
+                if (error.code == "auth/requires-recent-login") {
+                  setShowError(true);
+                  setTimeout(function () {
+                    setShowError(false);
+                  }, 10000);
+                }
+              });
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  }
+
+  let form = useRef(null);
+  const onSubmit = (e) => {
+    setShowUpdating(true);
+    e.preventDefault();
+    const formData = new FormData(form.current);
+    props.apiService
+      .updateUser(formData, props.authUser.uid)
+      .then((updatedUser) => {
+        setShowUpdating(false);
+        props.authUser.updateProfile({
+          displayName: updatedUser.name,
+          email: updatedUser.email,
+          photoURL: updatedUser.profilePictureURL,
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   return props.authUser ? (
     <div>
       <div className={styles.header}>
@@ -65,45 +71,58 @@ function Profile(props) {
       </div>
 
       <div className={styles.profileBody}>
-        <ImageDropzone initialImageUrl={props.authUser.photoURL} />
+        <form onSubmit={onSubmit} ref={form}>
+          <ImageDropzone
+            imageId="image"
+            initialImageUrl={props.authUser.photoURL}
+          />
 
-        <div className={styles.formEntry}>
-          <label className={styles.label} htmlFor="email">
-            Email
-          </label>
-          <input
-            id="email"
-            defaultValue={props.authUser.email}
-            className={styles.emailText}
-          ></input>
-        </div>
+          <div className={styles.formEntry}>
+            <label className={styles.label} htmlFor="email">
+              Email
+            </label>
+            <input
+              id="email"
+              name="email"
+              defaultValue={props.authUser.email}
+              className={styles.emailText}
+            ></input>
+          </div>
 
-        <div className={styles.formEntry}>
-          <label className={styles.label} htmlFor="name">
-            Name
-          </label>
-          <input
-            id="name"
-            defaultValue={props.authUser.displayName}
-            className={styles.nameText}
-          ></input>
-        </div>
+          <div className={styles.formEntry}>
+            <label className={styles.label} htmlFor="name">
+              Name
+            </label>
+            <input
+              id="name"
+              name="name"
+              defaultValue={props.authUser.displayName}
+              className={styles.nameText}
+            ></input>
+          </div>
 
-        <div className={styles.formEntry}>
-          <Button variant="primary" onClick={() => updateUser()}>
-            Save changes
-          </Button>
-        </div>
-        <div className={styles.formEntry}>
-          <Button
-            variant="danger"
-            onClick={() =>
-              deleteUser(props.authUser, props.apiService, props.history)
-            }
-          >
-            Delete account
-          </Button>
-        </div>
+          <div className={styles.formEntry}>
+            <Button type="submit" variant="primary">
+              Save changes
+            </Button>
+            {showUpdating && <div>updating</div>}
+          </div>
+          <div className={styles.formEntry}>
+            <Button
+              variant="danger"
+              onClick={() =>
+                deleteUser(props.authUser, props.apiService, props.history)
+              }
+            >
+              Delete account
+            </Button>
+          </div>
+          {showError && (
+            <div>
+              Oops, to delete account you need to logout and login again.
+            </div>
+          )}
+        </form>
       </div>
     </div>
   ) : (
