@@ -72,7 +72,7 @@ export default function App() {
           <MyFlows apiService={apiService} authUser={authUser} />
         </Route>
         <Route path={routes.PROFILE}>
-          <Profile authUser={authUser} />
+          <Profile apiService={apiService} authUser={authUser} />
         </Route>
 
         {/* example routes and components */}

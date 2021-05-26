@@ -5,6 +5,7 @@ const httpCodes = require("../constants/httpCodes.js");
 const isAuthenticated = require("../middleware/isAuthenticated.js");
 
 const User = models.user;
+const Flow = models.flow;
 
 // update this to use save and such for validation with mongoose
 router.post("/register", (req, res) => {
@@ -46,6 +47,40 @@ router.get("/", isAuthenticated, (req, res) => {
       console.error(error);
       res.sendStatus(httpCodes.serverError);
     });
+});
+
+async function signup(email) {
+  let user = await usersSchema.findOne({ email: email });
+  if (user) throw "The user already exists";
+  let new_user = await new usersSchema({ email: email }).save();
+  let result = parse_result(new_user);
+  return codesSchema.findOneAndUpdate(
+    {
+      used: false,
+      user_id: true,
+    },
+    {
+      used: true,
+      user_id: mongoose.Types.ObjectId(result._id),
+    }
+  );
+}
+
+router.delete("/:firebaseId", async (req, res) => {
+  // Note: using mongoose hooks is another possible implementation
+  let user = await User.findOne({ firebase_id: req.params.firebaseId });
+  if (!user) {
+    res.sendStatus(httpCodes.notFound);
+  } else {
+    try {
+      await Flow.deleteMany({ userId: req.params.firebaseId });
+      await User.deleteOne({ firebase_id: req.params.firebaseId });
+      res.sendStatus(httpCodes.success);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(httpCodes.serverError);
+    }
+  }
 });
 
 module.exports = router;

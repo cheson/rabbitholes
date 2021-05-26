@@ -17,6 +17,10 @@ export class APIService {
     return this.GET("/1/users", undefined, true);
   }
 
+  deleteUser(userId) {
+    return this.DELETE(`/1/users/${userId}`);
+  }
+
   createFlow(formData) {
     return this.POST("/1/flows/create", formData, true);
   }

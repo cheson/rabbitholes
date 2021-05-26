@@ -4,6 +4,7 @@ import styles from "./Profile.module.css";
 import ResourceNotFound from "../ResourceNotFound";
 import ImageDropzone from "../ImageDropzone";
 import { Button } from "react-bootstrap";
+import { withRouter } from "react-router-dom";
 
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
@@ -26,19 +27,26 @@ function updateUser(user, email, name, photo) {
   // });
 }
 
-function deleteUser(user) {
+function deleteUser(user, apiService, history) {
   confirmAlert({
     message: "Are you sure you want to delete your account?",
     buttons: [
       {
         label: "Yes",
         onClick: () => {
-          // user.delete().then(function() {
-          //   // User deleted.
-          // }).catch(function(error) {
-          //   // An error happened.ß
-          // });
           console.log("deleting", user);
+          // delete user from backend, delete all their flows too
+          // delete user from firebase
+          // if successful, logout and return to home screen
+          apiService
+            .deleteUser(user.uid)
+            .then(user.delete()) // maybe this should go first because it has the chance to fail if user hasn't logged in recently
+            .then(() => {
+              console.log(
+                "delete complete, clear auth user and return to home screen. also need to handle relogin if sensitive"
+              );
+              history.push("/home");
+            });
         },
       },
       {
@@ -48,7 +56,7 @@ function deleteUser(user) {
   });
 }
 
-export default function Profile(props) {
+function Profile(props) {
   return props.authUser ? (
     <div>
       <div className={styles.header}>
@@ -87,7 +95,12 @@ export default function Profile(props) {
           </Button>
         </div>
         <div className={styles.formEntry}>
-          <Button variant="danger" onClick={() => deleteUser(props.authUser)}>
+          <Button
+            variant="danger"
+            onClick={() =>
+              deleteUser(props.authUser, props.apiService, props.history)
+            }
+          >
             Delete account
           </Button>
         </div>
@@ -100,4 +113,8 @@ export default function Profile(props) {
 
 Profile.propTypes = {
   authUser: PropTypes.object,
+  apiService: PropTypes.object,
+  history: PropTypes.object,
 };
+
+export default withRouter(Profile);

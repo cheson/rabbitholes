@@ -37,11 +37,6 @@ userSchema.statics.findByEmail = async function (email) {
   return user;
 };
 
-// TODO: use this pre hook eventually to delete all flows associated with user
-// userSchema.pre('remove', function(next) {
-//     this.model('Message').deleteMany({ user: this._id }, next);
-// });
-
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
