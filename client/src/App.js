@@ -30,6 +30,7 @@ export default function App() {
     const unregisterAuthObserver = initializeAuthObserver(firebase, (user) => {
       setAppReady(true);
       if (user) {
+        // Note: if we don't need the entire user object, can pare down:
         // setAuthUser({ displayName: user.displayName, email: user.email, photoURL: user.photoURL });
         setAuthUser(user);
       } else {

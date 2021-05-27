@@ -61,7 +61,6 @@ export default function MyFlows(props) {
       </div>
 
       <div className={styles.flowBlockContainer}>
-        {/* <EditFlowBlock key={flow._id} flow={flow} /> */}
         {myFlows.map((flow) => (
           <ViewFlowsBlock key={flow.id} flow={flow} deleteFn={deleteFlow} />
         ))}
