@@ -10,6 +10,7 @@ import ViewFlow from "./components/ViewFlow";
 import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
 import MyFlows from "./components/MyFlows";
+import styles from "./App.module.css";
 
 import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
 
@@ -42,48 +43,52 @@ export default function App() {
     <div></div>
   ) : (
     <Router>
-      <NavigationBar
-        authUser={authUser}
-        logoutButton={<LogoutButton firebase={firebase} />}
-      />
+      <div className={styles.entireBody}>
+        <NavigationBar
+          authUser={authUser}
+          logoutButton={<LogoutButton firebase={firebase} />}
+        />
 
-      <Switch>
-        <Route exact path={[routes.ROOT, routes.HOME]}>
-          <Home />
-        </Route>
-        <Route path={routes.LOGIN}>
-          <Login
-            authUser={authUser}
-            firebase={firebase}
-            apiService={apiService}
-          />
-        </Route>
-        <Route path={routes.CREATE_FLOW}>
-          <CreateFlowPage apiService={apiService} />
-        </Route>
-        <Route path={routes.VIEW_FLOWS}>
-          <ViewFlows apiService={apiService} />
-        </Route>
-        <Route path={routes.VIEW_FLOW}>
-          <ViewFlow apiService={apiService} />
-        </Route>
-        <Route path={routes.MY_FLOWS}>
-          <MyFlows apiService={apiService} authUser={authUser} />
-        </Route>
-        <Route path={routes.PROFILE}>
-          <Profile apiService={apiService} authUser={authUser} />
-        </Route>
-      </Switch>
+        <div className={styles.mainContent}>
+          <Switch>
+            <Route exact path={[routes.ROOT, routes.HOME]}>
+              <Home />
+            </Route>
+            <Route path={routes.LOGIN}>
+              <Login
+                authUser={authUser}
+                firebase={firebase}
+                apiService={apiService}
+              />
+            </Route>
+            <Route path={routes.CREATE_FLOW}>
+              <CreateFlowPage apiService={apiService} />
+            </Route>
+            <Route path={routes.VIEW_FLOWS}>
+              <ViewFlows apiService={apiService} />
+            </Route>
+            <Route path={routes.VIEW_FLOW}>
+              <ViewFlow apiService={apiService} />
+            </Route>
+            <Route path={routes.MY_FLOWS}>
+              <MyFlows apiService={apiService} authUser={authUser} />
+            </Route>
+            <Route path={routes.PROFILE}>
+              <Profile apiService={apiService} authUser={authUser} />
+            </Route>
+          </Switch>
+        </div>
 
-      <div
-        style={{
-          height: "80px",
-          textAlign: "center",
-          backgroundColor: "rgb(100, 100, 100)",
-        }}
-      >
-        footer placeholder / fix to bottom, add privacy policy? terms of use?
-        contact?
+        <div
+          style={{
+            height: "80px",
+            textAlign: "center",
+            backgroundColor: "rgb(100, 100, 100)",
+          }}
+        >
+          footer placeholder / fix to bottom, add privacy policy? terms of use?
+          contact?
+        </div>
       </div>
     </Router>
   );
