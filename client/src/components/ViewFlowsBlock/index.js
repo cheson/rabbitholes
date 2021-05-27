@@ -33,14 +33,15 @@ function ViewFlowsBlock(props) {
         <span>views: {flow.numViews || 1}</span>
       </div>
       {props.deleteFn && (
-        <Button
-          onClick={(e) => props.deleteFn(flow.id, e)}
-          style={{ marginBottom: "0px placeholder" }}
-          variant="danger"
-          block
-        >
-          Delete flow
-        </Button>
+        <div className={styles.deleteButton}>
+          <Button
+            onClick={(e) => props.deleteFn(flow.id, e)}
+            variant="danger"
+            block
+          >
+            Delete flow
+          </Button>
+        </div>
       )}
     </div>
   );

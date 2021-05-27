@@ -3,14 +3,14 @@ import PropTypes from "prop-types";
 import styles from "./Profile.module.css";
 import ResourceNotFound from "../ResourceNotFound";
 import ImageDropzone from "../ImageDropzone";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { withRouter } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
 function Profile(props) {
-  const [showError, setShowError] = useState(false);
-  const [showUpdating, setShowUpdating] = useState(false);
+  const [showDeleteAccountError, setShowDeleteAccountError] = useState(false);
+  const [showSavingChanges, setShowSavingChanges] = useState(false);
 
   function deleteUser(user, apiService, history) {
     confirmAlert({
@@ -28,9 +28,9 @@ function Profile(props) {
               .catch((error) => {
                 console.log(error);
                 if (error.code == "auth/requires-recent-login") {
-                  setShowError(true);
+                  setShowDeleteAccountError(true);
                   setTimeout(function () {
-                    setShowError(false);
+                    setShowDeleteAccountError(false);
                   }, 10000);
                 }
               });
@@ -45,13 +45,13 @@ function Profile(props) {
 
   let form = useRef(null);
   const onSubmit = (e) => {
-    setShowUpdating(true);
+    setShowSavingChanges(true);
     e.preventDefault();
     const formData = new FormData(form.current);
     props.apiService
       .updateUser(formData, props.authUser.uid)
       .then((updatedUser) => {
-        setShowUpdating(false);
+        setShowSavingChanges(false);
         props.authUser.updateProfile({
           displayName: updatedUser.name,
           email: updatedUser.email,
@@ -59,6 +59,7 @@ function Profile(props) {
         });
       })
       .catch(function (error) {
+        setShowSavingChanges(false);
         console.log(error);
       });
   };
@@ -70,60 +71,59 @@ function Profile(props) {
         <hr />
       </div>
 
-      <div className={styles.profileBody}>
-        <form onSubmit={onSubmit} ref={form}>
-          <ImageDropzone
-            imageId="image"
-            initialImageUrl={props.authUser.photoURL}
-          />
+      <form className={styles.profileBody} onSubmit={onSubmit} ref={form}>
+        <ImageDropzone
+          imageId="image"
+          initialImageUrl={props.authUser.photoURL}
+          style={{ width: "90%", height: "20vh" }}
+        />
 
-          <div className={styles.formEntry}>
-            <label className={styles.label} htmlFor="email">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              defaultValue={props.authUser.email}
-              className={styles.emailText}
-            ></input>
-          </div>
+        <div className={styles.formEntry}>
+          <label className={styles.label} htmlFor="email">
+            Email
+          </label>
+          <input
+            id="email"
+            name="email"
+            defaultValue={props.authUser.email}
+            className={styles.emailText}
+          ></input>
+        </div>
 
-          <div className={styles.formEntry}>
-            <label className={styles.label} htmlFor="name">
-              Name
-            </label>
-            <input
-              id="name"
-              name="name"
-              defaultValue={props.authUser.displayName}
-              className={styles.nameText}
-            ></input>
-          </div>
+        <div className={styles.formEntry}>
+          <label className={styles.label} htmlFor="name">
+            Name
+          </label>
+          <input
+            id="name"
+            name="name"
+            defaultValue={props.authUser.displayName}
+            className={styles.nameText}
+          ></input>
+        </div>
 
-          <div className={styles.formEntry}>
-            <Button type="submit" variant="primary">
-              Save changes
-            </Button>
-            {showUpdating && <div>updating</div>}
-          </div>
-          <div className={styles.formEntry}>
-            <Button
-              variant="danger"
-              onClick={() =>
-                deleteUser(props.authUser, props.apiService, props.history)
-              }
-            >
-              Delete account
-            </Button>
-          </div>
-          {showError && (
-            <div>
-              Oops, to delete account you need to logout and login again.
-            </div>
-          )}
-        </form>
-      </div>
+        <div className={styles.formEntry}>
+          <Button type="submit" variant="primary">
+            Save changes&nbsp;
+            {showSavingChanges && (
+              <Spinner animation="border" size="sm" variant="light" />
+            )}
+          </Button>
+        </div>
+        <div className={styles.formEntry}>
+          <Button
+            variant="danger"
+            onClick={() =>
+              deleteUser(props.authUser, props.apiService, props.history)
+            }
+          >
+            Delete account
+          </Button>
+        </div>
+        {showDeleteAccountError && (
+          <div>Oops, to delete account you need to logout and login again.</div>
+        )}
+      </form>
     </div>
   ) : (
     <ResourceNotFound message={`No user logged in.`} />
