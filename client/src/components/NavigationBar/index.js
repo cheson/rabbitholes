@@ -34,9 +34,6 @@ function NavigationBar(props) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link eventKey="About" as={Link} to={routes.ABOUT}>
-              About
-            </Nav.Link>
             <Nav.Link eventKey="createFlow" as={Link} to={routes.CREATE_FLOW}>
               Create Flow
             </Nav.Link>
