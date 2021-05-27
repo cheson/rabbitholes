@@ -2,18 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import styles from "./ViewFlowsBlock.module.css";
+import { Button } from "react-bootstrap";
 
 function ViewFlowsBlock(props) {
   const flow = props.flow;
-
-  // function getRandomInt(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min) + min);
-  // }
-  // const width = getRandomInt(1300, 1600);
-  // const height = getRandomInt(600, 900);
-  // const imgURL = `https://picsum.photos/${width}/${height}`;
 
   const history = useHistory();
   function onClick() {
@@ -40,12 +32,24 @@ function ViewFlowsBlock(props) {
         </span>
         <span>views: {flow.numViews || 1}</span>
       </div>
+      {props.deleteFn && (
+        <div className={styles.deleteButton}>
+          <Button
+            onClick={(e) => props.deleteFn(flow.id, e)}
+            variant="danger"
+            block
+          >
+            Delete flow
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
 
 ViewFlowsBlock.propTypes = {
   flow: PropTypes.object,
+  deleteFn: PropTypes.func,
 };
 
 export default ViewFlowsBlock;

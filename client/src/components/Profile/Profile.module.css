@@ -1,0 +1,21 @@
+.header {
+  width: 90%;
+  margin-top: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profileBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0;
+}
+
+.formEntry {
+  margin-top: 15px;
+}

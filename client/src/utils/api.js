@@ -14,7 +14,16 @@ export class APIService {
   }
 
   listUsers() {
-    return this.GET("/1/users", true);
+    return this.GET("/1/users", undefined, true);
+  }
+
+  updateUser(formData, userId) {
+    console.log(formData, userId);
+    return this.PUT(`/1/users/${userId}`, formData, true);
+  }
+
+  deleteUser(userId) {
+    return this.DELETE(`/1/users/${userId}`);
   }
 
   createFlow(formData) {
@@ -25,8 +34,13 @@ export class APIService {
     return this.GET(`/1/flows/${flowId}`);
   }
 
-  viewFlows() {
-    return this.GET("/1/flows");
+  viewFlows(searchParams = {}) {
+    // text or uid
+    return this.GET("/1/flows", searchParams);
+  }
+
+  deleteFlow(flowId) {
+    return this.DELETE(`/1/flows/${flowId}`);
   }
 
   /* ----------- HELPER FUNCTIONS ----------- */
@@ -55,7 +69,14 @@ export class APIService {
     });
   }
 
-  async GET(url, requireAuth = false) {
+  formQueryString(obj) {
+    return Object.keys(obj)
+      .map((key) => key + "=" + obj[key])
+      .join("&");
+  }
+
+  async GET(urlBase, searchParamsObj = {}, requireAuth = false) {
+    let url = urlBase + "?" + this.formQueryString(searchParamsObj);
     let requestOptions = {
       method: "GET",
     };
@@ -81,21 +102,25 @@ export class APIService {
     return fetch(url, requestOptions).then(this.handleResponse);
   }
 
-  // Currently unused HTTP calls
+  async PUT(url, body, isFormData = false) {
+    const idToken = await this.getFirebaseIdToken();
+    let requestOptions = {
+      method: "PUT",
+      headers: { authorization: idToken },
+    };
+    if (isFormData) {
+      requestOptions.body = body;
+    } else {
+      requestOptions.body = JSON.stringify(body);
+      requestOptions.headers["Content-Type"] = "application/json";
+    }
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
 
-  // async PUT(url, body) {
-  //   const requestOptions = {
-  //       method: 'PUT',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify(body)
-  //   };
-  //   return fetch(url, requestOptions).then(handleResponse);
-  // }
-
-  // async DELETE(url) {
-  //   const requestOptions = {
-  //       method: 'DELETE'
-  //   };
-  //   return fetch(url, requestOptions).then(handleResponse);
-  // }
+  async DELETE(url) {
+    const requestOptions = {
+      method: "DELETE",
+    };
+    return fetch(url, requestOptions).then(this.handleResponse);
+  }
 }

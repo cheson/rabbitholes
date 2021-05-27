@@ -13,7 +13,15 @@ const upload = multer({ dest: "uploads/", limits: limits });
 const Flow = models.flow;
 
 router.get("/", (req, res) => {
-  Flow.findAll(true)
+  console.log(req.query);
+  // TODO: take search string and use for text based search
+  let resultPromise;
+  if (Object.keys(req.query).length === 0) {
+    resultPromise = Flow.findAll(true);
+  } else {
+    resultPromise = Flow.findByUserId(req.query.userId);
+  }
+  resultPromise
     .then((result) => {
       res.json(result);
     })
@@ -34,16 +42,31 @@ router.get("/:flowId", (req, res) => {
     });
 });
 
-function findImageFromFiles(files, id) {
-  return files.find((file) => {
-    return file.fieldname == id;
-  });
-}
+router.delete("/:flowId", (req, res) => {
+  Flow.findByIdAndDelete(req.params.flowId)
+    .then((result) => {
+      if (result) {
+        res.sendStatus(httpCodes.success);
+      } else {
+        res.sendStatus(httpCodes.notFound);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
+});
 
 // TODO: documentation comment with expected req shape?
 router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   console.log("BODY", req.body);
   console.log("FILES", req.files);
+
+  function findImageFromFiles(files, id) {
+    return files.find((file) => {
+      return file.fieldname == id;
+    });
+  }
 
   let flowInfo = {};
   let flowBlocks = {};

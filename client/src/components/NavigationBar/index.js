@@ -43,9 +43,16 @@ function NavigationBar(props) {
             <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
               View Flows
             </Nav.Link>
-            <Nav.Link eventKey="profile" as={Link} to={routes.PROFILE}>
-              Profile
-            </Nav.Link>
+            {props.authUser && (
+              <Nav.Link eventKey="profile" as={Link} to={routes.PROFILE}>
+                Profile
+              </Nav.Link>
+            )}
+            {props.authUser && (
+              <Nav.Link eventKey="myFlows" as={Link} to={routes.MY_FLOWS}>
+                My Flows
+              </Nav.Link>
+            )}
             <Nav.Link eventKey="login" as={Link} to={routes.LOGIN}>
               {props.authUser ? (
                 props.logoutButton
