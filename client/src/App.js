@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import List from "./components/List";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import NavigationBar from "./components/NavigationBar";
-import About from "./components/About";
 import LogoutButton from "./components/LogoutButton";
 import CreateFlowPage from "./components/CreateFlowPage";
 import ViewFlow from "./components/ViewFlow";
 import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
 import MyFlows from "./components/MyFlows";
+import Footer from "./components/Footer";
+import PrivacyPolicy from "./components/PrivacyPolicy";
+import styles from "./App.module.css";
 
 import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
 
@@ -44,56 +45,46 @@ export default function App() {
     <div></div>
   ) : (
     <Router>
-      <NavigationBar
-        authUser={authUser}
-        logoutButton={<LogoutButton firebase={firebase} />}
-      />
+      <div className={styles.entireBody}>
+        <NavigationBar
+          authUser={authUser}
+          logoutButton={<LogoutButton firebase={firebase} />}
+        />
 
-      <Switch>
-        <Route exact path={[routes.ROOT, routes.HOME]}>
-          <Home />
-        </Route>
-        <Route path={routes.LOGIN}>
-          <Login
-            authUser={authUser}
-            firebase={firebase}
-            apiService={apiService}
-          />
-        </Route>
-        <Route path={routes.CREATE_FLOW}>
-          <CreateFlowPage apiService={apiService} />
-        </Route>
-        <Route path={routes.VIEW_FLOWS}>
-          <ViewFlows apiService={apiService} />
-        </Route>
-        <Route path={routes.VIEW_FLOW}>
-          <ViewFlow apiService={apiService} />
-        </Route>
-        <Route path={routes.MY_FLOWS}>
-          <MyFlows apiService={apiService} authUser={authUser} />
-        </Route>
-        <Route path={routes.PROFILE}>
-          <Profile apiService={apiService} authUser={authUser} />
-        </Route>
+        <div className={styles.mainContent}>
+          <Switch>
+            <Route exact path={[routes.ROOT, routes.HOME]}>
+              <Home />
+            </Route>
+            <Route path={routes.LOGIN}>
+              <Login
+                authUser={authUser}
+                firebase={firebase}
+                apiService={apiService}
+              />
+            </Route>
+            <Route path={routes.CREATE_FLOW}>
+              <CreateFlowPage apiService={apiService} />
+            </Route>
+            <Route path={routes.VIEW_FLOWS}>
+              <ViewFlows apiService={apiService} />
+            </Route>
+            <Route path={routes.VIEW_FLOW}>
+              <ViewFlow apiService={apiService} />
+            </Route>
+            <Route path={routes.MY_FLOWS}>
+              <MyFlows apiService={apiService} authUser={authUser} />
+            </Route>
+            <Route path={routes.PROFILE}>
+              <Profile apiService={apiService} authUser={authUser} />
+            </Route>
+            <Route path={routes.PRIVACY_POLICY}>
+              <PrivacyPolicy />
+            </Route>
+          </Switch>
+        </div>
 
-        {/* example routes and components */}
-        <Route path={routes.ABOUT}>
-          <About authUser={authUser} firebase={firebase} />
-        </Route>
-        <Route path="/list">
-          <List apiService={apiService} />
-        </Route>
-      </Switch>
-
-      <div
-        style={{
-          height: "80px",
-          textAlign: "center",
-          backgroundColor: "rgb(100, 100, 100)",
-        }}
-      >
-        footer placeholder / fix to bottom, add privacy policy? terms of use?
-        contact?
+        <Footer />
       </div>
     </Router>
   );
