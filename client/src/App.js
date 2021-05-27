@@ -10,6 +10,7 @@ import ViewFlow from "./components/ViewFlow";
 import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
 import MyFlows from "./components/MyFlows";
+import Footer from "./components/Footer";
 import styles from "./App.module.css";
 
 import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
@@ -79,16 +80,7 @@ export default function App() {
           </Switch>
         </div>
 
-        <div
-          style={{
-            height: "80px",
-            textAlign: "center",
-            backgroundColor: "rgb(100, 100, 100)",
-          }}
-        >
-          footer placeholder / fix to bottom, add privacy policy? terms of use?
-          contact?
-        </div>
+        <Footer />
       </div>
     </Router>
   );
