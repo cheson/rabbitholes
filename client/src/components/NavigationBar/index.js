@@ -19,7 +19,7 @@ function NavigationBar(props) {
       >
         <Navbar.Brand>
           {/* TODO: investigate bug - need to close navbar after select if moving to different pages */}
-          <Link to="/">
+          <Link to={routes.ROOT}>
             <img src={rabbitIcon} className={styles.icon}></img>
           </Link>
         </Navbar.Brand>

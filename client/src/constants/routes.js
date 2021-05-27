@@ -6,3 +6,4 @@ export const VIEW_FLOWS = "/viewFlows";
 export const VIEW_FLOW = "/viewFlow/:flowId";
 export const PROFILE = "/profile";
 export const MY_FLOWS = "/myFlows";
+export const PRIVACY_POLICY = "/privacyPolicy";

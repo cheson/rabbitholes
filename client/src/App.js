@@ -11,6 +11,7 @@ import ViewFlows from "./components/ViewFlows";
 import Profile from "./components/Profile";
 import MyFlows from "./components/MyFlows";
 import Footer from "./components/Footer";
+import PrivacyPolicy from "./components/PrivacyPolicy";
 import styles from "./App.module.css";
 
 import { initializeFirebase, initializeAuthObserver } from "./utils/firebase";
@@ -76,6 +77,9 @@ export default function App() {
             </Route>
             <Route path={routes.PROFILE}>
               <Profile apiService={apiService} authUser={authUser} />
+            </Route>
+            <Route path={routes.PRIVACY_POLICY}>
+              <PrivacyPolicy />
             </Route>
           </Switch>
         </div>
