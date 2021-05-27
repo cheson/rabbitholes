@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import List from "./components/List";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import NavigationBar from "./components/NavigationBar";
-import About from "./components/About";
 import LogoutButton from "./components/LogoutButton";
 import CreateFlowPage from "./components/CreateFlowPage";
 import ViewFlow from "./components/ViewFlow";
@@ -74,14 +72,6 @@ export default function App() {
         </Route>
         <Route path={routes.PROFILE}>
           <Profile apiService={apiService} authUser={authUser} />
-        </Route>
-
-        {/* example routes and components */}
-        <Route path={routes.ABOUT}>
-          <About authUser={authUser} firebase={firebase} />
-        </Route>
-        <Route path="/list">
-          <List apiService={apiService} />
         </Route>
       </Switch>
 
