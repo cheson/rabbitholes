@@ -6,11 +6,14 @@ import { PRIVACY_POLICY } from "../../constants/routes";
 export default function Footer() {
   return (
     <div className={styles.footer}>
-      footer placeholder / fix to bottom, add privacy policy? terms of use?
-      contact? site improvements.
-      <Link to={PRIVACY_POLICY}>privacy policy</Link>
+      <div className={styles.copyright}>© 2021 rabbitholes</div>
+      <div className={styles.content}>
+        flowwebsitedev@gmail.com
+        <Link to={PRIVACY_POLICY} style={{ color: "black" }}>
+          privacy policy
+        </Link>
+        🐰
+      </div>
     </div>
   );
 }
-
-// https://www.freeprivacypolicy.com/live/48077487-3e10-4a68-be1b-5019afc0fdd6
