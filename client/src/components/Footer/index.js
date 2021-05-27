@@ -8,7 +8,7 @@ export default function Footer() {
     <div className={styles.footer}>
       <div className={styles.copyright}>© 2021 rabbitholes</div>
       <div className={styles.content}>
-        flowwebsitedev@gmail.com
+        flowwebsitedev@gmail.com |&nbsp;
         <Link to={PRIVACY_POLICY} style={{ color: "black" }}>
           privacy policy
         </Link>
