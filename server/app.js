@@ -19,12 +19,18 @@ function initializeFirebaseAdmin(app) {
 
 models.connectDb().then(async () => {
   initializeFirebaseAdmin(app);
-  app.listen(9000, () => {
-    console.log("Example app listening on port 9000");
+  const port = process.env.PORT || 9000;
+  app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`);
   });
+}).catch(function(err) {
+  console.log(err);
 });
 
-app.use(express.static("../client/build"));
+const isProduction = (process.env.NODE_ENV || "dev").toLowerCase() == "production";
+const buildDirectory = isProduction ? "./build" : "../client/build";
+
+app.use(express.static(buildDirectory));
 app.use(express.json());
 app.use(setCurrentFirebaseUser);
 
@@ -32,5 +38,5 @@ app.use("/1/users", usersRoutes);
 app.use("/1/flows", flowsRoutes);
 
 app.get("*", function (req, res) {
-  res.sendFile("../client/build/index.html");
+  res.sendFile(buildDirectory + "/index.html");
 });
