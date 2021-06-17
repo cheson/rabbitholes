@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  nginx:
+    depends_on:
+      - app
+    image: flowwebsitedev/app:rabbitholes-nginx
+    ports:
+      - 80:80
+      - 443:443
+    # volumes:
+    #   - <path/to/your/config>:/etc/nginx
+    #   - <path/to/your/certs>:/etc/ssl/private
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 2
+        window: 15s
+  app:
+    image: flowwebsitedev/app:0.1
+    volumes:
+      - ~/secrets/:/secrets/:rw
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 2
+        window: 15s
+    env_file: .env
+    expose: # no-op, just informational
+      - "8888"

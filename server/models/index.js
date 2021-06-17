@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
 const User = require("./user");
 const Flow = require("./flow");
-
-dotenv.config({ path: "./dev_secrets/.env" });
 
 const connectDb = () => {
   return mongoose.connect(
