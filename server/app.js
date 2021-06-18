@@ -6,7 +6,7 @@ const admin = require("firebase-admin");
 const setCurrentFirebaseUser = require("./middleware/setCurrentFirebaseUser.js");
 
 const isProduction = (process.env.NODE_ENV || "dev").toLowerCase() == "production";
-const buildDirectory = isProduction ? "./build" : "../client/build";
+const buildDirectory = isProduction ? __dirname + "/build" : "../client/build";
 if (!isProduction) {
   const dotenv = require("dotenv");
   dotenv.config({ path: "./dev_secrets/.env" });
