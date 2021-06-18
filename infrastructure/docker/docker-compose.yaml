@@ -8,9 +8,9 @@ services:
     ports:
       - 80:80
       - 443:443
-    # volumes:
-    #   - <path/to/your/config>:/etc/nginx
-    #   - <path/to/your/certs>:/etc/ssl/private
+    volumes:
+      - /etc/letsencrypt/live/rabbitholes.ooo/fullchain.pem:/etc/letsencrypt/live/rabbitholes.ooo/fullchain.pem
+      - /etc/letsencrypt/live/rabbitholes.ooo/privkey.pem:/etc/letsencrypt/live/rabbitholes.ooo/privkey.pem
     deploy:
       restart_policy:
         condition: on-failure
