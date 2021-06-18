@@ -1,0 +1,51 @@
+{
+    "family": "flowWebsite",
+    "taskRoleArn": "", //IAM role for this container, may need the role to access S3
+    "executionRoleArn": "",
+    "networkMode": "host",
+    "containerDefinitions": [
+        {
+            "name": "flowWebsiteApp",
+            "image": "flowwebsitedev/app:latest",
+            "repositoryCredentials": {
+                "credentialsParameter": ""
+            },
+            "portMappings": [
+                {
+                    "containerPort": 8000,
+                    "hostPort": 0,
+                    "protocol": "udp"
+                }
+            ],
+            "essential": true,
+            "entryPoint": [
+                ""
+            ],
+            "command": [
+                ""
+            ],
+            "environment": [
+                {
+                    "name": "key1",
+                    "value": "value2"
+                },
+                {
+                    "name": "key2",
+                    "value": "value2"
+                }
+            ],
+            "environmentFiles": [
+                {
+                    "value": "",
+                    "type": "s3"
+                }
+            ],
+            "secrets": [
+                {
+                    "name": "db password to be set as an env var, but i think we can configure the container to pull its own secrets bc iam stuff",
+                    "valueFrom": "arn of secrets manager secret"
+                }
+            ]
+        }
+    ]
+}
