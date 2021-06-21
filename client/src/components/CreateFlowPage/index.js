@@ -7,7 +7,7 @@ import { Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
 import { withRouter } from "react-router-dom";
-import { MY_FLOWS } from "../../constants/routes";
+import { VIEW_FLOW } from "../../constants/routes";
 import styles from "./CreateFlowPage.module.css";
 
 function CreateFlowPage(props) {
@@ -46,8 +46,10 @@ function CreateFlowPage(props) {
     e.preventDefault();
     const formData = new FormData(form.current);
     props.apiService.createFlow(formData).then(
-      () => {
-        props.history.push(MY_FLOWS);
+      (result) => {
+        props.history.push(
+          VIEW_FLOW.substr(0, VIEW_FLOW.indexOf(":")) + result.flowId
+        );
       },
       (err) => {
         console.log(err);
