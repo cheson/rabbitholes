@@ -9,7 +9,7 @@ var firebaseConfig = {
   storageBucket: "rabbitholes-c3d07.appspot.com",
   messagingSenderId: "1096051919781",
   appId: "1:1096051919781:web:0e913570cdafe5e53c364c",
-  measurementId: "G-KXDLYB219F"
+  measurementId: "G-KXDLYB219F",
 };
 
 export function initializeFirebase() {

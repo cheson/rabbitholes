@@ -108,10 +108,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   flow
     .save()
     .then((saved_flow) => {
-      console.log("SAVED FLOW", saved_flow);
-      res
-        .status(httpCodes.success)
-        .json({ example: "this would be the created flow" });
+      res.status(httpCodes.success).json({ flowId: saved_flow.id });
     })
     .catch((error) => {
       console.log(error);
