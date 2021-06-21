@@ -3,13 +3,13 @@ import firebase from "firebase";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 var firebaseConfig = {
-  apiKey: "AIzaSyCekVCfjfPPB21WgR-9wL8k78KpmgOzS3s",
-  authDomain: "flow-website-2f43f.firebaseapp.com",
-  projectId: "flow-website-2f43f",
-  storageBucket: "flow-website-2f43f.appspot.com",
-  messagingSenderId: "227156325482",
-  appId: "1:227156325482:web:9e7730c2400062059ec613",
-  measurementId: "G-Y6B1Q541FC",
+  apiKey: "AIzaSyDgOZrGaRgHIOJdKoCTBYigDknVIQ-Tnak",
+  authDomain: "rabbitholes-c3d07.firebaseapp.com",
+  projectId: "rabbitholes-c3d07",
+  storageBucket: "rabbitholes-c3d07.appspot.com",
+  messagingSenderId: "1096051919781",
+  appId: "1:1096051919781:web:0e913570cdafe5e53c364c",
+  measurementId: "G-KXDLYB219F"
 };
 
 export function initializeFirebase() {
