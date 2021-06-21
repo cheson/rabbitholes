@@ -43,6 +43,7 @@ router.get("/:flowId", (req, res) => {
 });
 
 router.delete("/:flowId", (req, res) => {
+  // TODO: delete S3 resources as well for any images stored there
   Flow.findByIdAndDelete(req.params.flowId)
     .then((result) => {
       if (result) {

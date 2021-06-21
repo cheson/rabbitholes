@@ -21,6 +21,7 @@ export default function ViewFlows(props) {
     TITLE: "TITLE",
   };
 
+  // TODO: double check this logic for correctness + this is a good candidate for jest testing
   const sortFunctions = {
     VIEWS_ASCENDING: (a, b) => {
       return (a.numViews || 0) - (b.numViews || 0);

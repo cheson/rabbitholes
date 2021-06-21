@@ -4,7 +4,7 @@ const Flow = require("./flow");
 
 const connectDb = () => {
   return mongoose.connect(
-    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@claustrophobiccluster.8051k.mongodb.net/flow-website?retryWrites=true&w=majority`,
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PW}@${process.env.MONGO_DB_CLUSTER_URL}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useFindAndModify: false }
   );
 };

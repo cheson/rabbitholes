@@ -1,16 +1,16 @@
-const express = require("express");
-const usersRoutes = require("./routes/users.js");
-const flowsRoutes = require("./routes/flows.js");
-const models = require("./models");
-const admin = require("firebase-admin");
-const setCurrentFirebaseUser = require("./middleware/setCurrentFirebaseUser.js");
-
 const isProduction = (process.env.NODE_ENV || "dev").toLowerCase() == "production";
 const buildDirectory = isProduction ? __dirname + "/build" : "../client/build";
 if (!isProduction) {
   const dotenv = require("dotenv");
   dotenv.config({ path: "./dev_secrets/.env" });
 }
+
+const express = require("express");
+const usersRoutes = require("./routes/users.js");
+const flowsRoutes = require("./routes/flows.js");
+const models = require("./models");
+const admin = require("firebase-admin");
+const setCurrentFirebaseUser = require("./middleware/setCurrentFirebaseUser.js");
 
 const app = express();
 
