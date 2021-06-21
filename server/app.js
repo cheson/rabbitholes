@@ -1,4 +1,5 @@
-const isProduction = (process.env.NODE_ENV || "dev").toLowerCase() == "production";
+const isProduction =
+  (process.env.NODE_ENV || "dev").toLowerCase() == "production";
 const buildDirectory = isProduction ? __dirname + "/build" : "../client/build";
 if (!isProduction) {
   const dotenv = require("dotenv");
@@ -22,15 +23,18 @@ function initializeFirebaseAdmin(app) {
   app.locals.firebaseAdmin = admin;
 }
 
-models.connectDb().then(async () => {
-  initializeFirebaseAdmin(app);
-  const port = process.env.PORT || 8888;
-  app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+models
+  .connectDb()
+  .then(async () => {
+    initializeFirebaseAdmin(app);
+    const port = process.env.PORT || 8888;
+    app.listen(port, () => {
+      console.log(`Example app listening on port ${port}`);
+    });
+  })
+  .catch(function (err) {
+    console.log(err);
   });
-}).catch(function(err) {
-  console.log(err);
-});
 
 app.use(express.static(buildDirectory));
 app.use(express.json());

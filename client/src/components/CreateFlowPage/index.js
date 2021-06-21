@@ -6,10 +6,12 @@ import { nanoid } from "nanoid";
 import { Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
+import { withRouter } from "react-router-dom";
+import { MY_FLOWS } from "../../constants/routes";
 import styles from "./CreateFlowPage.module.css";
 
-export default function CreateFlowPage(props) {
-  // what should show up on first creation? default block with helpful suggestions + UI to add new block
+function CreateFlowPage(props) {
+  // TODO: what should show up on first creation? default block with helpful suggestions + UI to add new block
   const [blocks, setBlocks] = useState([
     { url: "url1", image: "image1", description: "description1", id: nanoid() },
   ]);
@@ -43,8 +45,14 @@ export default function CreateFlowPage(props) {
   const onSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(form.current);
-    console.log(Array.from(formData.entries()));
-    props.apiService.createFlow(formData);
+    props.apiService.createFlow(formData).then(
+      () => {
+        props.history.push(MY_FLOWS);
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
   };
 
   function onDragEnd(result) {
@@ -137,6 +145,9 @@ export default function CreateFlowPage(props) {
   );
 }
 
+export default withRouter(CreateFlowPage);
+
 CreateFlowPage.propTypes = {
+  history: PropTypes.object,
   apiService: PropTypes.object,
 };
