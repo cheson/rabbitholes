@@ -1,0 +1,26 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 93vh;
+  background-color: rgb(174,231,229);
+}
+
+.loginBox {
+  width: 100%;
+  position: relative;
+}
+
+.backgroundImage {
+  width: 100%;
+}
+
+/* TODO: this needs some media breakpoints for column oriented screens */
+.loginOptions {
+  position: absolute;
+  left: 20%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+
