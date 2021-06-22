@@ -13,7 +13,7 @@ function useQuery() {
 
 export default function ViewFlows(props) {
   const searchQuery = useQuery().get("search");
-  console.log(searchQuery); // Can be used in the future for search keywords
+  console.log("SEARCH QUERY", searchQuery); // Can be used in the future for search keywords
 
   const sortTypes = {
     VIEWS_ASCENDING: "VIEWS_ASCENDING",
