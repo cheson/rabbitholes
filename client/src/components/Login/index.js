@@ -37,13 +37,13 @@ function Login(props) {
   if (!props.authUser) {
     return (
       <div className={styles.loginContainer}>
-
-
         <div className={styles.loginBox}>
           <img src={bunnyEars} className={styles.backgroundImage}></img>
           <div className={styles.loginOptions}>
             <h3>Welcome to rabbitholes!</h3>
-            <div>Sign in to create flows and keep track of your favorite content.</div>
+            <div>
+              Sign in to create flows and keep track of your favorite content.
+            </div>
             <StyledFirebaseAuth
               uiConfig={uiConfig}
               firebaseAuth={props.firebase.auth()}
@@ -51,15 +51,9 @@ function Login(props) {
           </div>
         </div>
       </div>
-
-
     );
   }
-  return (
-    <div>
-      {props.history.push("/home")}
-    </div>
-  );
+  return <div>{props.history.push("/home")}</div>;
 }
 
 Login.propTypes = {
