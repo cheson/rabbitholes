@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   height: 93vh;
-  background-color: rgb(174,231,229);
+  background-color: rgb(174, 231, 229);
 }
 
 .loginBox {
@@ -22,5 +22,3 @@
   top: 50%;
   transform: translateY(-50%);
 }
-
-

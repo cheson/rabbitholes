@@ -6,8 +6,8 @@ import { nanoid } from "nanoid";
 import { Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
-import { withRouter } from "react-router-dom";
-import { VIEW_FLOW } from "../../constants/routes";
+import { withRouter, Prompt } from "react-router-dom";
+import { VIEW_FLOW_PREFIX } from "../../constants/routes";
 import styles from "./CreateFlowPage.module.css";
 
 function CreateFlowPage(props) {
@@ -47,9 +47,7 @@ function CreateFlowPage(props) {
     const formData = new FormData(form.current);
     props.apiService.createFlow(formData).then(
       (result) => {
-        props.history.push(
-          VIEW_FLOW.substr(0, VIEW_FLOW.indexOf(":")) + result.flowId
-        );
+        props.history.push(VIEW_FLOW_PREFIX + result.flowId);
       },
       (err) => {
         console.log(err);
@@ -74,6 +72,14 @@ function CreateFlowPage(props) {
 
   return (
     <div>
+      <Prompt
+        message={(location) => {
+          return location.pathname.startsWith(VIEW_FLOW_PREFIX)
+            ? true
+            : `Are you sure you want to leave? Your progress will be lost.`;
+        }}
+      />
+
       <form onSubmit={onSubmit} ref={form}>
         <div className={styles.header}>
           <h3> Create Flow </h3>
