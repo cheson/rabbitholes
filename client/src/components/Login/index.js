@@ -2,7 +2,9 @@ import React from "react";
 import firebase from "firebase";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import bunnyEars from "../../assets/bunny_ears.jpeg";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
+import styles from "./Login.module.css";
 
 function Login(props) {
   // Configure FirebaseUI.
@@ -29,34 +31,33 @@ function Login(props) {
     signInOptions: [
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID, // TODO: integrate facebook in firebase so this actually works
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     ],
   };
-
   if (!props.authUser) {
     return (
-      <div>
-        <h1>My App</h1>
-        <p>Please sign-in:</p>
-        <StyledFirebaseAuth
-          uiConfig={uiConfig}
-          firebaseAuth={props.firebase.auth()}
-        />
+      <div className={styles.loginContainer}>
+
+
+        <div className={styles.loginBox}>
+          <img src={bunnyEars} className={styles.backgroundImage}></img>
+          <div className={styles.loginOptions}>
+            <h3>Welcome to rabbitholes!</h3>
+            <div>Sign in to create flows and keep track of your favorite content.</div>
+            <StyledFirebaseAuth
+              uiConfig={uiConfig}
+              firebaseAuth={props.firebase.auth()}
+            />
+          </div>
+        </div>
       </div>
+
+
     );
   }
   return (
     <div>
-      <h1>My App</h1>
-      <p>Welcome {props.authUser.displayName}! You are now signed-in!</p>
-      <a
-        onClick={() => {
-          console.log("signing out");
-          props.firebase.auth().signOut();
-        }}
-      >
-        Sign-out
-      </a>
+      {props.history.push("/home")}
     </div>
   );
 }
