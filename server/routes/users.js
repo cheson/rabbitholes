@@ -78,7 +78,7 @@ router.put("/:userId", isAuthenticated, upload.any(), async (req, res) => {
   }
 });
 
-router.delete("/:userId", async (req, res) => {
+router.delete("/:userId", isAuthenticated, async (req, res) => {
   // Note: using mongoose hooks is another possible implementation
   let user = await User.findOne({ firebase_id: req.params.userId });
   if (!user) {

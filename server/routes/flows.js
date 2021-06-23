@@ -46,8 +46,9 @@ router.get("/:flowId", (req, res) => {
     });
 });
 
-router.delete("/:flowId", (req, res) => {
+router.delete("/:flowId", isAuthenticated, (req, res) => {
   // TODO: delete S3 resources as well for any images stored there
+  // TODO: only allow users to delete their own flows
   Flow.findByIdAndDelete(req.params.flowId)
     .then((result) => {
       if (result) {
