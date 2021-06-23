@@ -15,7 +15,6 @@ export default function MyFlows(props) {
     if (props.authUser) {
       props.apiService
         .viewFlows({
-          searchString: "testing the search string",
           userId: props.authUser.uid,
         })
         .then((myFlows) => setMyFlows(myFlows));

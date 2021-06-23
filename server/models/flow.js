@@ -26,6 +26,8 @@ const flowSchema = new Schema(
   { timestamps: true }
 );
 
+flowSchema.index({ "$**": "text" });
+
 // https://mongoosejs.com/docs/populate.html#populate-virtuals
 flowSchema.virtual("user", {
   ref: "User",
@@ -70,6 +72,15 @@ flowSchema.statics.findByUserId = async function (userId) {
   const flows = await this.find({
     userId: userId,
   });
+
+  return flows;
+};
+
+flowSchema.statics.findBySearchQuery = async function (searchQuery) {
+  const flows = await this.find(
+    { $text: { $search: searchQuery } },
+    { score: { $meta: "textScore" } }
+  ).sort({ score: { $meta: "textScore" } });
 
   return flows;
 };

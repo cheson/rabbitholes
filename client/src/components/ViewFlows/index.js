@@ -13,7 +13,6 @@ function useQuery() {
 
 export default function ViewFlows(props) {
   const searchQuery = useQuery().get("search");
-  console.log(searchQuery); // Can be used in the future for search keywords
 
   const sortTypes = {
     VIEWS_ASCENDING: "VIEWS_ASCENDING",
@@ -43,9 +42,9 @@ export default function ViewFlows(props) {
   // TODO: do we need a loaded boolean for all pages that load from api?
   useEffect(() => {
     props.apiService
-      .viewFlows()
+      .viewFlows(searchQuery ? { search: searchQuery } : {})
       .then((newFlows) => setSortedFlows(sortTypes.VIEWS_DESCENDING, newFlows));
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div>

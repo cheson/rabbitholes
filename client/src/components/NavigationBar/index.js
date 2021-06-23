@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Nav, Navbar, Form, FormControl } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import * as routes from "../../constants/routes";
 import styles from "./NavigationBar.module.css";
@@ -8,6 +8,13 @@ import rabbitIcon from "../../assets/rabbit.png";
 import { Search } from "react-bootstrap-icons";
 
 function NavigationBar(props) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  function searchFlows() {
+    const urlSearchParams = searchQuery ? "?search=" + searchQuery : "";
+    props.history.push("/viewFlows" + urlSearchParams);
+  }
+
   return (
     <div id="navbarId">
       <Navbar
@@ -23,12 +30,22 @@ function NavigationBar(props) {
             <img src={rabbitIcon} className={styles.icon}></img>
           </Link>
         </Navbar.Brand>
-        <Form className={styles.form} inline>
-          <FormControl type="text" placeholder="" className="mr-sm-2" />
+        <Form
+          className={styles.form}
+          onSubmit={(e) => {
+            e.preventDefault();
+            searchFlows();
+          }}
+          inline
+        >
+          <FormControl
+            type="text"
+            placeholder=""
+            className="mr-sm-2"
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           <Button variant="link">
-            <Search
-            // onClick={() => props.removeBlock(block.id)}
-            />
+            <Search onClick={searchFlows} />
           </Button>
         </Form>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -67,6 +84,7 @@ function NavigationBar(props) {
 NavigationBar.propTypes = {
   authUser: PropTypes.object,
   logoutButton: PropTypes.object,
+  history: PropTypes.object,
 };
 
-export default NavigationBar;
+export default withRouter(NavigationBar);
