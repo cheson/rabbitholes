@@ -40,42 +40,55 @@ function NavigationBar(props) {
         >
           <FormControl
             type="text"
-            placeholder=""
             className="mr-sm-2"
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Button variant="link">
-            <Search onClick={searchFlows} />
+          <Button variant="link" onClick={searchFlows}>
+            <Search />
           </Button>
         </Form>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="mr-auto">
-            <Nav.Link eventKey="createFlow" as={Link} to={routes.CREATE_FLOW}>
-              Create Flow
-            </Nav.Link>
-            <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
-              View Flows
-            </Nav.Link>
-            {props.authUser && (
-              <Nav.Link eventKey="profile" as={Link} to={routes.PROFILE}>
-                Profile
+        {props.authUser && (
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        )}
+        {props.authUser ? (
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
+                View Flows
               </Nav.Link>
-            )}
-            {props.authUser && (
-              <Nav.Link eventKey="myFlows" as={Link} to={routes.MY_FLOWS}>
-                My Flows
-              </Nav.Link>
-            )}
-            <Nav.Link eventKey="login" as={Link} to={routes.LOGIN}>
-              {props.authUser ? (
-                props.logoutButton
-              ) : (
-                <Button variant="outline-primary">Login</Button>
+              {props.authUser && (
+                <Nav.Link
+                  eventKey="createFlow"
+                  as={Link}
+                  to={routes.CREATE_FLOW}
+                >
+                  Create Flow
+                </Nav.Link>
               )}
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+              {props.authUser && (
+                <Nav.Link eventKey="myFlows" as={Link} to={routes.MY_FLOWS}>
+                  My Flows
+                </Nav.Link>
+              )}
+              {props.authUser && (
+                <Nav.Link eventKey="profile" as={Link} to={routes.PROFILE}>
+                  Profile
+                </Nav.Link>
+              )}
+              <Nav.Link eventKey="login" as={Link} to={routes.LOGIN}>
+                {props.authUser ? (
+                  props.logoutButton
+                ) : (
+                  <Button variant="outline-primary">Login</Button>
+                )}
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        ) : (
+          <Link to={routes.LOGIN}>
+            <Button variant="outline-primary">Login</Button>
+          </Link>
+        )}
       </Navbar>
     </div>
   );
