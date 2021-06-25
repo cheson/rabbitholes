@@ -19,18 +19,15 @@ function ViewFlowsBlock(props) {
     // TODO: Adding an actual <a> link would help with accessibility
     <div className={styles.flowBlock} onClick={onClick}>
       {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
-      <div className={styles.title}>
-        {flow.flowTitle || "flow title tee hee"}
-      </div>
+      <h6 className={styles.title}>{flow.flowTitle || "Untitled"}</h6>
       <div className={styles.description}>
-        {flow.flowDescription ||
-          "flow description blah blah blah blah blah description blah blah blah blah blah"}
+        {flow.flowDescription || "No description provided."}
       </div>
       <div className={styles.metadata}>
         <span>
-          username: {flow.user?.username || flow.user?.name || "gooduser"}
+          Author: {flow.user?.username || flow.user?.name || "Anonymous"}
         </span>
-        <span>views: {flow.numViews || 1}</span>
+        <span>Views: {flow.numViews || 1}</span>
       </div>
       {props.deleteFn && (
         <div className={styles.deleteButton}>
@@ -39,7 +36,7 @@ function ViewFlowsBlock(props) {
             variant="danger"
             block
           >
-            Delete flow
+            X
           </Button>
         </div>
       )}

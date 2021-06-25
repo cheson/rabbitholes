@@ -69,6 +69,7 @@
 .blockImage {
   display: block;
   max-width: 30%;
+  max-height: 25vh;
   padding: 10px;
   object-fit: fill;
   margin-left: auto;

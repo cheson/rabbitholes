@@ -19,8 +19,11 @@ export default function ViewFlows(props) {
     VIEWS_DESCENDING: "VIEWS_DESCENDING",
     TITLE: "TITLE",
   };
+  const [activeSortType, setActiveSortType] = useState(
+    sortTypes.VIEWS_DESCENDING
+  );
 
-  // TODO: double check this logic for correctness + this is a good candidate for jest testing
+  // TODO: this is a good candidate for jest testing
   const sortFunctions = {
     VIEWS_ASCENDING: (a, b) => {
       return (a.numViews || 0) - (b.numViews || 0);
@@ -29,12 +32,16 @@ export default function ViewFlows(props) {
       return (b.numViews || 0) - (a.numViews || 0);
     },
     TITLE: (a, b) => {
-      return a.title > b.title;
+      if (a.flowTitle === "" || a.flowTitle === null) return 1;
+      if (b.flowTitle === "" || b.flowTitle === null) return -1;
+      if (a.flowTitle === b.flowTitle) return 0;
+      return a.flowTitle.toLowerCase().localeCompare(b.flowTitle.toLowerCase());
     },
   };
 
   function setSortedFlows(sortType, optFlows) {
     const unsortedFlows = [...(optFlows || flows)];
+    setActiveSortType(sortType);
     setFlows(unsortedFlows.sort(sortFunctions[sortType]));
   }
 
@@ -43,7 +50,7 @@ export default function ViewFlows(props) {
   useEffect(() => {
     props.apiService
       .viewFlows(searchQuery ? { search: searchQuery } : {})
-      .then((newFlows) => setSortedFlows(sortTypes.VIEWS_DESCENDING, newFlows));
+      .then((newFlows) => setSortedFlows(activeSortType, newFlows));
   }, [searchQuery]);
 
   return (
@@ -58,13 +65,24 @@ export default function ViewFlows(props) {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item eventKey={sortTypes.VIEWS_DESCENDING}>
+              <Dropdown.Item
+                active={activeSortType == sortTypes.VIEWS_DESCENDING}
+                eventKey={sortTypes.VIEWS_DESCENDING}
+              >
                 Views Descending
               </Dropdown.Item>
-              <Dropdown.Item eventKey={sortTypes.VIEWS_ASCENDING}>
+              <Dropdown.Item
+                active={activeSortType == sortTypes.VIEWS_ASCENDING}
+                eventKey={sortTypes.VIEWS_ASCENDING}
+              >
                 Views Ascending
               </Dropdown.Item>
-              <Dropdown.Item eventKey={sortTypes.TITLE}>Title</Dropdown.Item>
+              <Dropdown.Item
+                active={activeSortType == sortTypes.TITLE}
+                eventKey={sortTypes.TITLE}
+              >
+                Title
+              </Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </div>
