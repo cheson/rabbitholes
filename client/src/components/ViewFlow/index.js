@@ -40,10 +40,13 @@ export default function ViewFlow(props) {
             <div className={styles.title}>{flow.flowTitle}</div>
             <div className={styles.metadata}>
               <div className={styles.author}>
-                <i className="fa fa-user-circle-o"></i> ProlificUser
+                <i className="fa fa-user-circle-o"></i>{" "}
+                {flow.user?.username || flow.user?.name || "Anonymous"}
               </div>{" "}
               <div className={styles.date}>
-                <i className="fa fa-calendar-o"></i> May 4, 2021
+                <i className="fa fa-calendar-o"></i>{" "}
+                {new Date(flow.updatedAt).toLocaleDateString() ||
+                  "No date recorded"}
               </div>
             </div>
             <div className={styles.description}>{flow.flowDescription}</div>

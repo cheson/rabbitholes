@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
   const queryKeys = Object.keys(req.query);
   let resultPromise;
   if (queryKeys.length === 0) {
-    resultPromise = Flow.findAll(true);
+    resultPromise = Flow.findAll();
   } else if (queryKeys.includes("search")) {
     resultPromise = Flow.findBySearchQuery(req.query.search);
   } else if (queryKeys.includes("userId")) {

@@ -38,14 +38,18 @@ flowSchema.virtual("user", {
 flowSchema.set("toObject", { virtuals: true });
 flowSchema.set("toJSON", { virtuals: true });
 
-flowSchema.statics.findAll = async function (withUserInfo = false) {
-  if (withUserInfo) {
-    return await this.find().populate({
-      path: "user",
-      select: "firebase_id email name username -_id",
-    });
-  }
-  return await this.find().select("-userId");
+function withUserInfo(flows) {
+  return flows.populate({
+    path: "user",
+    select: "firebase_id email name username -_id",
+  });
+}
+
+flowSchema.statics.findAll = async function () {
+  return await this.find().populate({
+    path: "user",
+    select: "firebase_id email name username -_id",
+  });
 };
 
 // TODO: improve error handling and propagate back to client
@@ -53,12 +57,14 @@ flowSchema.statics.findByFlowIdAndIncNumViews = async function (flowId) {
   if (!mongoose.Types.ObjectId.isValid(flowId)) {
     throw new Error("bad id");
   }
-  const flow = await this.findByIdAndUpdate(
-    {
-      _id: flowId,
-    },
-    { $inc: { numViews: 1 } },
-    { new: true }
+  const flow = await withUserInfo(
+    this.findByIdAndUpdate(
+      {
+        _id: flowId,
+      },
+      { $inc: { numViews: 1 } },
+      { new: true }
+    )
   );
 
   if (!flow) {
@@ -69,18 +75,22 @@ flowSchema.statics.findByFlowIdAndIncNumViews = async function (flowId) {
 };
 
 flowSchema.statics.findByUserId = async function (userId) {
-  const flows = await this.find({
-    userId: userId,
-  });
+  const flows = await withUserInfo(
+    this.find({
+      userId: userId,
+    })
+  );
 
   return flows;
 };
 
 flowSchema.statics.findBySearchQuery = async function (searchQuery) {
-  const flows = await this.find(
-    { $text: { $search: searchQuery } },
-    { score: { $meta: "textScore" } }
-  ).sort({ score: { $meta: "textScore" } });
+  const flows = await withUserInfo(
+    this.find(
+      { $text: { $search: searchQuery } },
+      { score: { $meta: "textScore" } }
+    ).sort({ score: { $meta: "textScore" } })
+  );
 
   return flows;
 };

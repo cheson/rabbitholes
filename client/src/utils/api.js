@@ -118,8 +118,10 @@ export class APIService {
   }
 
   async DELETE(url) {
+    const idToken = await this.getFirebaseIdToken();
     const requestOptions = {
       method: "DELETE",
+      headers: { authorization: idToken },
     };
     return fetch(url, requestOptions).then(this.handleResponse);
   }

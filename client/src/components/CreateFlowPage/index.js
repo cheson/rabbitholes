@@ -16,6 +16,8 @@ function CreateFlowPage(props) {
     { url: "url1", image: "image1", description: "description1", id: nanoid() },
   ]);
 
+  const [isUploading, setIsUploading] = useState(false);
+
   function addBlock() {
     const randNum = Math.floor(Math.random() * 100);
     const newBlock = {
@@ -43,13 +45,16 @@ function CreateFlowPage(props) {
 
   let form = useRef(null);
   const onSubmit = (e) => {
+    setIsUploading(true);
     e.preventDefault();
     const formData = new FormData(form.current);
     props.apiService.createFlow(formData).then(
       (result) => {
+        setIsUploading(false);
         props.history.push(VIEW_FLOW_PREFIX + result.flowId);
       },
       (err) => {
+        setIsUploading(false);
         console.log(err);
       }
     );
@@ -145,7 +150,7 @@ function CreateFlowPage(props) {
             Add Block!
           </Button>
           <Button type="submit" variant="success">
-            Submit Form
+            {isUploading ? "Uploading..." : "Submit Form"}
           </Button>
         </div>
       </form>
