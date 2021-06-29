@@ -20,6 +20,8 @@ query. This works because CSS that comes later overwrites CSS that comes earlier
   word-wrap: break-word;
   overflow: hidden;
   margin-bottom: 10px;
+  font-family: var(--sansSerifFont);
+  font-size: 1.25em;
 }
 
 .description {
@@ -38,6 +40,7 @@ query. This works because CSS that comes later overwrites CSS that comes earlier
   display: flex;
   justify-content: space-between;
   width: 90%;
+  font-family: var(--sansSerifFont);
 }
 
 .deleteButton {
@@ -45,10 +48,12 @@ query. This works because CSS that comes later overwrites CSS that comes earlier
   margin: 5px;
   right: 0px;
   position: absolute;
+  font-family: var(--sansSerifFont);
 }
 
 .flowBlock {
-  border-color: lightgrey;
+  background-color: white;
+  border-color: var(--blockBorderColor);
   border-width: 2px;
   border-style: solid;
   border-radius: 3px;

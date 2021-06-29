@@ -1,10 +1,11 @@
 .footer {
-  /* height: 50px; */
-  /* text-align: center; */
   display: flex;
   justify-content: space-between;
-  background-color: rgb(100, 100, 100);
-  color: black;
+  background-color: var(--footerColor);
+  color: var(--headerFooterFontColor);
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10px;
 }
 
 .copyright {
@@ -13,4 +14,8 @@
 
 .content {
   margin: 10px;
+}
+
+.privacyPolicyLink {
+  color: var(--headerFooterFontColor);
 }

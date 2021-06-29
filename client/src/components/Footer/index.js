@@ -9,10 +9,9 @@ export default function Footer() {
       <div className={styles.copyright}>© 2021 rabbitholes</div>
       <div className={styles.content}>
         flowwebsitedev@gmail.com |&nbsp;
-        <Link to={PRIVACY_POLICY} style={{ color: "black" }}>
+        <Link to={PRIVACY_POLICY} className={styles.privacyPolicyLink}>
           privacy policy
         </Link>
-        🐰
       </div>
     </div>
   );

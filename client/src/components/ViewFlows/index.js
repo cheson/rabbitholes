@@ -59,7 +59,10 @@ export default function ViewFlows(props) {
       <div className={styles.header}>
         <div className={styles.headerElements}>
           <h3> View Flows </h3>
-          <Dropdown onSelect={(sortType) => setSortedFlows(sortType)}>
+          <Dropdown
+            onSelect={(sortType) => setSortedFlows(sortType)}
+            style={{ fontFamily: "Source Sans Pro" }}
+          >
             <Dropdown.Toggle variant="success" id="dropdown-basic">
               Sort By
             </Dropdown.Toggle>

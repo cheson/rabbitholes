@@ -1,5 +1,4 @@
 /* TODO: download into bundle and make a generally available css file */
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&family=Source+Serif+Pro&display=swap");
 
 .image {
   max-width: 40%;
@@ -13,14 +12,14 @@
   text-align: center;
   font-size: 30px;
   padding-bottom: 10px;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: var(--sansSerifFont);
 }
 
 .metadata {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
-  font-family: "Source Sans Pro", sans-serif;
+  font-family: var(--sansSerifFont);
   display: flex;
   justify-content: space-between;
   padding-bottom: 10px;
@@ -29,7 +28,6 @@
 .description {
   width: 80%;
   margin: auto;
-  font-family: "Source Serif Pro", serif;
   padding-bottom: 10px;
 }
 
@@ -39,7 +37,7 @@
 }
 
 .block {
-  border-color: lightgrey;
+  border-color: var(--blockBorderColor);
   border-width: 2px;
   border-style: solid;
   border-radius: 2px;
@@ -52,7 +50,11 @@
   object-fit: contain;
 }
 
-.block:hover {
+.blockWithHover {
+  composes: block;
+}
+
+.blockWithHover:hover {
   transition: all 0.15s ease-in-out;
   transform: scale(1.05);
   cursor: pointer;
@@ -63,7 +65,6 @@
   margin-bottom: auto;
   padding-left: 10px;
   padding-right: 10px;
-  font-family: "Source Serif Pro", serif;
 }
 
 .blockImage {
@@ -78,10 +79,6 @@
 
 .blockDescription {
   margin: auto 0;
-  font-family: "Source Serif Pro", serif;
-}
-
-.blockUrl {
 }
 
 @media all and (max-width: 480px) {

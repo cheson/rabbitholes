@@ -103,7 +103,7 @@ function Profile(props) {
         </div>
 
         <div className={styles.formEntry}>
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="primary" className={styles.formButton}>
             Save changes&nbsp;
             {showSavingChanges && (
               <Spinner animation="border" size="sm" variant="light" />
@@ -116,6 +116,7 @@ function Profile(props) {
             onClick={() =>
               deleteUser(props.authUser, props.apiService, props.history)
             }
+            className={styles.formButton}
           >
             Delete account
           </Button>

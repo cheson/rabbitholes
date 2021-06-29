@@ -68,6 +68,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   console.log("BODY", req.body);
   console.log("FILES", req.files);
 
+  // TODO: see if we need to periodically purge this uploads folder from server?
   function findImageFromFiles(files, id) {
     return files.find((file) => {
       return file.fieldname == id;

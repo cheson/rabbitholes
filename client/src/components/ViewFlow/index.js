@@ -10,15 +10,21 @@ export default function ViewFlow(props) {
   const [pageLoaded, setPageLoaded] = useState(false);
 
   useEffect(() => {
-    props.apiService.viewFlow(flowId).then((flow) => {
-      setFlow(flow);
-      setPageLoaded(true);
-    });
+    props.apiService
+      .viewFlow(flowId)
+      .then((flow) => {
+        setFlow(flow);
+        setPageLoaded(true);
+      })
+      .catch(() => {
+        setFlow(undefined);
+        setPageLoaded(true);
+      });
   }, []);
 
   function onClick(url) {
     const isTextSelected = window.getSelection().toString();
-    if (!isTextSelected) {
+    if (!isTextSelected && url) {
       window.open(url);
     }
   }
@@ -28,9 +34,6 @@ export default function ViewFlow(props) {
   );
   const pageNotLoadedComponent = <div></div>;
 
-  // TODO: if no URL in flow (eg for purely notes based non-external linking blocks), then don't add clickable styling
-  // TODO: add image placeholders of a certain reasonable size so the divs don't resize as much
-  // TODO: play with vertical images and see how they are handled (ans: terribly - come up with fix)
   return (
     <div>
       {pageLoaded ? (
@@ -53,7 +56,7 @@ export default function ViewFlow(props) {
             <div className={styles.list}>
               {flow.blocks?.map((block, index) => (
                 <div
-                  className={styles.block}
+                  className={block.url ? styles.blockWithHover : styles.block}
                   key={block._id}
                   onClick={() => onClick(block.url)}
                 >

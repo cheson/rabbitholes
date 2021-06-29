@@ -1,5 +1,5 @@
 .flowBlock {
-  border-color: lightgrey;
+  border-color: var(--blockBorderColor);
   border-width: 2px;
   border-style: solid;
   border-radius: 2px;
@@ -7,7 +7,6 @@
   background-color: white;
   display: grid;
   grid-template-columns: 6fr 4fr;
-  /* grid-template-rows: auto; */
   grid-gap: 10px;
   grid-template-areas:
     "controls controls"
@@ -15,7 +14,6 @@
     "description img";
   padding: 0 10px 10px 10px;
   box-sizing: border-box;
-  /* height: 300px; */
 }
 
 .controlsSection {
