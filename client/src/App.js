@@ -50,7 +50,6 @@ export default function App() {
           authUser={authUser}
           logoutButton={<LogoutButton firebase={firebase} />}
         />
-
         <div className={styles.mainContent}>
           <Switch>
             <Route exact path={[routes.ROOT, routes.HOME]}>

@@ -7,7 +7,7 @@ import { LOGIN } from "../../constants/routes";
 function LogoutButton(props) {
   return (
     <Button
-      variant="outline-primary"
+      variant="danger"
       onClick={() => {
         props.firebase.auth().signOut();
         props.history.push(LOGIN);

@@ -19,6 +19,10 @@
   width: 50%;
 }
 
+.videoButton {
+  font-family: var(--sansSerifFont);
+}
+
 .modalBody {
   display: flex;
   justify-content: center;
@@ -26,7 +30,7 @@
 
 .transition {
   height: 30px;
-  background-image: linear-gradient(white, rgb(245, 245, 247));
+  background-image: linear-gradient(white, var(--homeBackgroundColor));
 }
 
 .examplesPage {
@@ -34,7 +38,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgb(245, 245, 247);
+  background-color: var(--homeBackgroundColor);
 }
 
 .examplesHeader {
@@ -50,7 +54,7 @@
 .examplesContainer {
   display: grid;
   grid-template-columns: 45vw 45vw;
-  grid-template-rows: 70vh 70vh;
+  grid-template-rows: 50vh 50vh;
   grid-template-areas:
     "one two"
     "three four";
@@ -58,34 +62,29 @@
   margin-bottom: 30px;
 }
 
-.one {
-  background-color: white;
-  grid-area: one;
+.gridFlexElement {
+  /* background-color: #f4f1de; */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.one {
+  grid-area: one;
+  composes: gridFlexElement;
 }
 
 .two {
-  background-color: white;
   grid-area: two;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  composes: gridFlexElement;
 }
 
 .three {
-  background-color: white;
   grid-area: three;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  composes: gridFlexElement;
 }
 
 .four {
-  background-color: white;
   grid-area: four;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  composes: gridFlexElement;
 }

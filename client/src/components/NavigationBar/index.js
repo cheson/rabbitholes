@@ -21,11 +21,9 @@ function NavigationBar(props) {
         // fixed="top"
         collapseOnSelect
         expand={false}
-        bg="dark"
-        variant="dark"
+        className={styles.navBar}
       >
         <Navbar.Brand>
-          {/* TODO: investigate bug - need to close navbar after select if moving to different pages */}
           <Link to={routes.ROOT}>
             <img src={rabbitIcon} className={styles.icon}></img>
           </Link>
@@ -41,10 +39,11 @@ function NavigationBar(props) {
           <FormControl
             type="text"
             className="mr-sm-2"
+            style={{ width: "50vw", maxWidth: "500px" }}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Button variant="link" onClick={searchFlows}>
-            <Search />
+            <Search className={styles.searchButton} />
           </Button>
         </Form>
         {props.authUser && (

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-// import EditFlowBlock from "../EditFlowBlock";
 import ViewFlowsBlock from "../ViewFlowsBlock";
 import styles from "./MyFlows.module.css";
 import ResourceNotFound from "../ResourceNotFound";

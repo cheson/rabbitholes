@@ -27,7 +27,13 @@ function uploadS3File(file) {
     .upload(uploadParams)
     .promise()
     .then((result) => {
-      return result.Location;
+      // Convert S3 link to a domain that is fronted by Cloudflare to take advantage of caching.
+      // From: https://s3.us-west-2.amazonaws.com/static.rabbitholes.ooo/xyz
+      // To: http://static.rabbitholes.ooo/xyz
+      return result.Location.replace(
+        "https://s3.us-west-2.amazonaws.com/",
+        "http://"
+      );
     });
 }
 

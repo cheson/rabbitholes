@@ -93,7 +93,6 @@ function CreateFlowPage(props) {
 
         <CreateFlowIntro />
 
-        {/* <hr /> */}
         <div className={styles.flowBlocksInformation}>
           <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop to
           reorder list blocks. <br />

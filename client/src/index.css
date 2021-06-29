@@ -1,8 +1,25 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&family=Source+Serif+Pro&display=swap");
+
+:root {
+  --headerColor: rgb(255, 209, 102);
+  --footerColor: rgb(255, 209, 102);
+  --headerFooterFontColor: rgb(52, 58, 64);
+  --homeBackgroundColor: rgb(245, 245, 247);
+  --loginBackgroundColor: rgb(174, 231, 229);
+  --blockBorderColor: rgb(211, 211, 211);
+
+  --sansSerifFont: "Source Sans Pro", sans-serif;
+}
+
+label {
+  font-family: var(--sansSerifFont);
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Source Serif Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

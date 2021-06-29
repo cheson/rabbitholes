@@ -23,7 +23,11 @@ export default function Home() {
           <h2 className={styles.title}>
             Explore and share your favorite internet rabbit holes
           </h2>
-          <Button variant="outline-dark" onClick={() => setOpen(true)}>
+          <Button
+            className={styles.videoButton}
+            variant="outline-dark"
+            onClick={() => setOpen(true)}
+          >
             Watch video
           </Button>
 
@@ -56,14 +60,13 @@ export default function Home() {
       <div className={styles.examplesPage}>
         <div className={styles.examplesHeader}>
           <h2>Playlists for internet content</h2>
-          {/* Note: this can maybe be a better replacement of the home page description */}
+          {/* TODO: edit and improve this description */}
           <div className={styles.examplesHeaderDescription}>
             <div>The internet is unstructured and overwhelming 😟</div>
             <div>
               Instead, we can curate our favorite URLs into thoughtfully ordered
               playlists 😊
             </div>
-            {/* Roadmap / essay where the building blocks are links / playlist */}
           </div>
         </div>
         {/* Note: eventually these examples can be dynamically featured, not hardcoded */}

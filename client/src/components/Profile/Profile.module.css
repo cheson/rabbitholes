@@ -19,3 +19,7 @@
 .formEntry {
   margin-top: 15px;
 }
+
+.formButton {
+  font-family: var(--sansSerifFont);
+}
