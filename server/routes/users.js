@@ -19,7 +19,6 @@ router.post("/register", (req, res) => {
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
-      console.log(decodedToken);
       User.updateOne(
         { firebase_id: decodedToken.uid },
         {
@@ -41,7 +40,6 @@ router.post("/register", (req, res) => {
       console.log(error);
       res.sendStatus(httpCodes.serverError);
     });
-  console.log("registering new user");
 });
 
 router.get("/", isAuthenticated, (req, res) => {

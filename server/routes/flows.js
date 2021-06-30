@@ -14,8 +14,6 @@ const upload = multer({ dest: "uploads/", limits: limits });
 const Flow = models.flow;
 
 router.get("/", (req, res) => {
-  console.log(req.query);
-
   const queryKeys = Object.keys(req.query);
   let resultPromise;
   if (queryKeys.length === 0) {
@@ -72,9 +70,6 @@ function findImageFromFiles(files, id) {
 }
 
 router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
-  console.log("BODY", req.body);
-  console.log("FILES", req.files);
-
   let flow = await Flow.findById(req.params.flowId);
 
   if (req.user.firebase_id != flow.userId) {
@@ -133,9 +128,6 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
 
 // TODO: documentation comment with expected req shape?
 router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
-  console.log("BODY", req.body);
-  console.log("FILES", req.files);
-
   let flowInfo = {};
   let flowBlocks = {};
 
@@ -169,7 +161,6 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   flowInfo["userId"] = req.user.firebase_id;
   flowInfo["blocks"] = Object.values(flowBlocks);
   flowInfo["numViews"] = 1;
-  console.log("BLOCKS", flowInfo["blocks"]);
 
   const flow = new Flow(flowInfo);
   flow
