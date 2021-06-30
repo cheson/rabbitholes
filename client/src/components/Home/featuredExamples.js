@@ -1,7 +1,9 @@
 export default {
-  _id: "60904fef5afbc13f22d41536",
+  _id: "60d3b1221273292a7d911f12",
   userId: "beK6rpPtrzUPQv7pqaGq8oYAJTx2",
   flowTitle: "Exploring the Internet",
+  imgUrl:
+    "https://s3.us-west-2.amazonaws.com/static.rabbitholes.ooo/a4bf5881c993ac8b3f87e266748eb66b",
   flowDescription:
     "In the 1800s, inventions that harnessed electricity fundamentally changed the world and our ways of life. Today we wake up to alarms set on our electric phones, pull bread out of our electric refrigerators and stick them in electric toasters, all perhaps while watching the news on an electric TV before driving to work in an electric car. \r\n\r\nSimilarly, around the turn of the 21st century, the modern Internet grew from humble beginnings to become as commonplace as electricity, something that just works and just exists. We can FaceTime our family and friends, browse Instagram, stream shows from Netflix, trade stocks on Robinhood, download books from our local library, and so much more!\r\n\r\nI find the Internet and all its implications extremely fascinating. Feel free to post below with any comments or questions!\r\n",
   blocks: [
@@ -34,8 +36,8 @@ export default {
   __v: 0,
   user: {
     firebase_id: "beK6rpPtrzUPQv7pqaGq8oYAJTx2",
-    email: "haha@haha.com",
-    name: "haha haha",
+    email: "",
+    name: "Jason Chen",
   },
   id: "60904fef5afbc13f22d41536",
 };

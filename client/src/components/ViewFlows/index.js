@@ -42,6 +42,7 @@ export default function ViewFlows(props) {
   function setSortedFlows(sortType, optFlows) {
     const unsortedFlows = [...(optFlows || flows)];
     setActiveSortType(sortType);
+    console.log(unsortedFlows);
     setFlows(unsortedFlows.sort(sortFunctions[sortType]));
   }
 

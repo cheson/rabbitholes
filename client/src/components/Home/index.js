@@ -70,7 +70,6 @@ export default function Home() {
           </div>
         </div>
         {/* Note: eventually these examples can be dynamically featured, not hardcoded */}
-        {/* omg thought: these could be ordered in same ui style as the actual lists? */}
         <div className={styles.examplesContainer}>
           <div className={styles.one}>
             <ViewFlowsBlock flow={featuredExamples} />
