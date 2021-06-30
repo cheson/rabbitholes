@@ -181,7 +181,7 @@ function CreateFlowPage(props) {
           >
             Add Block!
           </Button>
-          <Button type="submit" variant="success">
+          <Button type="submit" variant="success" disabled={isUploading}>
             {isUploading ? "Uploading..." : "Submit Form"}
           </Button>
         </div>

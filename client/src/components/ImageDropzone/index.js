@@ -9,7 +9,7 @@ function ImageDropzone(props) {
   const [image, setImage] = useState(props.initialImageUrl || imageIcon);
 
   useEffect(() => {
-    setImage(props.initialImageUrl);
+    setImage(props.initialImageUrl || imageIcon);
   }, [props.initialImageUrl]);
 
   const onDrop = (acceptedImageArray) => {

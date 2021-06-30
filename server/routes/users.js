@@ -65,6 +65,7 @@ router.put("/:userId", isAuthenticated, upload.any(), async (req, res) => {
       if (req.files.length > 0) {
         updatedFields["profilePictureURL"] = await uploadS3File(req.files[0]);
       }
+      // TODO: should be possible to just call update on the user object already found earlier
       const updatedUser = await User.findOneAndUpdate(
         { firebase_id: req.params.userId },
         updatedFields,
