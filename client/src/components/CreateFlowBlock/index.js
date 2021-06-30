@@ -23,6 +23,7 @@ function CreateFlowBlock(props) {
           type="text"
           id={`url:${block.id}`}
           name={`url:${block.id}`}
+          defaultValue={block.url}
         ></input>
       </div>
 
@@ -33,6 +34,7 @@ function CreateFlowBlock(props) {
           type="text"
           id={`description:${block.id}`}
           name={`description:${block.id}`}
+          defaultValue={block.description}
         ></textarea>
       </div>
 
@@ -46,6 +48,7 @@ function CreateFlowBlock(props) {
             maxHeight: "200px",
             boxSizing: "border-box",
           }}
+          initialImageUrl={block.image}
         />
       </div>
     </div>

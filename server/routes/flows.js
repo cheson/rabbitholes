@@ -4,6 +4,7 @@ const models = require("../models");
 const httpCodes = require("../constants/httpCodes");
 const isAuthenticated = require("../middleware/isAuthenticated");
 const uploadS3File = require("../utils/s3");
+const mongoose = require("mongoose");
 
 const multer = require("multer");
 // Configured with a limit in order to prevent abuse. (Good DKV candidate!)
@@ -13,8 +14,6 @@ const upload = multer({ dest: "uploads/", limits: limits });
 const Flow = models.flow;
 
 router.get("/", (req, res) => {
-  console.log(req.query);
-
   const queryKeys = Object.keys(req.query);
   let resultPromise;
   if (queryKeys.length === 0) {
@@ -63,18 +62,72 @@ router.delete("/:flowId", isAuthenticated, (req, res) => {
     });
 });
 
-// TODO: documentation comment with expected req shape?
-router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
-  console.log("BODY", req.body);
-  console.log("FILES", req.files);
+// TODO: see if we need to periodically purge this uploads folder from server?
+function findImageFromFiles(files, id) {
+  return files.find((file) => {
+    return file.fieldname == id;
+  });
+}
 
-  // TODO: see if we need to periodically purge this uploads folder from server?
-  function findImageFromFiles(files, id) {
-    return files.find((file) => {
-      return file.fieldname == id;
-    });
+router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
+  let flow = await Flow.findById(req.params.flowId);
+
+  if (req.user.firebase_id != flow.userId) {
+    res.sendStatus(httpCodes.unauthorized);
   }
 
+  let processedImgIds = new Set();
+  let newBlockIdMapping = {};
+
+  for (const [key, value] of Object.entries(req.body)) {
+    if (["flowTitle", "flowDescription"].includes(key)) {
+      flow[key] = value;
+      continue;
+    }
+
+    const [type, id] = key.split(":");
+    let block = flow.blocks.find((target) => target._id == id);
+
+    // Logic to add a new block during edit if it doesn't exist yet.
+    if (!block) {
+      let blockId = newBlockIdMapping[id];
+      if (!blockId) {
+        blockId = mongoose.Types.ObjectId();
+        flow.blocks.push({ _id: blockId });
+        newBlockIdMapping[id] = blockId;
+      }
+      block = flow.blocks.find((target) => target._id == blockId);
+    }
+    block[type] = value;
+
+    // Hacky way to only process images once, can certainly be improved.
+    if (!processedImgIds.has(id)) {
+      const img = findImageFromFiles(req.files, id);
+      if (img) {
+        block["imgUrl"] = await uploadS3File(img);
+      }
+      processedImgIds.add(id);
+    }
+  }
+
+  const introImg = findImageFromFiles(req.files, "intro");
+  if (introImg) {
+    flow["imgUrl"] = await uploadS3File(introImg);
+  }
+
+  flow
+    .save()
+    .then((saved_flow) => {
+      res.status(httpCodes.success).json({ flowId: saved_flow.id });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(httpCodes.serverError);
+    });
+});
+
+// TODO: documentation comment with expected req shape?
+router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   let flowInfo = {};
   let flowBlocks = {};
 
@@ -108,7 +161,6 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   flowInfo["userId"] = req.user.firebase_id;
   flowInfo["blocks"] = Object.values(flowBlocks);
   flowInfo["numViews"] = 1;
-  console.log("BLOCKS", flowInfo["blocks"]);
 
   const flow = new Flow(flowInfo);
   flow

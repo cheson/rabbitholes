@@ -18,7 +18,6 @@ export class APIService {
   }
 
   updateUser(formData, userId) {
-    console.log(formData, userId);
     return this.PUT(`/1/users/${userId}`, formData, true);
   }
 
@@ -28,6 +27,10 @@ export class APIService {
 
   createFlow(formData) {
     return this.POST("/1/flows/create", formData, true);
+  }
+
+  editFlow(flowId, formData) {
+    return this.PUT(`/1/flows/${flowId}`, formData, true);
   }
 
   viewFlow(flowId) {

@@ -19,7 +19,6 @@ router.post("/register", (req, res) => {
     .auth()
     .verifyIdToken(req.body.token)
     .then((decodedToken) => {
-      console.log(decodedToken);
       User.updateOne(
         { firebase_id: decodedToken.uid },
         {
@@ -41,7 +40,6 @@ router.post("/register", (req, res) => {
       console.log(error);
       res.sendStatus(httpCodes.serverError);
     });
-  console.log("registering new user");
 });
 
 router.get("/", isAuthenticated, (req, res) => {
@@ -65,6 +63,7 @@ router.put("/:userId", isAuthenticated, upload.any(), async (req, res) => {
       if (req.files.length > 0) {
         updatedFields["profilePictureURL"] = await uploadS3File(req.files[0]);
       }
+      // TODO: should be possible to just call update on the user object already found earlier
       const updatedUser = await User.findOneAndUpdate(
         { firebase_id: req.params.userId },
         updatedFields,

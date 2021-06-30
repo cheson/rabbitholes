@@ -23,3 +23,11 @@
 .formButton {
   font-family: var(--sansSerifFont);
 }
+
+.emailText {
+  width: 35vw;
+}
+
+.nameText {
+  width: 35vw;
+}

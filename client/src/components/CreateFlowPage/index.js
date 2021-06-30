@@ -1,32 +1,57 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import CreateFlowIntro from "../CreateFlowIntro";
 import CreateFlowBlock from "../CreateFlowBlock";
+import ResourceNotFound from "../ResourceNotFound";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
 import { Button } from "react-bootstrap";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { MenuButtonWide, UiChecksGrid } from "react-bootstrap-icons";
-import { withRouter, Prompt } from "react-router-dom";
+import { withRouter, Prompt, useParams } from "react-router-dom";
 import { VIEW_FLOW_PREFIX } from "../../constants/routes";
 import styles from "./CreateFlowPage.module.css";
 
 function CreateFlowPage(props) {
-  // TODO: what should show up on first creation? default block with helpful suggestions + UI to add new block
-  const [blocks, setBlocks] = useState([
-    { url: "url1", image: "image1", description: "description1", id: nanoid() },
-  ]);
-
+  let { flowId } = useParams();
+  const defaultEmptyBlock = {
+    url: "",
+    image: "",
+    description: "",
+    id: nanoid(),
+  };
+  const [blocks, setBlocks] = useState([defaultEmptyBlock]);
+  const defaultEmptyIntro = [{ title: "", image: "", description: "" }];
+  const [intro, setIntro] = useState(defaultEmptyIntro);
+  const [editFlowAllowed, setEditFlowAllowed] = useState(undefined);
   const [isUploading, setIsUploading] = useState(false);
 
+  useEffect(() => {
+    if (props.editMode) {
+      props.apiService.viewFlow(flowId).then((flow) => {
+        const newBlocks = flow.blocks.map((block) => {
+          return {
+            url: block.url,
+            description: block.description,
+            image: block.imgUrl,
+            id: block._id,
+          };
+        });
+        setBlocks(newBlocks);
+        setIntro({
+          title: flow.flowTitle,
+          description: flow.flowDescription,
+          image: flow.imgUrl,
+        });
+        setEditFlowAllowed(flow.userId == props.authUser?.uid);
+      });
+    } else {
+      setBlocks([defaultEmptyBlock]);
+      setIntro(defaultEmptyIntro);
+    }
+  }, [props.editMode]);
+
   function addBlock() {
-    const randNum = Math.floor(Math.random() * 100);
-    const newBlock = {
-      url: "url" + randNum,
-      image: "image" + randNum,
-      description: "description" + randNum,
-      id: nanoid(),
-    };
-    setBlocks((currentBlocks) => [...currentBlocks, newBlock]);
+    setBlocks((currentBlocks) => [...currentBlocks, defaultEmptyBlock]);
     setTimeout(
       () =>
         window.scrollTo({
@@ -48,7 +73,10 @@ function CreateFlowPage(props) {
     setIsUploading(true);
     e.preventDefault();
     const formData = new FormData(form.current);
-    props.apiService.createFlow(formData).then(
+    const apiCall = props.editMode
+      ? () => props.apiService.editFlow(flowId, formData)
+      : () => props.apiService.createFlow(formData);
+    apiCall().then(
       (result) => {
         setIsUploading(false);
         props.history.push(VIEW_FLOW_PREFIX + result.flowId);
@@ -75,8 +103,13 @@ function CreateFlowPage(props) {
     setBlocks(newBlocks);
   }
 
-  return (
+  const resourceNotFoundComponent = (
+    <ResourceNotFound message={`This user does not own flow (${flowId}).`} />
+  );
+
+  const createFlowComponent = (
     <div>
+      {/* TODO: investigate some bug where this prompt will reoccur multiple times when trying to log out */}
       <Prompt
         message={(location) => {
           return location.pathname.startsWith(VIEW_FLOW_PREFIX)
@@ -87,11 +120,11 @@ function CreateFlowPage(props) {
 
       <form onSubmit={onSubmit} ref={form}>
         <div className={styles.header}>
-          <h3> Create Flow </h3>
+          {props.editMode ? <h3> Edit Flow </h3> : <h3> Create Flow </h3>}
           <hr />
         </div>
 
-        <CreateFlowIntro />
+        <CreateFlowIntro {...intro} />
 
         <div className={styles.flowBlocksInformation}>
           <MenuButtonWide className={styles.menuButtonWide} /> Drag and drop to
@@ -148,13 +181,22 @@ function CreateFlowPage(props) {
           >
             Add Block!
           </Button>
-          <Button type="submit" variant="success">
+          <Button type="submit" variant="success" disabled={isUploading}>
             {isUploading ? "Uploading..." : "Submit Form"}
           </Button>
         </div>
       </form>
     </div>
   );
+
+  if (props.editMode) {
+    if (editFlowAllowed === undefined) {
+      return <div></div>;
+    } else if (!editFlowAllowed) {
+      return resourceNotFoundComponent;
+    }
+  }
+  return createFlowComponent;
 }
 
 export default withRouter(CreateFlowPage);
@@ -162,4 +204,6 @@ export default withRouter(CreateFlowPage);
 CreateFlowPage.propTypes = {
   history: PropTypes.object,
   apiService: PropTypes.object,
+  editMode: PropTypes.bool,
+  authUser: PropTypes.object,
 };

@@ -43,12 +43,16 @@ query. This works because CSS that comes later overwrites CSS that comes earlier
   font-family: var(--sansSerifFont);
 }
 
-.deleteButton {
+.buttonControls {
   top: 0px;
-  margin: 5px;
   right: 0px;
+  margin: 5px;
   position: absolute;
   font-family: var(--sansSerifFont);
+}
+
+.editButton {
+  margin-right: 5px;
 }
 
 .flowBlock {

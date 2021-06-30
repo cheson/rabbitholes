@@ -4,7 +4,6 @@ module.exports = function setCurrentUser(req, res, next) {
       .auth()
       .verifyIdToken(req.headers["authorization"])
       .then((decodedToken) => {
-        console.log("DECODED TOKEN", decodedToken);
         req.user = {
           firebase_id: decodedToken.uid,
           name: decodedToken.name,
