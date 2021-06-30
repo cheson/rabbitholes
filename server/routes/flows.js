@@ -63,6 +63,12 @@ router.delete("/:flowId", isAuthenticated, (req, res) => {
     });
 });
 
+router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
+  console.log("BODY", req.body);
+  console.log("FILES", req.files);
+  res.status(httpCodes.success).json({ flowId: req.url.substring(1) });
+});
+
 // TODO: documentation comment with expected req shape?
 router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   console.log("BODY", req.body);

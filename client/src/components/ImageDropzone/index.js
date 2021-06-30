@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dropzone from "react-dropzone";
 import imageIcon from "../../assets/image.png";
 import PropTypes from "prop-types";
@@ -7,6 +7,10 @@ import styles from "./ImageDropzone.module.css";
 // TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
 function ImageDropzone(props) {
   const [image, setImage] = useState(props.initialImageUrl || imageIcon);
+
+  useEffect(() => {
+    setImage(props.initialImageUrl);
+  }, [props.initialImageUrl]);
 
   const onDrop = (acceptedImageArray) => {
     // TODO: instead of returning, show some UI that only 1 image can be uploaded.

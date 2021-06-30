@@ -65,6 +65,13 @@ export default function App() {
             <Route path={routes.CREATE_FLOW}>
               <CreateFlowPage apiService={apiService} />
             </Route>
+            <Route path={routes.EDIT_FLOW}>
+              <CreateFlowPage
+                apiService={apiService}
+                editMode={true}
+                authUser={authUser}
+              />
+            </Route>
             <Route path={routes.VIEW_FLOWS}>
               <ViewFlows apiService={apiService} />
             </Route>

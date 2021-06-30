@@ -22,6 +22,7 @@
 
 .flowBlocksInformation {
   margin: 20px;
+  font-family: var(--sansSerifFont);
 }
 
 .header {

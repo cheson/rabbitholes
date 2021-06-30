@@ -48,7 +48,7 @@ export default function ViewFlow(props) {
               </div>{" "}
               <div className={styles.date}>
                 <i className="fa fa-calendar-o"></i>{" "}
-                {new Date(flow.updatedAt).toLocaleDateString() ||
+                {new Date(flow.createdAt).toLocaleDateString() ||
                   "No date recorded"}
               </div>
             </div>
