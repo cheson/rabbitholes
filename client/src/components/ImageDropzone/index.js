@@ -4,15 +4,30 @@ import imageIcon from "../../assets/image.png";
 import PropTypes from "prop-types";
 import styles from "./ImageDropzone.module.css";
 
-// TODO/BUG: Drag and drop doesn't work for this input: https://github.com/react-dropzone/react-dropzone/issues/131
 function ImageDropzone(props) {
   const [image, setImage] = useState(props.initialImageUrl || imageIcon);
+  const [isDragged, setIsDragged] = useState(false);
 
   useEffect(() => {
     setImage(props.initialImageUrl || imageIcon);
   }, [props.initialImageUrl]);
 
+  // Dropzone doesn't handle image uploading well. This is a hack to temporarily disable drag-and-drop functionality.
+  // Eg. image will show up but will not be present in formData submitted to server.
+  // https://github.com/react-dropzone/react-dropzone/issues/131
+  const onDragEnter = () => {
+    setIsDragged(true);
+  };
+  const onDragLeave = () => {
+    setIsDragged(false);
+  };
+
   const onDrop = (acceptedImageArray) => {
+    if (isDragged) {
+      setIsDragged(false);
+      return;
+    }
+
     // TODO: instead of returning, show some UI that only 1 image can be uploaded.
     if (acceptedImageArray.length == 0) return;
 
@@ -35,7 +50,13 @@ function ImageDropzone(props) {
   );
 
   return (
-    <Dropzone onDrop={onDrop} maxFiles={1} accept="image/*">
+    <Dropzone
+      onDragLeave={onDragLeave}
+      onDragEnter={onDragEnter}
+      onDrop={onDrop}
+      maxFiles={1}
+      accept="image/*"
+    >
       {({ getRootProps, getInputProps }) => (
         <div
           className={styles.dropzone}

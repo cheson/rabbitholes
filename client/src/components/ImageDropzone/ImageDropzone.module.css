@@ -10,6 +10,10 @@
   justify-content: center;
 }
 
+.dropzone:hover {
+  cursor: pointer;
+}
+
 .imgIcon {
   max-width: 15%;
   max-height: 15%;
