@@ -53,8 +53,8 @@
 
 .examplesContainer {
   display: grid;
-  grid-template-columns: 45vw 45vw;
-  grid-template-rows: 50vh 50vh;
+  grid-template-columns: auto auto;
+  grid-template-rows: auto auto;
   grid-template-areas:
     "one two"
     "three four";

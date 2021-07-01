@@ -1,20 +1,26 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import styles from "./Home.module.css";
 import bunnyLineImg from "../../assets/bunny_line.jpeg";
 import { Modal, Button } from "react-bootstrap";
 import ViewFlowsBlock from "../ViewFlowsBlock";
-import featuredExamples from "./featuredExamples.js";
 
-export default function Home() {
+export default function Home(props) {
   const [isOpen, setOpen] = useState(false);
 
-  // todo: potentially adjust this to show the examples instead of trying to go full screen
   const navbarHeight = document.getElementById("navbarId")?.offsetHeight;
   const divStyle = {
     height: navbarHeight
       ? window.innerHeight - navbarHeight - 50 + "px"
       : "95vh",
   };
+
+  const [featuredExamples, setFeaturedExamples] = useState();
+  useEffect(() => {
+    props.apiService
+      .viewFeaturedFlows()
+      .then((flows) => setFeaturedExamples(flows));
+  }, []);
 
   return (
     <div>
@@ -69,35 +75,39 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* Note: eventually these examples can be dynamically featured, not hardcoded */}
-        {/* omg thought: these could be ordered in same ui style as the actual lists? */}
-        <div className={styles.examplesContainer}>
-          <div className={styles.one}>
-            <ViewFlowsBlock flow={featuredExamples} />
+        {featuredExamples && (
+          <div className={styles.examplesContainer}>
+            <div className={styles.one}>
+              <ViewFlowsBlock flow={featuredExamples[0]} />
 
-            {/* <div className={styles.oneContent}>
+              {/* <div className={styles.oneContent}>
               Rabbit hole:
               https://publish.twitter.com/?query=https%3A%2F%2Ftwitter.com%2Frabbitholes_%2Fstatus%2F1386366253040689155&widget=Tweet
             </div> */}
-          </div>
-          <div className={styles.two}>
-            <ViewFlowsBlock flow={featuredExamples} />
-            {/* <div className={styles.twoContent}>
+            </div>
+            <div className={styles.two}>
+              <ViewFlowsBlock flow={featuredExamples[1]} />
+              {/* <div className={styles.twoContent}>
               developer roadmap
               https://github.com/kamranahmedse/developer-roadmap developer
               roadmap
             </div> */}
+            </div>
+            <div className={styles.three}>
+              <ViewFlowsBlock flow={featuredExamples[2]} />
+              {/* Sourdough https://www.youtube.com/watch?v=2FVfJTGpXnU */}
+            </div>
+            <div className={styles.four}>
+              <ViewFlowsBlock flow={featuredExamples[3]} />
+              {/* how the internet works */}
+            </div>
           </div>
-          <div className={styles.three}>
-            <ViewFlowsBlock flow={featuredExamples} />
-            {/* Sourdough https://www.youtube.com/watch?v=2FVfJTGpXnU */}
-          </div>
-          <div className={styles.four}>
-            <ViewFlowsBlock flow={featuredExamples} />
-            {/* how the internet works */}
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
 }
+
+Home.propTypes = {
+  apiService: PropTypes.object,
+};

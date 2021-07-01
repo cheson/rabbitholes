@@ -53,7 +53,7 @@ export default function App() {
         <div className={styles.mainContent}>
           <Switch>
             <Route exact path={[routes.ROOT, routes.HOME]}>
-              <Home />
+              <Home apiService={apiService} />
             </Route>
             <Route path={routes.LOGIN}>
               <Login

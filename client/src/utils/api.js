@@ -38,8 +38,11 @@ export class APIService {
   }
 
   viewFlows(searchParams = {}) {
-    // text or uid
     return this.GET("/1/flows", searchParams);
+  }
+
+  viewFeaturedFlows() {
+    return this.GET(`/1/flows/featured`);
   }
 
   deleteFlow(flowId) {
