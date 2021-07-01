@@ -23,10 +23,7 @@ function ImageDropzone(props) {
     const reader = new FileReader();
     reader.onabort = () => console.log("file reading was aborted");
     reader.onerror = () => console.log("file reading has failed");
-    reader.onload = () => {
-      const binaryStr = reader.result;
-      console.log(binaryStr);
-    };
+    reader.onload = () => {};
     reader.readAsArrayBuffer(acceptedImage);
   };
 

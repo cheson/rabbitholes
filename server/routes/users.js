@@ -13,7 +13,6 @@ const upload = multer({ dest: "uploads/", limits: limits });
 const User = models.user;
 const Flow = models.flow;
 
-// update this to use save and such for validation with mongoose
 router.post("/register", (req, res) => {
   req.app.locals.firebaseAdmin
     .auth()
@@ -53,7 +52,13 @@ router.get("/", isAuthenticated, (req, res) => {
     });
 });
 
+// TODO: delete s3 images when user updates profile picture or deletes user
+
 router.put("/:userId", isAuthenticated, upload.any(), async (req, res) => {
+  if (req.params.userId != req.user.firebase_id) {
+    res.sendStatus(httpCodes.unauthorized);
+  }
+
   let user = await User.findOne({ firebase_id: req.params.userId });
   if (!user) {
     res.sendStatus(httpCodes.notFound);
@@ -78,6 +83,10 @@ router.put("/:userId", isAuthenticated, upload.any(), async (req, res) => {
 });
 
 router.delete("/:userId", isAuthenticated, async (req, res) => {
+  if (req.params.userId != req.user.firebase_id) {
+    res.sendStatus(httpCodes.unauthorized);
+  }
+
   // Note: using mongoose hooks is another possible implementation
   let user = await User.findOne({ firebase_id: req.params.userId });
   if (!user) {
