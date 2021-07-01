@@ -3,7 +3,7 @@ const router = express.Router();
 const models = require("../models");
 const httpCodes = require("../constants/httpCodes");
 const isAuthenticated = require("../middleware/isAuthenticated");
-const uploadS3File = require("../utils/s3");
+const s3 = require("../utils/s3");
 const mongoose = require("mongoose");
 
 const multer = require("multer");
@@ -54,12 +54,32 @@ router.get("/:flowId", (req, res) => {
     });
 });
 
-router.delete("/:flowId", isAuthenticated, (req, res) => {
-  // TODO: delete S3 resources as well for any images stored there
-  // TODO: only allow users to delete their own flows
+function gatherImgURLs(flow) {
+  let imgURLs = [];
+  if (flow.imgUrl) {
+    imgURLs.push(flow.imgUrl);
+  }
+  if (flow.blocks) {
+    flow.blocks.forEach((block) => {
+      if (block.imgUrl) {
+        imgURLs.push(block.imgUrl);
+      }
+    });
+  }
+  return imgURLs;
+}
+
+router.delete("/:flowId", isAuthenticated, async (req, res) => {
+  let flow = await Flow.findById(req.params.flowId);
+
+  if (req.user.firebase_id != flow.userId) {
+    res.sendStatus(httpCodes.unauthorized);
+  }
+
   Flow.findByIdAndDelete(req.params.flowId)
     .then((result) => {
       if (result) {
+        s3.deleteS3Files(gatherImgURLs(result));
         res.sendStatus(httpCodes.success);
       } else {
         res.sendStatus(httpCodes.notFound);
@@ -71,7 +91,6 @@ router.delete("/:flowId", isAuthenticated, (req, res) => {
     });
 });
 
-// TODO: see if we need to periodically purge this uploads folder from server?
 function findImageFromFiles(files, id) {
   return files.find((file) => {
     return file.fieldname == id;
@@ -113,7 +132,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
     if (!processedImgIds.has(id)) {
       const img = findImageFromFiles(req.files, id);
       if (img) {
-        block["imgUrl"] = await uploadS3File(img);
+        block["imgUrl"] = await s3.uploadS3File(img);
       }
       processedImgIds.add(id);
     }
@@ -121,7 +140,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
 
   const introImg = findImageFromFiles(req.files, "intro");
   if (introImg) {
-    flow["imgUrl"] = await uploadS3File(introImg);
+    flow["imgUrl"] = await s3.uploadS3File(introImg);
   }
 
   flow
@@ -155,7 +174,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
       block = {};
       const img = findImageFromFiles(req.files, id);
       if (img) {
-        block["imgUrl"] = await uploadS3File(img);
+        block["imgUrl"] = await s3.uploadS3File(img);
       }
     }
     flowBlocks[id] = Object.assign(block, { [type]: value });
@@ -163,7 +182,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
 
   const introImg = findImageFromFiles(req.files, "intro");
   if (introImg) {
-    flowInfo["imgUrl"] = await uploadS3File(introImg);
+    flowInfo["imgUrl"] = await s3.uploadS3File(introImg);
   }
   // TODO: Stay denormalized with userId joining to user table for now,
   // but figure out how to profile the cost of the join, especially when fetching all flows.
