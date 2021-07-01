@@ -53,7 +53,7 @@ function NavigationBar(props) {
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="mr-auto">
               <Nav.Link eventKey="viewFlows" as={Link} to={routes.VIEW_FLOWS}>
-                View Flows
+                View Lists
               </Nav.Link>
               {props.authUser && (
                 <Nav.Link
@@ -61,12 +61,12 @@ function NavigationBar(props) {
                   as={Link}
                   to={routes.CREATE_FLOW}
                 >
-                  Create Flow
+                  Create List
                 </Nav.Link>
               )}
               {props.authUser && (
                 <Nav.Link eventKey="myFlows" as={Link} to={routes.MY_FLOWS}>
-                  My Flows
+                  My Lists
                 </Nav.Link>
               )}
               {props.authUser && (

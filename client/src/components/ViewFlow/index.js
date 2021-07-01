@@ -30,7 +30,7 @@ export default function ViewFlow(props) {
   }
 
   const resourceNotFoundComponent = (
-    <ResourceNotFound message={`Flow (${flowId}) cannot be found.`} />
+    <ResourceNotFound message={`List (${flowId}) cannot be found.`} />
   );
   const pageNotLoadedComponent = <div></div>;
 

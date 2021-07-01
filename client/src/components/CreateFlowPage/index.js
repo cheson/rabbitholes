@@ -120,7 +120,7 @@ function CreateFlowPage(props) {
 
       <form onSubmit={onSubmit} ref={form}>
         <div className={styles.header}>
-          {props.editMode ? <h3> Edit Flow </h3> : <h3> Create Flow </h3>}
+          {props.editMode ? <h3> Edit List </h3> : <h3> Create List </h3>}
           <hr />
         </div>
 

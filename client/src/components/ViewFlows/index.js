@@ -58,7 +58,7 @@ export default function ViewFlows(props) {
       {/* TODO: consolidate all the header stylings */}
       <div className={styles.header}>
         <div className={styles.headerElements}>
-          <h3> View Flows </h3>
+          <h3> View Lists </h3>
           <Dropdown
             onSelect={(sortType) => setSortedFlows(sortType)}
             style={{ fontFamily: "Source Sans Pro" }}

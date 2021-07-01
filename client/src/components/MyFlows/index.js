@@ -53,7 +53,7 @@ export default function MyFlows(props) {
       {/* TODO: consolidate all the header stylings */}
       <div className={styles.header}>
         <div className={styles.headerElements}>
-          <h3> My Flows </h3>
+          <h3> My Lists </h3>
         </div>
         <hr />
       </div>
