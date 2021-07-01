@@ -20,7 +20,7 @@ function ViewFlowsBlock(props) {
     history.push(`edit/${flow._id}`);
   }
 
-  return (
+  return flow ? (
     // TODO: Adding an actual <a> link would help with accessibility
     <div className={styles.flowBlock} onClick={viewFlowClick}>
       {flow.imgUrl && <img className={styles.image} src={flow.imgUrl} />}
@@ -50,6 +50,8 @@ function ViewFlowsBlock(props) {
         </div>
       )}
     </div>
+  ) : (
+    <div className={styles.flowBlock}></div>
   );
 }
 

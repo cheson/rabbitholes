@@ -74,6 +74,18 @@ flowSchema.statics.findByFlowIdAndIncNumViews = async function (flowId) {
   return flow;
 };
 
+flowSchema.statics.findByFlowIds = async function (flowIdArr) {
+  const flows = await withUserInfo(
+    this.find({
+      _id: {
+        $in: flowIdArr.map((id) => mongoose.Types.ObjectId(id)),
+      },
+    })
+  );
+
+  return flows;
+};
+
 flowSchema.statics.findByUserId = async function (userId) {
   const flows = await withUserInfo(
     this.find({

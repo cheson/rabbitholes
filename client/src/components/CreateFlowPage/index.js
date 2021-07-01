@@ -178,6 +178,7 @@ function CreateFlowPage(props) {
             id="addBlockButton"
             variant="primary"
             onClick={() => addBlock()}
+            disabled={isUploading}
           >
             Add Block!
           </Button>

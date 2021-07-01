@@ -35,7 +35,16 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:flowId", (req, res) => {
-  Flow.findByFlowIdAndIncNumViews(req.params.flowId)
+  let dbResult =
+    req.params.flowId == "featured"
+      ? Flow.findByFlowIds([
+          "60de0b095a865b82f7e639e9",
+          "60d3b57c1273292a7d911f20",
+          "60d3b5901273292a7d911f24",
+          "60d3b59f1273292a7d911f26",
+        ])
+      : Flow.findByFlowIdAndIncNumViews(req.params.flowId);
+  dbResult
     .then((result) => {
       res.json(result);
     })
