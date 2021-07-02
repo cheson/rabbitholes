@@ -16,13 +16,13 @@ const s3 = new S3({
 
 // Convert S3 link to a domain that is fronted by Cloudflare to take advantage of caching.
 // From: https://s3.us-west-2.amazonaws.com/static.rabbitholes.ooo/xyz
-// To: http://static.rabbitholes.ooo/xyz
+// To: https://static.rabbitholes.ooo/xyz
 function s3ToCloudflareURL(s3URL) {
-  return s3URL.replace("https://s3.us-west-2.amazonaws.com/", "http://");
+  return s3URL.replace("https://s3.us-west-2.amazonaws.com/", "https://");
 }
 
 function cloudflareURLToS3Key(cloudflareURL) {
-  return cloudflareURL.replace("http://static.rabbitholes.ooo/", "");
+  return cloudflareURL.replace("https://static.rabbitholes.ooo/", "");
 }
 
 // Deletes associated S3 resources upon flow/user deletion

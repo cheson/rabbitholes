@@ -67,8 +67,13 @@ export default function Home(props) {
         <div className={styles.examplesHeader}>
           <h2>Playlists for internet content</h2>
           <div className={styles.examplesHeaderDescription}>
-            <div>The internet is a mess of infinite feeds and random links.</div>
-            <div>Could we thoughtfully curate playlists for Internet content like we do for music?</div>
+            <div>
+              The internet is a mess of infinite feeds and random links.
+            </div>
+            <div>
+              Could we thoughtfully curate playlists for Internet content like
+              we do for music?
+            </div>
           </div>
         </div>
         {featuredExamples && (
