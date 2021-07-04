@@ -63,7 +63,6 @@
 }
 
 .gridFlexElement {
-  /* background-color: #f4f1de; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -87,4 +86,11 @@
 .four {
   grid-area: four;
   composes: gridFlexElement;
+}
+
+@media all and (max-width: 480px) {
+  .examplesContainer {
+    display: flex;
+    flex-direction: column;
+  }
 }

@@ -18,3 +18,9 @@
 .privacyPolicyLink {
   color: var(--headerFooterFontColor);
 }
+
+@media all and (max-width: 480px) {
+  .footer {
+    flex-direction: column;
+  }
+}

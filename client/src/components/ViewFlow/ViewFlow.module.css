@@ -84,21 +84,31 @@
 
 @media all and (max-width: 480px) {
   .blockImage {
-    max-width: 60%;
+    max-width: 100%;
     padding: 10px;
     object-fit: contain;
     order: 1;
     margin-left: auto;
     margin-right: auto;
   }
-  .index {
-    margin-top: 10px;
-    order: 2;
+
+  .image {
+    max-width: 80%;
   }
-  .description {
+
+  .index {
     order: 3;
+    margin: auto;
+  }
+  .blockDescription {
+    margin: 10px;
+    order: 2;
   }
   .block {
     flex-wrap: wrap;
+  }
+
+  .blockWithHover:hover {
+    transform: scale(1.02);
   }
 }
