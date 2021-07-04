@@ -15,10 +15,21 @@
   width: 100%;
 }
 
-/* TODO: this needs some media breakpoints for column oriented screens */
 .loginOptions {
   position: absolute;
   left: 20%;
   top: 50%;
   transform: translateY(-50%);
+  text-align: center;
+}
+
+@media all and (max-width: 480px) {
+  .loginOptions {
+    margin: 5px;
+    left: 0%;
+  }
+
+  .backgroundImage {
+    display: none;
+  }
 }

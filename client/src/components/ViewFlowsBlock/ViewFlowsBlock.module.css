@@ -83,12 +83,11 @@ query. This works because CSS that comes later overwrites CSS that comes earlier
 
 @media all and (max-width: 480px) {
   .flowBlock {
-    border-color: green;
-    border-width: 3px;
-    border-style: solid;
-    border-radius: 2px;
-    margin: 15px;
-    width: 80vw;
-    height: 70vh;
+    margin: 8px;
+    width: 100%;
+  }
+
+  .flowBlock:hover {
+    transform: scale(1.02);
   }
 }
