@@ -95,16 +95,18 @@ function CreateFlowPage(props) {
     if (sourceIndex === undefined || destinationIndex === undefined) {
       return;
     }
-    const tempDestinationBlock = blocks[destinationIndex];
-
-    newBlocks[destinationIndex] = blocks[sourceIndex];
-    newBlocks[sourceIndex] = tempDestinationBlock;
-
+    // Moves block from sourceIndex to destinationIndex
+    const tempBlock = newBlocks.splice(sourceIndex, 1)[0];
+    newBlocks.splice(destinationIndex, 0, tempBlock);
     setBlocks(newBlocks);
   }
 
-  const resourceNotFoundComponent = (
+  const resourceNotOwnedComponent = (
     <ResourceNotFound message={`This user does not own flow (${flowId}).`} />
+  );
+
+  const notLoggedInComponent = (
+    <ResourceNotFound message={`No user logged in.`} />
   );
 
   const createFlowComponent = (
@@ -194,8 +196,11 @@ function CreateFlowPage(props) {
     if (editFlowAllowed === undefined) {
       return <div></div>;
     } else if (!editFlowAllowed) {
-      return resourceNotFoundComponent;
+      return resourceNotOwnedComponent;
     }
+  }
+  if (!props.authUser) {
+    return notLoggedInComponent;
   }
   return createFlowComponent;
 }

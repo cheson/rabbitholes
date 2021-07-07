@@ -71,8 +71,8 @@ export default function Home(props) {
               The internet is a mess of infinite feeds and random links.
             </div>
             <div>
-              What if we curated playlists for Internet content like
-              we do for music?
+              What if we curated playlists for Internet content like we do for
+              music?
             </div>
           </div>
         </div>
