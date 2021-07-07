@@ -38,8 +38,8 @@ router.get("/:flowId", (req, res) => {
   let dbResult =
     req.params.flowId == "featured"
       ? Flow.findByFlowIds([
-          "60de0b095a865b82f7e639e9",
-          "60d3b57c1273292a7d911f20",
+          "60de0b095a865b82f7e639e9", // Exploring the Internet
+          "60e5244a480a530013aeed04", // Snowboarding
           "60d3b5901273292a7d911f24",
           "60d3b59f1273292a7d911f26",
         ])
