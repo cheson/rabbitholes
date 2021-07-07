@@ -106,6 +106,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
 
   let processedImgIds = new Set();
   let newBlockIdMapping = {};
+  let blockIdsToKeep = [];
 
   for (const [key, value] of Object.entries(req.body)) {
     if (["flowTitle", "flowDescription"].includes(key)) {
@@ -127,6 +128,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
       block = flow.blocks.find((target) => target._id == blockId);
     }
     block[type] = value;
+    blockIdsToKeep.push(block._id);
 
     // Hacky way to only process images once, can certainly be improved.
     if (!processedImgIds.has(id)) {
@@ -142,6 +144,11 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
   if (introImg) {
     flow["imgUrl"] = await s3.uploadS3File(introImg);
   }
+
+  // Removes existing blocks that intend to be deleted by this edit.
+  flow.blocks = flow.blocks.filter((block) =>
+    blockIdsToKeep.includes(block._id)
+  );
 
   flow
     .save()
