@@ -27,20 +27,22 @@ function cloudflareURLToS3Key(cloudflareURL) {
 
 // Deletes associated S3 resources upon flow/user deletion
 function deleteS3Files(cloudflareURLs) {
-  const s3Keys = cloudflareURLs.map((url) => {
-    return { Key: cloudflareURLToS3Key(url) };
-  });
-  const deleteParams = {
-    Bucket: bucketName,
-    Delete: {
-      Objects: s3Keys,
-    },
-  };
-  s3.deleteObjects(deleteParams, function (err) {
-    if (err) {
-      console.log(err);
-    }
-  });
+  if (cloudflareURLs.length > 0) {
+    const s3Keys = cloudflareURLs.map((url) => {
+      return { Key: cloudflareURLToS3Key(url) };
+    });
+    const deleteParams = {
+      Bucket: bucketName,
+      Delete: {
+        Objects: s3Keys,
+      },
+    };
+    s3.deleteObjects(deleteParams, function (err) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
 }
 
 // Uploads a file to S3

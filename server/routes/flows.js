@@ -105,8 +105,8 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
   }
 
   let processedImgIds = new Set();
-  let newBlockIdMapping = {};
-  let blockIdsToKeep = [];
+  let newIdMap = {};
+  let updatedBlocks = new Map();
 
   for (const [key, value] of Object.entries(req.body)) {
     if (["flowTitle", "flowDescription"].includes(key)) {
@@ -114,21 +114,20 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
       continue;
     }
 
-    const [type, id] = key.split(":");
-    let block = flow.blocks.find((target) => target._id == id);
+    let [type, id] = key.split(":");
 
-    // Logic to add a new block during edit if it doesn't exist yet.
-    if (!block) {
-      let blockId = newBlockIdMapping[id];
-      if (!blockId) {
-        blockId = mongoose.Types.ObjectId();
-        flow.blocks.push({ _id: blockId });
-        newBlockIdMapping[id] = blockId;
-      }
-      block = flow.blocks.find((target) => target._id == blockId);
-    }
+    let block =
+      updatedBlocks.get(id) ||
+      updatedBlocks.get(newIdMap[id]) ||
+      flow.blocks.find((target) => target._id == id) ||
+      (function () {
+        const newId = mongoose.Types.ObjectId();
+        newIdMap[id] = newId;
+        id = newId;
+        return { _id: id };
+      })();
+
     block[type] = value;
-    blockIdsToKeep.push(block._id);
 
     // Hacky way to only process images once, can certainly be improved.
     if (!processedImgIds.has(id)) {
@@ -138,6 +137,8 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
       }
       processedImgIds.add(id);
     }
+
+    updatedBlocks.set(id, block);
   }
 
   const introImg = findImageFromFiles(req.files, "intro");
@@ -145,10 +146,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
     flow["imgUrl"] = await s3.uploadS3File(introImg);
   }
 
-  // Removes existing blocks that intend to be deleted by this edit.
-  flow.blocks = flow.blocks.filter((block) =>
-    blockIdsToKeep.includes(block._id)
-  );
+  flow.blocks = Array.from(updatedBlocks.values());
 
   flow
     .save()
@@ -164,7 +162,7 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
 // TODO: documentation comment with expected req shape?
 router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   let flowInfo = {};
-  let flowBlocks = {};
+  let flowBlocks = new Map(); // Map preserves order of insertion when iterating over key/values later
 
   // Retrieve flow blocks from the request body.
   // Input fields associated with the same block share a unique id (eg. url:123xyz and description:123xyz)
@@ -176,7 +174,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
       continue;
     }
     const [type, id] = key.split(":");
-    let block = flowBlocks[id];
+    let block = flowBlocks.get(id);
     if (!block) {
       block = {};
       const img = findImageFromFiles(req.files, id);
@@ -184,7 +182,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
         block["imgUrl"] = await s3.uploadS3File(img);
       }
     }
-    flowBlocks[id] = Object.assign(block, { [type]: value });
+    flowBlocks.set(id, Object.assign(block, { [type]: value }));
   }
 
   const introImg = findImageFromFiles(req.files, "intro");
@@ -194,7 +192,7 @@ router.post("/create", isAuthenticated, upload.any(), async (req, res) => {
   // TODO: Stay denormalized with userId joining to user table for now,
   // but figure out how to profile the cost of the join, especially when fetching all flows.
   flowInfo["userId"] = req.user.firebase_id;
-  flowInfo["blocks"] = Object.values(flowBlocks);
+  flowInfo["blocks"] = Array.from(flowBlocks.values());
   flowInfo["numViews"] = 1;
 
   const flow = new Flow(flowInfo);
