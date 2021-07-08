@@ -22,5 +22,14 @@
 @media all and (max-width: 480px) {
   .footer {
     flex-direction: column;
+    text-align: center;
+  }
+
+  .content {
+    margin: 3px;
+  }
+
+  .copyright {
+    margin: 3px;
   }
 }
