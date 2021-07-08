@@ -113,12 +113,10 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
       flow[key] = value;
       continue;
     }
-
     let [type, id] = key.split(":");
-
+    id = newIdMap[id] || id;
     let block =
       updatedBlocks.get(id) ||
-      updatedBlocks.get(newIdMap[id]) ||
       flow.blocks.find((target) => target._id == id) ||
       (function () {
         const newId = mongoose.Types.ObjectId();
@@ -126,7 +124,6 @@ router.put("/:flowId", isAuthenticated, upload.any(), async (req, res) => {
         id = newId;
         return { _id: id };
       })();
-
     block[type] = value;
 
     // Hacky way to only process images once, can certainly be improved.
