@@ -40,8 +40,8 @@ router.get("/:flowId", (req, res) => {
       ? Flow.findByFlowIds([
           "60de0b095a865b82f7e639e9", // Exploring the Internet
           "60e5244a480a530013aeed04", // Snowboarding
-          "60d3b5901273292a7d911f24",
-          "60d3b59f1273292a7d911f26",
+          "60e8e593fee7f40013ab69c5", // Placeholder
+          "60e8e59dfee7f40013ab69c7", // Placeholder
         ])
       : Flow.findByFlowIdAndIncNumViews(req.params.flowId);
   dbResult
