@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import ViewFlowsBlock from "../ViewFlowsBlock";
 import styles from "./ViewFlows.module.css";
@@ -46,11 +46,17 @@ export default function ViewFlows(props) {
   }
 
   const [flows, setFlows] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // TODO: do we need a loaded boolean for all pages that load from api?
   useEffect(() => {
+    setFlows([]);
+    setIsLoading(true);
     props.apiService
       .viewFlows(searchQuery ? { search: searchQuery } : {})
-      .then((newFlows) => setSortedFlows(activeSortType, newFlows));
+      .then((newFlows) => {
+        setIsLoading(false);
+        setSortedFlows(activeSortType, newFlows);
+      });
   }, [searchQuery]);
 
   return (
@@ -93,9 +99,13 @@ export default function ViewFlows(props) {
       </div>
 
       <div className={styles.flowBlockContainer}>
-        {flows.map((flow) => (
-          <ViewFlowsBlock key={flow._id} flow={flow} />
-        ))}
+        {isLoading ? (
+          <Spinner animation="border" variant="success" />
+        ) : flows.length > 0 ? (
+          flows.map((flow) => <ViewFlowsBlock key={flow._id} flow={flow} />)
+        ) : (
+          <h3>No results found for keywords: [ {searchQuery} ]</h3>
+        )}
       </div>
     </div>
   );

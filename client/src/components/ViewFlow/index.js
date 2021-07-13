@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import styles from "./ViewFlow.module.css";
+import { Spinner } from "react-bootstrap";
 import ResourceNotFound from "../ResourceNotFound";
 
 export default function ViewFlow(props) {
@@ -32,7 +33,9 @@ export default function ViewFlow(props) {
   const resourceNotFoundComponent = (
     <ResourceNotFound message={`List (${flowId}) cannot be found.`} />
   );
-  const pageNotLoadedComponent = <div></div>;
+  const pageNotLoadedComponent = (
+    <Spinner className={styles.spinner} animation="border" variant="success" />
+  );
 
   return (
     <div>
