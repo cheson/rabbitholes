@@ -24,18 +24,20 @@ function CreateFlowIntro(props) {
           defaultValue={props.title}
           className={styles.titleText}
           name="flowTitle"
+          maxLength="250"
         ></input>
       </div>
 
       <div className={styles.formEntry}>
         <label className={styles.label} htmlFor="description">
-          Description
+          Description (max 1000 characters)
         </label>
         <textarea
           id="description"
           className={styles.descriptionText}
           defaultValue={props.description || ""}
           name="flowDescription"
+          maxLength="1000"
         ></textarea>
       </div>
     </div>

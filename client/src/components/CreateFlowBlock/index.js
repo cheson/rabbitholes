@@ -24,17 +24,21 @@ function CreateFlowBlock(props) {
           id={`url:${block.id}`}
           name={`url:${block.id}`}
           defaultValue={block.url}
+          maxLength="250"
         ></input>
       </div>
 
       <div className={styles.descriptionSection}>
-        <label htmlFor={`description:${block.id}`}>Description</label>
+        <label htmlFor={`description:${block.id}`}>
+          Description (max 1000 characters)
+        </label>
         <textarea
           className={styles.descriptionText}
           type="text"
           id={`description:${block.id}`}
           name={`description:${block.id}`}
           defaultValue={block.description}
+          maxLength="1000"
         ></textarea>
       </div>
 
