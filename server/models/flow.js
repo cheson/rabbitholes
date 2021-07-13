@@ -46,10 +46,30 @@ function withUserInfo(flows) {
 }
 
 flowSchema.statics.findAll = async function () {
-  return await this.find().populate({
-    path: "user",
-    select: "firebase_id email name username -_id",
-  });
+  return await withUserInfo(this.find().select("-blocks"));
+};
+
+flowSchema.statics.findByUserId = async function (userId) {
+  const flows = await withUserInfo(
+    this.find({
+      userId: userId,
+    }).select("-blocks")
+  );
+
+  return flows;
+};
+
+flowSchema.statics.findBySearchQuery = async function (searchQuery) {
+  const flows = await withUserInfo(
+    this.find(
+      { $text: { $search: searchQuery } },
+      { score: { $meta: "textScore" } }
+    )
+      .sort({ score: { $meta: "textScore" } })
+      .select("-blocks")
+  );
+
+  return flows;
 };
 
 // TODO: improve error handling and propagate back to client
@@ -81,27 +101,6 @@ flowSchema.statics.findByFlowIds = async function (flowIdArr) {
         $in: flowIdArr.map((id) => mongoose.Types.ObjectId(id)),
       },
     })
-  );
-
-  return flows;
-};
-
-flowSchema.statics.findByUserId = async function (userId) {
-  const flows = await withUserInfo(
-    this.find({
-      userId: userId,
-    })
-  );
-
-  return flows;
-};
-
-flowSchema.statics.findBySearchQuery = async function (searchQuery) {
-  const flows = await withUserInfo(
-    this.find(
-      { $text: { $search: searchQuery } },
-      { score: { $meta: "textScore" } }
-    ).sort({ score: { $meta: "textScore" } })
   );
 
   return flows;
