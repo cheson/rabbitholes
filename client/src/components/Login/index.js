@@ -29,7 +29,7 @@ function Login(props) {
     },
     // We will display Google and Facebook as auth providers.
     signInOptions: [
-      firebase.auth.EmailAuthProvider.PROVIDER_ID, //TODO: email verification
+      // firebase.auth.EmailAuthProvider.PROVIDER_ID, //TODO: re-add when we have email verification
       firebase.auth.GoogleAuthProvider.PROVIDER_ID,
       firebase.auth.FacebookAuthProvider.PROVIDER_ID,
     ],
