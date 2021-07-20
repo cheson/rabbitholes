@@ -1,6 +1,6 @@
 # rabbitholes
 
-Web app publicly deployed at www.rabbitholes.com. More details available in this writeup: https://www.notion.so/rabbitholes-summary-fd709bb1beed451797b7bd60d6ae25c7 
+Web app publicly deployed at www.rabbitholes.ooo. More details available in this writeup: https://www.notion.so/rabbitholes-summary-fd709bb1beed451797b7bd60d6ae25c7 
 
 List of tools and tech used: [https://www.notion.so/Tools-Tech-List-01c1cde64c844724b84fb953bf84d5b8](https://www.notion.so/Tools-Tech-List-01c1cde64c844724b84fb953bf84d5b8)
 
